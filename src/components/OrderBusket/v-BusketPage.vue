@@ -1,9 +1,12 @@
 <template>
+  <div class="user-panel">
+    <v-main-panel-user/>
+  </div>
   <div id="busketContainer">
     <div class="busket">
       <div class="productInBusket">
         <h1 id="header">Корзина Избранных Продуктов</h1>
-        <div class="productItem" v-if="BUSKETPRODUCTS" v-for="(item, i) in BUSKETPRODUCTS">
+        <div class="productItem" v-if=busketproducts v-for="(item, i) in busketproducts">
           <img :src="require('../assets/images/Kenzo/'+ item.image)" alt="images">
           <div class="navig-btn">
             <button id="prod-button" class="plus" @click="plusCountProd(i, item.name)">+</button>
@@ -32,11 +35,11 @@
 <script>
 
 import {mapGetters, mapActions} from "vuex";
-// import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
 export default {
     name: 'v-BusketPage',
     components:{
-      // vMainPanelUser
+      vMainPanelUser
     },
     data(){
       return {
@@ -46,13 +49,13 @@ export default {
       }
     },
     methods:{
-      ...mapActions([
-         'clearBusket',
-         'appendBusket',
-         'plusProdBusket',
-         'minusProdBusket',
-         'deliteProduct'
-      ]),
+      ...mapActions({
+        clearBusket: 'busketProducts/clearBusket',
+        appendBusket: 'busketProducts/appendBusket',
+        plusProdBusket: 'busketProducts/plusProdBusket',
+        minusProdBusket: 'busketProducts/minusProdBusket',
+        deliteProduct: 'busketProducts/deliteProduct'
+      }),
       clearBuskets(){
         try {
           this.clearBusket()
@@ -108,9 +111,9 @@ export default {
 
     },
     computed:{
-      ...mapGetters([
-        'BUSKETPRODUCTS',
-      ]),
+      ...mapGetters({
+        busketproducts: 'busketProducts/BUSKETPRODUCTS',
+      }),
       calculateThePrice(){
         try {
           if (this.dataBusket){
@@ -136,6 +139,13 @@ export default {
 </script>
 
 <style>
+
+.user-panel{
+  display: flex;
+  background-color: rgb(57, 73, 82);
+  width: 100%;
+  height: 50px;
+}
 
 #busketContainer{
   display: flex;

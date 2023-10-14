@@ -3,8 +3,8 @@
       <vMainPanelUser/>
     </div>
     <div class="contaner-homepage">
-      <vCaruselProduct v-if="ONEPRODUCT"
-         :oneproduct="ONEPRODUCT"/>
+      <vCaruselProduct v-if="oneproduct"
+         :oneproduct="oneproduct"/>
       <div class="cards">
           <div class="head">
             <h1 class="header-product">Catalog Brend's</h1>
@@ -27,10 +27,10 @@
             vMainPanelUser
         },
       methods: {
-        ...mapActions([
-          'loadsProduct',
-          'getUsers'
-        ]),
+        ...mapActions({
+          loadsProducts: 'products/loadProducts',
+          loadsProduct: 'products/loadsProduct'
+        }),
         async loadData() {
           try {
             await this.loadsProduct()
@@ -40,10 +40,8 @@
         },
       },
       computed:{
-            ...mapGetters([
-                'PRODUCTS',
-                'ONEPRODUCT',
-                'USERINSYSTEM']),
+            ...mapGetters({
+                oneproduct: 'products/ONEPRODUCT'}),
         },
       mounted() {
           this.loadData()

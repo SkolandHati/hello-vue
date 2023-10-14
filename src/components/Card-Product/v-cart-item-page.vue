@@ -3,12 +3,12 @@
     <div class="user-panel">
       <vMainPanelUser/>
     </div>
-    <div class="itemproduct" v-if="ONEPRODUCT">
+    <div class="itemproduct" v-if="oneproduct">
       <div class="info-product">
         <div class="image-container">
             <img :src="require('../assets/images/Kenzo/'+ $route.params.id + '.jpeg')" alt="images">
-            <h1 class="nameProducts">{{ONEPRODUCT.name}}</h1>
-            <h2 class="price">{{ONEPRODUCT.price}}</h2>
+            <h1 class="nameProducts">{{oneproduct.name}}</h1>
+            <h2 class="price">{{oneproduct.price}}</h2>
         </div>
       </div>
       <div class="block-button">
@@ -16,9 +16,6 @@
         <button id="favorite">В избранное</button>
         <button id="in-busket" @click="addToCartInBusket">В корзину</button>
       </div>
-    </div>
-    <div>
-      <span>wqfewqfwewegwegewgwegweg</span>
     </div>
   </div>
 </template>
@@ -33,10 +30,10 @@
           vMainPanelUser
       },
       methods:{
-        ...mapActions([
-           'loadsProduct',
-           'appendBusket',
-        ]),
+        ...mapActions({
+          loadsProduct: 'products/loadsProduct',
+          addBusket: 'busketProducts/appendBusket',
+        }),
         async getData(){
           try {
             await this.loadsProduct(this.$route.params.id)
@@ -46,11 +43,10 @@
         },
         async addToCartInBusket() {
           try {
-            const prod = await this.ONEPRODUCT;
+            const prod = await this.oneproduct;
             if (prod) {
               prod['quantity'] = 1
               localStorage.setItem(prod.name, JSON.stringify(prod))
-              console.log(localStorage)
             }
           }catch (e){
             Promise.reject(e)
@@ -58,14 +54,13 @@
         },
       },
       computed:{
-        ...mapGetters([
-            'ONEPRODUCT',
-            'BUSKETPRODUCTS',
-        ])
+        ...mapGetters({
+          oneproduct: 'products/ONEPRODUCT',
+          busketProducts: 'busketProducts/BUSKETPRODUCTS',
+        })
       },
       mounted() {
         this.getData()
-        console.log(localStorage)
       }
     }
 </script>

@@ -1,9 +1,9 @@
 <template>
     <div class="v-catalog-products">
-        <vCartItems v-if="PRODUCTS"
-        v-for="products in PRODUCTS"
-        :key="products.id"
-        :allproducts="products"/>
+        <vCartItems v-if="productus"
+        v-for="prodoos in productus"
+        :key="prodoos.id"
+        :allproducts="prodoos"/>
     </div>
 </template>
 
@@ -16,9 +16,9 @@
         vCartItems
       },
       methods:{
-        ...mapActions([
-              'loadProducts'
-          ]),
+        ...mapActions({
+          loadProducts: 'products/loadProducts',
+        }),
         async loadData(){
           try {
             await this.loadProducts()
@@ -29,9 +29,9 @@
         }
       },
       computed:{
-          ...mapGetters([
-              'PRODUCTS'
-          ])
+        ...mapGetters({
+          productus:'products/PRODUCTS'
+        }),
       },
       mounted() {
         this.loadData()

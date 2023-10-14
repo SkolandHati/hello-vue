@@ -6,14 +6,17 @@
                   crossorigin="anonymous">
       <div class="userbuttons">
         <div class="button" id="button-busket">
-          <button @click="$router.push({name: 'v-BusketPage'})"> <i class="fas fa-solid fa-cart-plus"></i></button>
+          <button class="busket-btn" @click="$router.push({name: 'v-BusketPage'})">
+            <i class="fas fa-solid fa-cart-plus"></i>
+            <span class="circle" v-if="busketPiece" >{{3}}</span>
+          </button>
         </div>
         <div class="button" id="button-heart">
           <button> <i class="fas fa-solid fa-heart"></i></button>
         </div>
         <div class="button" id="button-user">
           <button class="fas fa-solid fa-user" :style="styleCheck"></button>
-          <div class="btn-auth-regist" v-if="USERINSYSTEM">
+          <div class="btn-auth-regist" v-if="userinsystem">
             <a @click=""> Настройки </a>
             <a @click="signOut"> Выйти </a>
           </div>
@@ -30,25 +33,26 @@
     import router from "@/router";
     import {mapGetters, mapActions} from "vuex";
     import {supabase} from "@/services/APIauthorization";
-
+    import {ref} from "vue";
     export default {
         name: "v-button-user",
         data(){
           return {
             isActive: false,
+            busketPiece: localStorage.length
           }
         },
         methods: {
           router() {
             return router
           },
-          ...mapActions([
-              'getUsers',
-              'outUser',
-          ]),
+          ...mapActions({
+            getUser: 'user/getUsers',
+            outUser: 'user/outUser',
+          }),
           async loadData() {
             try {
-              await this.getUsers()
+              await this.getUser()
             }
             catch (e) {
               Promise.reject(e)
@@ -65,12 +69,12 @@
             }catch (e){
               Promise.reject(e)
             }
-          }
+          },
         },
         computed:{
-          ...mapGetters([
-              'USERINSYSTEM'
-          ]),
+          ...mapGetters({
+            userinsystem: 'user/USERINSYSTEM',
+          }),
           styleCheck(){
             if (this.isActive){
               return {
@@ -81,7 +85,7 @@
                 border: '2px solid #7BA7AB'
               }
             }
-          },
+          }
         },
         setup(){
           const signOut = async () => {
@@ -109,6 +113,7 @@
         mounted() {
             this.checkUser()
             this.loadData()
+          console.log()
         }
     }
 </script>
@@ -126,6 +131,28 @@
     }
     .panel-user>.userbuttons>.button{
       display: block;
+    }
+    .panel-user>.userbuttons>#button-busket{
+      display: flex;
+      width: 60px;
+    }
+    .panel-user>.userbuttons>.button>.busket-btn{
+      margin-right: 0px;
+      display: flex;
+      padding: 8px;
+      padding-top: 10px;
+    }
+    .panel-user>.userbuttons>.button>.busket-btn>.circle{
+      width: 20px;
+      height: 20px;
+      background-color: rgb(83, 211, 29);
+      border-radius: 50%;
+      margin-top: 10px;
+      padding-left: 7px;
+      padding-right: 6px;
+      font-size: 14px;
+      color: #1a6c80;
+      text-align: center;
     }
     .panel-user>.userbuttons>.button>button{
       position: relative;
@@ -178,6 +205,21 @@
       background-color: dimgrey;
       cursor: pointer;
       right: 0px;
+    }
+    /// Циркуль
+    .panel-user>.userbuttons>.button>.cont-circle{
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+    }
+    .panel-user>.userbuttons>.button>.circle{
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      background-color: rgb(83, 211, 29);
+      border-radius: 50%;
+      margin-top: 27px;
+      padding-left: 5px;
     }
 
 </style>

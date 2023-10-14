@@ -1,11 +1,13 @@
 <template>
     <div class="items">
+      <div class="container-item" @click="$router.push({name: 'v-cart-item-page', params: {id: allproducts.id}})">
         <div class="image">
-            <img :src="require('../assets/images/Kenzo/'+ allproducts.image)" alt="images">
+          <img :src="require('../assets/images/Kenzo/'+ allproducts.image)" alt="images">
         </div>
-        <div class="nameds" @click="$router.push({name: 'v-cart-item-page', params: {id: allproducts.id}})">
-            <p>{{allproducts.name}}</p>
+        <div class="nameds">
+          <p>{{allproducts.name}}</p>
         </div>
+      </div>
         <div class="pricesed">
             <h2>{{allproducts.price}} $</h2>
             <button class="add-basket">Добавить в корзину</button>
@@ -36,7 +38,7 @@
 <style>
     .items{
         display: block;
-        margin-top: 15px;
+        margin-top: 10px;
         margin-left: 12px;
         margin-bottom: 40px;
         width: 280px;
@@ -44,11 +46,11 @@
         box-shadow: 0 0 4px 0;
 
     }
-    .items>.nameds{
+    .items>.container-item>.nameds{
         display: flex;
         justify-content: center;
     }
-    .items>.nameds>p{
+    .items>.container-item>.nameds>p{
         font-size: 27px;
         color: black;
         
@@ -80,17 +82,16 @@
         font-size: 20px;
         color: black;
     }
-    .items>.image{
-        margin-top: 15px;
+    .items>.container-item>.image{
+        padding-top: 15px;
         display: flex;
         justify-content: center;
     }
-    .items>.image>img{
+    .items>.container-item>.image>img{
         width: 200px;
         height: 200px;
     }
-    .image:hover,
-    .nameds:hover{
+    .items>.container-item:hover{
       background-color: aliceblue;
       color: #7BA7AB;
       cursor: pointer;
