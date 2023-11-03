@@ -1,11 +1,13 @@
 <template>
     <div class="v-catalog-products">
-        <vCartItems v-if="perProducts"
-        v-for="prodoos in perProducts"
+        <vCartItems v-if="products"
+        v-for="prodoos in visibleProducts"
         :key="prodoos.id"
         :allproducts="prodoos"/>
     </div>
-  <PaginateMod v-if="productus" :productsArr="productus" :pageNumb="pageNumber"></PaginateMod>
+  <PaginateMod v-if="productus" :current_page="currentPage"
+               :total_pages="totalPages"
+               @pagechanged="pageChanged"></PaginateMod>
 </template>
 
 <script>
@@ -20,9 +22,10 @@
       },
       data(){
         return {
-          perProducts: null,
-          pageNumber: 1
-        }
+          products: [],
+          currentPage: 1,
+          pageSize: 6
+        };
       },
       methods:{
         ...mapActions({
@@ -36,38 +39,44 @@
             Promise.reject(e)
           }
         },
-        async loadCountProducts(index = 0){
+        async loadCountProducts(){
           try {
             let data = await this.productus
             let listProd = []
-            let onTracking = {
-              index: index,
-            }
             if (data){
               data.forEach((item, index, arrey) => {
                 localStorage.setItem(index, JSON.stringify(item))
               })
-              let numd = localStorage.length / this.countesPage
-              for (let i = 0; numd > i; i++){
+              for (let i = 0; localStorage.length > i; i++){
                 listProd.push(JSON.parse(localStorage.getItem(i)))
               }
-              return this.perProducts = listProd
+              return this.products = listProd
             }
           }catch (e){
             Promise.reject(e)
           }
+        },
+        pageChanged(pageNumber) {
+          this.currentPage = pageNumber;
         }
       },
       computed:{
         ...mapGetters({
           productus:'products/PRODUCTS'
         }),
-        countesPage() {
-          return Math.ceil(localStorage.length / 6)
+        visibleProducts() {
+          const start = (this.currentPage - 1) * this.pageSize;
+          const end = start + this.pageSize;
+          return this.products.slice(start, end)
+        },
+        totalPages() {
+          return Math.ceil(this.products.length / this.pageSize);
         },
       },
-      mounted() {
+      created() {
         this.loadData()
+      },
+      mounted() {
         this.loadCountProducts()
       }
     }

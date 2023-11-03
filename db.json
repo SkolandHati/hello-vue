@@ -116,11 +116,111 @@
       "name": "Prada 111",
       "brend": "Prada",
       "price": 7503,
-      "article": "T11",
+      "article": "T12",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 13,
+      "image": "13.jpeg",
+      "name": "Prada 09",
+      "brend": "Prada",
+      "price": 6661,
+      "article": "T13",
+      "available": true,
+      "category": "Женские"
+    },
+    {
+      "id": 14,
+      "image": "14.jpeg",
+      "name": "Prada 411",
+      "brend": "Prada",
+      "price": 10003,
+      "article": "T14",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 15,
+      "image": "15.jpeg",
+      "name": "Prada 71",
+      "brend": "Prada",
+      "price": 32167,
+      "article": "T15",
+      "available": true,
+      "category": "Женские"
+    },
+    {
+      "id": 16,
+      "image": "16.jpeg",
+      "name": "Prada 061-",
+      "brend": "Prada",
+      "price": 5434,
+      "article": "T16",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 17,
+      "image": "17.jpeg",
+      "name": "Prada 105",
+      "brend": "Prada",
+      "price": 54114,
+      "article": "T16",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 18,
+      "image": "18.jpeg",
+      "name": "Stone Island 29",
+      "brend": "Stone Island",
+      "price": 9000,
+      "article": "T18",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 19,
+      "image": "19.jpeg",
+      "name": "Stone Island 259",
+      "brend": "Stone Island",
+      "price": 5305,
+      "article": "T19",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 20,
+      "image": "20.jpeg",
+      "name": "Stone Island 9",
+      "brend": "Stone Island",
+      "price": 6465,
+      "article": "T20",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 21,
+      "image": "21.jpeg",
+      "name": "Stone Island 900",
+      "brend": "Stone Island",
+      "price": 34677,
+      "article": "T21",
+      "available": true,
+      "category": "Мужские"
+    },
+    {
+      "id": 22,
+      "image": "22.jpeg",
+      "name": "Stone Island 41",
+      "brend": "Stone Island",
+      "price": 7586,
+      "article": "T22",
       "available": true,
       "category": "Мужские"
     }
-],
+  ],
   "brend": [
     {
       "id": 1,

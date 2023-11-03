@@ -1,22 +1,27 @@
 <template>
   <div class="container__paginate">
-    <ul class="pagination justify-content-center" v-for="(item, i) in countesPage" :key="item[i]">
-      <li class="item" :class="{setClass}"  @click.prevent="setClass">{{item}}</li>
-    </ul>
+    <button class="pagination" v-for="(item, i) in pages" :key="item[i]" :class="{active: current_page === item}" @click.prevent="navigate(item)">
+      {{item}}
+    </button>
   </div>
 </template>
 
 <script>
+import {createLogger} from "vuex";
+
 export default {
     name: 'v-PaginateModul',
+    emits:[
+        'pagechanged'
+    ],
     props:{
-      productsArr:{
-        type: Array,
-        required: true
-      },
-      pageNumb:{
+      current_page:{
         type: Number,
-        required: true
+        require: true
+      },
+      total_pages:{
+        type: Number,
+        require: true
       }
     },
     data(){
@@ -26,24 +31,28 @@ export default {
       }
     },
     methods:{
-      setClass(){
-        return this.Active = true
+      navigate(page) {
+        if (this.currentPage !== page) {
+          this.$emit('pagechanged', page);
+        }
       }
     },
     computed: {
-      countesPage() {
-        return Math.ceil(localStorage.length / 6)
-      },
-      selected: {
-        get: function () {
-          return this.modelValue || this.innerValue;
-        },
-        set: function (newValue) {
-          this.innerValue = newValue;
-        },
+      pages() {
+        const pagesArray = [];
+        for (let page = 1; page <= this.total_pages; page++) {
+          const pageDiff = Math.abs(page - this.current_page);
+          const showPage = (pageDiff < 3 || page === 1 || page === this.total_pages);
+          console.log(pageDiff, showPage)
+          if (showPage) {
+            pagesArray.push(page);
+          }
+        }
+        return pagesArray;
       }
     },
     mounted() {
+      this.pages
     }
 }
 
@@ -59,25 +68,29 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 15px;
+    margin-left: 10px;
     margin-bottom: 15px;
-    width: 100%;
-    height: 50px;
+    padding-bottom: 20px;
+    width: 98%;
+    height: 35px;
+    border: 1px solid #989898;
   }
-  .container__paginate>.pagination>.item{
+  .container__paginate>.pagination{
     display: flex;
+    margin: 15px;
     width: 30px;
-    height: 25px;
+    height: 30px;
     padding-top: 4px;
     justify-content: center;
     border: 2px solid skyblue;
-    border-radius: 115%;
+    border-radius: 50%;
   }
 
-  .container__paginate>.pagination>.item:hover{
+  .container__paginate>.pagination:hover{
     cursor: pointer;
     background-color: skyblue;
   }
-  .container__paginate>.pagination>.item.Active{
+  .container__paginate>.active{
     background-color: skyblue;
   }
 </style>
