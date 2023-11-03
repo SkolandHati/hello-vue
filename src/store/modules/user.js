@@ -4,13 +4,21 @@ export default {
     namespaced: true,
     state:{
         auth: false,
-        user: null
+        user: {
+            user_id: 0,
+            user_name: null
+        }
     },
-    action: {
-        async getUsers({commit}){
+    actions: {
+        async getUser({commit}){
             try {
                 const result = await supabase.auth.getUser()
-                commit("GET_USER", result.data.user)
+                if (result.data.user === null){
+                    return commit("GET_USER", false, result.data.user)
+                }
+                commit("GET_USER_STATUS", result.data.user.aud)
+                commit("GET_USER_ID", result.data.user.id)
+                commit("GET_USER_NAME", result.data.user.user_metadata.first_name)
             }
             catch (e){
                 Promise.reject(e)
@@ -25,11 +33,20 @@ export default {
         },
     },
     mutations:{
-        GET_USER(state, user){
-            state.user = user
+        GET_USER_STATUS(state, auth){
+            state.auth = auth
         },
+        GET_USER_ID(state, id){
+            state.user.user_id = id
+        },
+        GET_USER_NAME(state, name){
+            state.user.user_name = name
+        }
     },
     getters: {
+        AUTH(state){
+          return state.auth
+        },
         USERINSYSTEM(state){
             return state.user
         }

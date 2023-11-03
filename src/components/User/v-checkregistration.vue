@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <main class="container-main">
-      <div class="window-accept" v-if="iscurrensuser">
+      <div class="window-accept" v-if="loadData">
         <h1>Регистрация прошла успешна!</h1>
         <h2>Пользователь создан</h2>
         <div class="buttn">
@@ -24,45 +24,46 @@
   export default {
     name: "checkRegister",
     methods:{
-      ...mapActions([
-          'getUsers'
-      ]),
+      ...mapActions({
+        thenUser:'user/getUser'
+      }),
       router() {
         return router
       },
-      // async loadData(){
-      //   try{
-      //     await this.getUsers()
-      //   }catch (e){
-      //     Promise.reject(e)
-      //   }
-      // },
-      async iscurrensuser(){
+      async loadUserData(){
         try {
+          await this.thenUser()
+        }catch (e){
+          Promise.reject(e)
+        }
+      },
+      async loadData(){
+        try{
           const data = await supabase.auth.getUser()
-          if (data.user.aud){
-            return data
-          }else {
+          if (data){
+            return data.data.user
+          }else{
             return false
           }
         }catch (e){
           Promise.reject(e)
         }
-      }
+      },
     },
     computed:{
-      ...mapGetters([
-          'USERINSYSTEM'
-      ])
+      ...mapGetters({
+        userAuth: 'user/AUTH'
+      })
     },
     mounted() {
-      // this.loadData()
+      this.loadData()
+      this.loadUserData()
     }
   }
 
 </script>
 
-<style>
+<style scoped>
   body{
     background-color: #6e6d6d;
   }

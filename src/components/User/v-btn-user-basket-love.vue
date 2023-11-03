@@ -8,15 +8,15 @@
         <div class="button" id="button-busket">
           <button class="busket-btn" @click="$router.push({name: 'v-BusketPage'})">
             <i class="fas fa-solid fa-cart-plus"></i>
-            <span class="circle" v-if="busketPiece" >{{3}}</span>
+            <span class="circle" v-if="count !== 0">{{count}}</span>
           </button>
         </div>
         <div class="button" id="button-heart">
-          <button> <i class="fas fa-solid fa-heart"></i></button>
+          <button @click="$router.push({name:'vFavoritePage'})"> <i class="fas fa-solid fa-heart"></i></button>
         </div>
         <div class="button" id="button-user">
           <button class="fas fa-solid fa-user" :style="styleCheck"></button>
-          <div class="btn-auth-regist" v-if="userinsystem">
+          <div class="btn-auth-regist" v-if="is_auth">
             <a @click=""> Настройки </a>
             <a @click="signOut"> Выйти </a>
           </div>
@@ -33,13 +33,12 @@
     import router from "@/router";
     import {mapGetters, mapActions} from "vuex";
     import {supabase} from "@/services/APIauthorization";
-    import {ref} from "vue";
     export default {
-        name: "v-button-user",
+        name: "v-btn-user-basket-love",
         data(){
           return {
             isActive: false,
-            busketPiece: localStorage.length
+            count: 0
           }
         },
         methods: {
@@ -47,14 +46,32 @@
             return router
           },
           ...mapActions({
-            getUser: 'user/getUsers',
+            getUser: 'user/getUser',
             outUser: 'user/outUser',
+            loadDatafromDataBase: 'busketProducts/loadProductsData',
           }),
           async loadData() {
             try {
               await this.getUser()
             }
             catch (e) {
+              Promise.reject(e)
+            }
+          },
+          async calculateCountProducts(){
+            try {
+              await this.loadDatafromDataBase()
+              let data = await this.busketproducts
+              if (data){
+                const listPrice = []
+                for (const key in this.busketproducts){
+                  listPrice.push(this.busketproducts[key].quantity)
+                }
+                return this.count = listPrice.reduce((sum, current) => sum + current, 0)}
+              else {
+                return  this.count  = 0
+              }
+            }catch (e){
               Promise.reject(e)
             }
           },
@@ -74,6 +91,8 @@
         computed:{
           ...mapGetters({
             userinsystem: 'user/USERINSYSTEM',
+            is_auth: 'user/AUTH',
+            busketproducts: 'busketProducts/BUSKETPRODUCTS',
           }),
           styleCheck(){
             if (this.isActive){
@@ -85,7 +104,7 @@
                 border: '2px solid #7BA7AB'
               }
             }
-          }
+          },
         },
         setup(){
           const signOut = async () => {
@@ -113,7 +132,7 @@
         mounted() {
             this.checkUser()
             this.loadData()
-          console.log()
+            this.calculateCountProducts()
         }
     }
 </script>

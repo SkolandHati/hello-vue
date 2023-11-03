@@ -16,6 +16,8 @@
           <router-link to="/" class="route">
           <a href="#" class="button button-google" @click="signIn"> Войти</a>
           </router-link>
+            <p>Или</p>
+            <a href="#" class="button button-google" @click="$router.push({name: 'v-SignUp'})"> Зарегистрироваться</a>
         </div>
       </div>
     </main>
@@ -36,6 +38,9 @@ export default {
       let password = ref('')
       const signIn = async () => {
         try {
+          if (!email.value && !password.value){
+            this.router.push({name: 'v-SignIn'})
+          }
             const {data, error } = await supabase.auth.signInWithPassword({
               email: email.value,
               password: password.value
@@ -60,7 +65,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
     .imgcont {
       background-image: none;
       margin: 0;
@@ -183,7 +188,8 @@ export default {
       margin-bottom: 13px;
 
     }
-    .imgcont>main>.register-form-container>.form-button>.route>.button{
+    .imgcont>main>.register-form-container>.form-button>.route>.button,
+    .imgcont>main>.register-form-container>.form-button>.button{
       font-weight: bold;
       font-size: 14px;
       display: block;
@@ -196,20 +202,33 @@ export default {
       line-height: 45px;
       cursor: pointer;
     }
-    .imgcont>main>.register-form-container>.form-button>.route>.button:hover {
+    .imgcont>main>.register-form-container>.form-button>.route>.button:hover,
+    .imgcont>main>.register-form-container>.form-button>.button{
       background-color: #0D6CF2;
     }
 
-    .imgcont>main>.register-form-container>.form-button>.route>.button-google {
+    .imgcont>main>.register-form-container>.form-button>.route>.button-google,
+    .imgcont>main>.register-form-container>.form-button>.button{
       text-decoration: none;
     }
 
-    .imgcont>main>.register-form-container>.form-button>.route>a.button-google {
+    .imgcont>main>.register-form-container>.form-button>.route>a.button-google,
+    .imgcont>main>.register-form-container>.form-button>.button{
       color: #fff;
       background: #0D6CF2;
     }
-    .imgcont>main>.register-form-container>.form-button>.route>a.button-google:hover {
+    .imgcont>main>.register-form-container>.form-button>.route>a.button-google:hover,
+    .imgcont>main>.register-form-container>.form-button>.button{
       background: #3a58be;
       color: #fff;
+    }
+    html body div#app div#app div#app section.imgcont main div.register-form-container div.form-button p {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
+      color: #405D87;
+      text-align: center;
+      padding-top: 5px;
+      padding-bottom: 5px;
     }
 </style>

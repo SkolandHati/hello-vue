@@ -7,22 +7,16 @@
 <script>
     import vSearchPanel from './v-search-panel.vue';
     import vBtnUserBasketLove from './v-btn-user-basket-love.vue';
-    import router from "@/router";
     export default {
-        name: "v-panel",
+        name: "v-main-panel-user",
         components: {
             vSearchPanel,
             vBtnUserBasketLove,
         },
-        methods:{
-            router() {
-              return router
-            }
-          }
     }
 </script>
 
-<style>
+<style scoped>
     h1{
         color: rgb(235, 239, 241);
         font-size: 30px;

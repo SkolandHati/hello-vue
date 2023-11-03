@@ -2,14 +2,18 @@ import {createStore} from 'vuex'
 
 import products from "@/store/modules/products";
 import busketProducts from "@/store/modules/busketProducts";
-import user from "@/store/modules/user"
+import favoriteProducts from "@/store/modules/FavoriteProducts"
+import user from "@/store/modules/user";
+import commentsModules from "@/store/modules/comments_data"
 
 
 let store = {
     modules:{
         products,
         busketProducts,
-        user
+        favoriteProducts,
+        user,
+        commentsModules
     }
 }
 

@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import {supabase} from "@/services/APIauthorization";
 
 const App = () => import('@/App.vue')
 const Home = () => import('@/components/Home/v-HomePage')
@@ -12,7 +13,7 @@ const SignIn = () => import('@/components/User/v-SignIn.vue')
 
 const BusketPage = () => import('@/components/OrderBusket/v-BusketPage.vue')
 
-
+const FavoritePage = () => import('@/components/Favorite/v-FavoritePage.vue')
 
 const router = createRouter({
     routes: [
@@ -31,7 +32,7 @@ const router = createRouter({
                     component: ProductID,
                 },
                 {
-                    path: '/signup',
+                    path: 'signup',
                     name: 'v-SignUp',
                     component: SignUp,
                 },
@@ -48,13 +49,37 @@ const router = createRouter({
                 {
                     path:'/busket',
                     name:'v-BusketPage',
-                    component: BusketPage
+                    component: BusketPage,
+                    meta: {
+                        requireAuth: true
+                    }
+                },
+                {
+                    path:'/favorite_products',
+                    name:'vFavoritePage',
+                    component:FavoritePage,
                 }
             ]
         },
     ],
-
     history: createWebHistory()
+})
+
+async function getUser(next){
+    let localUser = await supabase.auth.getSession()
+    if (localUser.data.session === null){
+        next('/signin')
+    }else {
+        next()
+    }
+}
+router.beforeEach((to, from, next) => {
+    if (to.meta.requireAuth){
+        getUser(next)
+    }
+    else {
+        next()
+    }
 })
 
 export default router

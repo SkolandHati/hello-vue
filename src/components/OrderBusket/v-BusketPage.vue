@@ -4,29 +4,26 @@
   </div>
   <div id="busketContainer">
     <div class="busket">
-      <div class="productInBusket">
+      <div class="productInBusket" v-if=busketproducts>
         <h1 id="header">Корзина Избранных Продуктов</h1>
-        <div class="productItem" v-if=busketproducts v-for="(item, i) in busketproducts">
-          <img :src="require('../assets/images/Kenzo/'+ item.image)" alt="images">
+        <div class="productItem" v-for="(item, i) in busketproducts">
+          <img :src="require('../assets/images/Kenzo/'+ item.image_product)" alt="images">
           <div class="navig-btn">
-            <button id="prod-button" class="plus" @click="plusCountProd(i, item.name)">+</button>
-            <button id="prod-button" class="minus" @click="minusCountProd(i, item.name)">-</button>
-            <button id="prod-button" class="delite" @click="deliteProdisBusket(item.name)">delit</button>
+            <button id="prod-button" class="plus" @click="plusCountProd(i)">+</button>
+            <button id="prod-button" class="minus" @click="minusCountProd(i)">-</button>
+            <button id="prod-button" class="delite" @click="deliteProductBusket(item.id_product)">delit</button>
           </div>
           <div class="productInfo">
-              <h1 id="product">{{item.name}}</h1>
-              <h1 id="product">{{item.price * item.quantity}}</h1>
+              <h1 id="product">{{item.name_product}}</h1>
+              <h1 id="product">{{item.product_price * item.quantity}}</h1>
               <h1 id="product">Количество товаров в корзине {{item.quantity}}</h1>
           </div>
-        </div>
-        <div v-else>
-          <h1>В КОРЗИНЕ ОТСУТСТВУЮТ ТОВАРЫ</h1>
         </div>
       </div>
     <div class="infoAllBusket">
       <h1 id="infoPrice" >Стоимость всех товаров в корзине: {{calculateThePrice}}</h1>
-      <button id="button">ewgwegdsgsdg</button>
-      <button id="button" class="clearBusket" @click="clearBuskets">Очистить корзину</button>
+      <button id="button">Оформить заказ</button>
+      <button id="button" class="clearBusket" @click="clearBusket">Очистить корзину</button>
     </div>
     </div>
   </div>
@@ -43,72 +40,63 @@ export default {
     },
     data(){
       return {
-        dataBusket: [],
-        statPrice: 0,
+        dataBusket: null,
         fullPrice: 0,
       }
     },
     methods:{
       ...mapActions({
-        clearBusket: 'busketProducts/clearBusket',
-        appendBusket: 'busketProducts/appendBusket',
+        loadDatafromDataBase: 'busketProducts/loadProductsData',
         plusProdBusket: 'busketProducts/plusProdBusket',
         minusProdBusket: 'busketProducts/minusProdBusket',
-        deliteProduct: 'busketProducts/deliteProduct'
+        deliteDataProduct: 'busketProducts/deliteProduct',
+        clearBusket: 'busketProducts/clearBusket',
       }),
-      clearBuskets(){
+      async loadsInBusketData(){
         try {
-          this.clearBusket()
-          localStorage.clear()
+          await this.loadDatafromDataBase()
+          this.dataBusket = this.busketproducts
         }catch (e){
           Promise.reject(e)
         }
       },
-      async loadBusketProducts(){
+      async plusCountProd(index){
         try {
-            for (let i = 0; localStorage.length > i; i++){
-              let dataLocalstorage = await JSON.parse(localStorage.getItem(localStorage.key(i)))
-              this.dataBusket.push(dataLocalstorage)
-            }
-          this.appendBusket(this.dataBusket)
+          await this.plusProdBusket(index)
         }catch (e){
           Promise.reject(e)
         }
       },
-      async updateBusket(){
+      async minusCountProd(index){
         try {
-          await this.BUSKETPRODUCTS
+          await this.minusProdBusket(index)
         }catch (e){
           Promise.reject(e)
         }
       },
-      plusCountProd(index, name){
+      async deliteProductBusket(id){
         try {
-            this.plusProdBusket(index)
-            localStorage.removeItem(name)
-            localStorage.setItem(name, JSON.stringify(this.dataBusket[index]))
+          await this.deliteDataProduct(id)
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
       },
-      minusCountProd(index, name){
-        try {
-            this.minusProdBusket(index, name)
-            localStorage.removeItem(name)
-            localStorage.setItem(name, JSON.stringify(this.dataBusket[index]))
-        }catch (e){
-          Promise.reject(e)
-        }
-      },
-      deliteProdisBusket(name){
-        try {
-          localStorage.removeItem(name)
-          this.deliteProduct(name)
-        }catch (e){
-          Promise.reject(e)
-        }
-      }
-
+      // async calculateCountProducts(){
+      //   try {
+      //     let data = await this.busketproducts
+      //     if (data){
+      //       const listPrice = []
+      //       for (const key in this.busketproducts){
+      //         listPrice.push(this.busketproducts[key].quantity)
+      //       }
+      //       return this.allCountProd = listPrice.reduce((sum, current) => sum + current, 0)}
+      //     else {
+      //       return  this.allCountProd  = 0
+      //     }
+      //   }catch (e){
+      //     Promise.reject(e)
+      //   }
+      // },
     },
     computed:{
       ...mapGetters({
@@ -116,10 +104,10 @@ export default {
       }),
       calculateThePrice(){
         try {
-          if (this.dataBusket){
+          if (this.busketproducts){
             const listPrice = []
-            for (const key in this.dataBusket){
-              listPrice.push(this.dataBusket[key].price * this.dataBusket[key].quantity)
+            for (const key in this.busketproducts){
+              listPrice.push(this.busketproducts[key].product_price * this.busketproducts[key].quantity)
             }
             return this.fullPrice = listPrice.reduce((sum, current) => sum + current, 0)}
           else {
@@ -130,9 +118,13 @@ export default {
         }
       },
     },
+    watch:{
+      busketproducts(){
+        this.loadsInBusketData()
+      },
+    },
     mounted() {
-      this.loadBusketProducts()
-      this.updateBusket()
+      this.loadsInBusketData()
     }
 }
 
@@ -163,7 +155,6 @@ export default {
 #busketContainer>.busket>.productInBusket{
   display: block;
   margin: 25px;
-  //border: 2px solid #008888;
 }
 #busketContainer>.busket>.productInBusket>.productItem{
   display: flex;
@@ -204,7 +195,6 @@ export default {
 }
 #busketContainer>.busket>.productInBusket>.productItem>.productInfo{
   display: block;
-  //margin: 20px;
   margin-left: 35px;
 }
 #busketContainer>.busket>.productInBusket>.productItem>.productInfo>#product{

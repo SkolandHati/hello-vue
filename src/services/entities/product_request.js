@@ -1,15 +1,23 @@
-import { request } from "../APIbackend.js"
+import { requestProducts, requestInfoBrends } from "../APIbackend.js"
 
 export async function getPRoducts(){
-    return request({
+    return requestProducts({
         method:"GET",
         url: `/`,
     })
 }
 
 export async function getProductID(id){
-    return request({
+    return requestProducts({
         method:"GET",
         url: `/${id}`,
     })
 }
+
+export async function getInfoBrends(){
+    return requestInfoBrends({
+        method:"GET",
+        url: `/`,
+    })
+}
+

@@ -2,7 +2,7 @@
     <div class="items">
       <div class="container-item" @click="$router.push({name: 'v-cart-item-page', params: {id: allproducts.id}})">
         <div class="image">
-          <img :src="require('../assets/images/Kenzo/'+ allproducts.image)" alt="images">
+          <img :src="require('@/components/assets/images/'+ allproducts.brend + '/' + allproducts.image)" alt="images">
         </div>
         <div class="nameds">
           <p>{{allproducts.name}}</p>
@@ -10,32 +10,69 @@
       </div>
         <div class="pricesed">
             <h2>{{allproducts.price}} $</h2>
-            <button class="add-basket">Добавить в корзину</button>
+            <button class="add-basket" @click="addToCartInBusket(allproducts)">Добавить в корзину</button>
             <button class="favorits"></button>
         </div>
     </div>
 </template>
 
 <script>
+    import {mapActions, mapGetters} from "vuex";
     import router from "@/router";
     export default {
-      name: "cart-item",
-      methods: {
-        router() {
-          return router
-        }
-      },
+      name: "v-cart-item",
       props:{
         allproducts: {
           type: Object,
           require:true
         }
       },
+      methods: {
+        ...mapActions({
+          loadUser: 'user/getUsers',
+          addInBusket: 'busketProducts/appendBusket'
+        }),
+        async loadData(){
+          try {
+            await this.loadUser()
+          }catch (e){
+            Promise.reject(e)
+          }
+        },
+        async addToCartInBusket(object) {
+          try {
+            if (!this.getUser){
+              return router.push({name :'v-SignIn'})
+            }
+            if (object) {
+              const obj = {
+                'image': object.image,
+                'name': object.name,
+                'id': object.id,
+                'price':object.price,
+                'quantity': 1,
+                'brend': object.brend
+              }
+              await this.addInBusket(obj)
+            }
+            }catch (e){
+              Promise.reject(e)
+            }
+          },
+      },
+      computed:{
+        ...mapGetters({
+          getUser: 'user/AUTH'
+        })
+      },
+      mounted() {
+        this.loadData()
+      }
     }
 
 </script>
 
-<style>
+<style scoped>
     .items{
         display: block;
         margin-top: 10px;

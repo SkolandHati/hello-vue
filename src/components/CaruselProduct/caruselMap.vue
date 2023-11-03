@@ -19,14 +19,12 @@
     }
 </script>
 
-<style>
-    .container {
-        background-color: rgb(0, 107, 201);
-        /* position:absolute;
-            left:0px; */
-    }
+<style scoped>
     .brend-image{
-        background-color: rgb(89, 138, 182);
+        //background-color: rgb(71, 222, 14);
+    }
+    .brend-image>h1{
+      text-align: center;
     }
     .brend-image>img{
         background-color: rgb(121, 165, 208);

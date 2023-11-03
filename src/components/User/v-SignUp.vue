@@ -28,7 +28,9 @@
           <button class="button" @click="submitinDatabase" :disabled="v$.password.$error && v$.emailAdress.$error && v$.nameUser.$error">Зарегистрироваться</button>
           </router-link>
           <div class="divider">или</div>
-          <a href="#" class="button" @click="$router.push({name: 'v-SignIn'})"> Войти</a>
+          <router-link to="/signin" class="route">
+          <a href="#" class="button"> Войти</a>
+          </router-link>
         </div>
       </div>
     </main>
@@ -53,10 +55,12 @@
         }
       },
       setup(){
+
         const nameUser = ref("");
         const emailAdress = ref("");
         const password = ref("");
         const confirmpassword = ref("")
+
         const state = reactive({
           nameUser: nameUser,
           emailAdress: emailAdress,
@@ -74,10 +78,14 @@
 
         const submitinDatabase = async () => {
           try {
-            // if(!this.v$.error){
             const {error} = await supabase.auth.signUp({
               email: emailAdress.value,
               password: password.value,
+              options: {
+                data:{
+                  first_name: nameUser.value
+                }
+              }
             });
             if (error) throw error
           }catch (error){
@@ -115,7 +123,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .imgcont {
     background-image: none;
     margin: 0;
