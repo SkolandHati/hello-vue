@@ -8,7 +8,7 @@
         <div class="button" id="button-busket">
           <button class="busket-btn" @click="$router.push({name: 'v-BusketPage'})">
             <i class="fas fa-solid fa-cart-plus"></i>
-            <span class="circle" v-if="count !== 0">{{count}}</span>
+            <span class="circle" v-if="count !== 0 && is_auth">{{count}}</span>
           </button>
         </div>
         <div class="button" id="button-heart">

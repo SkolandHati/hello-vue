@@ -78,7 +78,6 @@ export default {
             'brend': data.name_brend
         }
         this.addInBusket(object)
-        //console.log("Что-то как то не добавилось")
       }
     },
     computed:{
@@ -90,7 +89,6 @@ export default {
     mounted() {
       this.loadData()
       this.loadRandomProduct()
-      console.log(this.getterFavoriteProd)
     }
 
 }

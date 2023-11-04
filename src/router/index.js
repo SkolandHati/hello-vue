@@ -58,6 +58,9 @@ const router = createRouter({
                     path:'/favorite_products',
                     name:'vFavoritePage',
                     component:FavoritePage,
+                    meta: {
+                        requireAuth: true
+                    }
                 }
             ]
         },

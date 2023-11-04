@@ -34,7 +34,7 @@ export function initAPIproducts (store) {
 export function initAPIinfoBrends(store){
     APIbrendsInfo = axios.create({
         baseURL: 'http://localhost:3000/brend',
-        timeout: 2000
+        timeout: 4000
     })
     return APIbrendsInfo
 }

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import vSearchPanel from './v-search-panel.vue';
+    import vSearchPanel from './v-SearchModull.vue';
     import vBtnUserBasketLove from './v-btn-user-basket-love.vue';
     export default {
         name: "v-main-panel-user",

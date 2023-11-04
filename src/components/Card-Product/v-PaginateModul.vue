@@ -43,7 +43,6 @@ export default {
         for (let page = 1; page <= this.total_pages; page++) {
           const pageDiff = Math.abs(page - this.current_page);
           const showPage = (pageDiff < 3 || page === 1 || page === this.total_pages);
-          console.log(pageDiff, showPage)
           if (showPage) {
             pagesArray.push(page);
           }
@@ -51,9 +50,6 @@ export default {
         return pagesArray;
       }
     },
-    mounted() {
-      this.pages
-    }
 }
 
 
