@@ -71,7 +71,9 @@
         },
         async getData(){
           try {
-            await this.loadsProduct(this.$route.params.id)
+            if (this.$route.params.id){
+              await this.loadsProduct(this.$route.params.id)
+            }
           }
           catch (e){
               console.log(e)}
@@ -124,10 +126,12 @@
           busketProducts: 'busketProducts/BUSKETPRODUCTS',
           getInfobrends: 'products/BRENDSINFO',
           auth: 'user/AUTH',
-        })
+        }),
+      },
+      created() {
+        this.getData()
       },
       mounted() {
-        this.getData()
         this.loadUserData()
         this.loadBrendInfo()
       }

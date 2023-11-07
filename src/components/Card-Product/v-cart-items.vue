@@ -1,5 +1,5 @@
 <template>
-    <div class="items">
+    <div class="items" v-if="allproducts">
       <div class="container-item" @click="$router.push({name: 'v-cart-item-page', params: {id: allproducts.id}})">
         <div class="image">
           <img :src="require('@/components/assets/images/'+ allproducts.brend + '/' + allproducts.image)" alt="images">
@@ -81,6 +81,7 @@
         width: 280px;
         height: 300px;
         box-shadow: 0 0 4px 0;
+        border-radius: 5px;
 
     }
     .items>.container-item>.nameds{
@@ -132,5 +133,6 @@
       background-color: aliceblue;
       color: #7BA7AB;
       cursor: pointer;
+      border-radius: 5px;
     }
 </style>

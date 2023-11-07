@@ -4,6 +4,7 @@ export default {
     namespaced: true,
     state:{
         products: [],
+        catalogProducts: [],
         oneproduct: null,
         caruselProducts: [],
         randomProduct: null,
@@ -28,10 +29,19 @@ export default {
                 Promise.reject(e)
             }
         },
-        async loadCaruselProd({commit}){
+        async loadProdcutsCatalog({dispatch, commit}, data){
             try {
-                const result = await getPRoducts()
-                commit("SET_CAROUSEL_PRODUCTS", result)
+                await dispatch('loadProducts')
+                commit("SET_PRODUCTS_CATALOG", data)
+            }catch (e){
+                Promise.reject(e)
+            }
+        },
+        async loadCaruselProd({dispatch,commit}){
+            try {
+                await dispatch('loadProducts')
+                await dispatch('loadBrendsInfo')
+                commit("SET_CAROUSEL_PRODUCTS")
             }catch (e){
                 Promise.reject(e)
             }
@@ -58,12 +68,18 @@ export default {
         SET_PRODUCTS_STATE(state, products) {
             state.products = products
         },
+        SET_PRODUCTS_CATALOG(state, nameBrend){
+            let list = state.products.filter(item => item.brend === nameBrend)
+            state.catalogProducts = list
+        },
         ONE_SET_PRODUCTS(state, products) {
             state.oneproduct = products
         },
-        SET_CAROUSEL_PRODUCTS(state, products){
-            state.caruselProducts  = products
-
+        SET_CAROUSEL_PRODUCTS(state){
+            const randomNumber = () => { return Math.floor(Math.random() *(4 - 1) + 1)}
+            let data = state.brends[randomNumber()].brend_Name
+            let list = state.products.filter(item => item.brend === data)
+            state.caruselProducts = list
         },
         SET_RANDOM_PROD(state, prod){
             state.randomProduct = prod
@@ -75,6 +91,9 @@ export default {
     getters: {
         PRODUCTS(state) {
             return state.products
+        },
+        PRODUCTSFORCATALOG(state){
+            return state.catalogProducts
         },
         ONEPRODUCT(state) {
             return state.oneproduct

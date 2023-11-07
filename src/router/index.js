@@ -3,6 +3,8 @@ import {supabase} from "@/services/APIauthorization";
 
 const App = () => import('@/App.vue')
 const Home = () => import('@/components/Home/v-HomePage')
+
+const BrendsPageCatalog = () => import('@/components/Card-Product/v-BrendsPageProducts.vue')
 const Products = () => import('@/components/Card-Product/v-cart-items.vue')
 const ProductID = () => import('@/components/Card-Product/v-cart-item-page')
 
@@ -25,6 +27,11 @@ const router = createRouter({
                     name: 'v-HomePage',
                     path: '',
                     component: Home,
+                },
+                {
+                    name: 'v-BrendsPageProducts',
+                    path: '/brends_product',
+                    component: BrendsPageCatalog
                 },
                 {
                     path:'/products/:id',
@@ -62,7 +69,7 @@ const router = createRouter({
                         requireAuth: true
                     }
                 }
-            ]
+            ],
         },
     ],
     history: createWebHistory()

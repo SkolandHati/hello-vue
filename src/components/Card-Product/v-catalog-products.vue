@@ -73,6 +73,9 @@
           return Math.ceil(this.products.length / this.pageSize);
         },
       },
+
+      inheritAttrs: false,
+
       created() {
         this.loadData()
       },
@@ -88,5 +91,4 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
     }
-
 </style>

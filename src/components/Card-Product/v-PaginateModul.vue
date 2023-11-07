@@ -70,6 +70,7 @@ export default {
     width: 98%;
     height: 35px;
     border: 1px solid #989898;
+    border-radius: 5px;
   }
   .container__paginate>.pagination{
     display: flex;

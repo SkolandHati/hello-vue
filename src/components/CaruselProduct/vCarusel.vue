@@ -1,6 +1,6 @@
 <template>
   <carousel class="carousel" :autoplay="4000" :wrap-around="false">
-    <slide class="carousel_page"  v-for="item in getProducts" :key="item.id">
+    <slide class="carousel_page" v-if="getCaruselProd" v-for="(item, i) in getCaruselProd" :key="item.id">
       <div class="carousel__item" @click="$router.push({name: 'v-cart-item-page', params: {id: item.id}})">
         <h1>{{item.name}}</h1>
         <img :src="require('@/components/assets/images/'+ item.brend + '/' + item.image)" alt="images">
@@ -30,11 +30,11 @@ export default {
   },
   methods:{
     ...mapActions({
-      loadProducts: 'products/loadCaruselProd'
+      loadProductsCarusel: 'products/loadCaruselProd',
     }),
-    async loadData(){
+    async getCaruselProducts(){
       try {
-        await this.loadProducts()
+            await this.loadProductsCarusel()
       }catch (e){
         Promise.reject(e)
       }
@@ -42,11 +42,11 @@ export default {
   },
   computed:{
     ...mapGetters({
-      getProducts: 'products/CAROSELPRODUCTS'
+      getCaruselProd: 'products/CAROSELPRODUCTS',
     })
   },
   mounted() {
-    this.loadData()
+    this.getCaruselProducts()
   }
 }
 </script>

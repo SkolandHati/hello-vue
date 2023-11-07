@@ -113,8 +113,14 @@
       color: #989898;
     }
     .search>.result>.search-inputs:hover{
+      text-align: center;
       cursor: pointer;
-      background-color: #53d31d;
+      padding-left: 65px;
+      padding-right: 65px;
+      padding-bottom: 10px;
+      padding-top: 10px;
+      border-radius: 3px;
+      background-color: #545252;
     }
     .block{
       display: none;

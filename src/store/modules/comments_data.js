@@ -55,15 +55,15 @@ export default {
         },
         async addCommentDatabase({commit}, dataComments){
             try {
-                setCommentsForProduct(dataComments)
+                await setCommentsForProduct(dataComments)
                 commit("APPEND_COMMENT_DATABSE", dataComments)
             }catch (e){
                 Promise.reject(e)
             }
         },
-        deliteComments({commit}, data){
+        async deliteComments({commit}, data){
             try {
-                 deliteCommentsDatabase(data)
+                 await deliteCommentsDatabase(data)
                  if (data){
                     commit("DELITE_COMMENT_DB", data)
                  }
