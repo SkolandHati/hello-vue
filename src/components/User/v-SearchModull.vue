@@ -2,16 +2,16 @@
     <div class="search">
         <form action="" method="get">
             <span class="span-search">
-                <input class="panel-search" v-model="data_search" v-on:focus="active = true" v-on:blur="active=false" placeholder="Поиск по сайту..." type="search">
+                <input class="panel-search" v-model="data_search" v-on:focus="active = true" v-on:blur="onBlur" placeholder="Поиск по сайту..." type="search">
                 <button class="fa-thin" type="submit"></button>
             </span>
         </form>
         <div class="result" :class="{isActive: active}" v-if="data_search !== null || undefined">
-          <span class="search-inputs"> Найти: {{data_search}}</span>
+          <span class="search-inputs" @click="goNextCatalog(data_search)"> Найти: {{data_search}}</span>
         </div>
-        <div class="block" :class="{isActive: active}">
+        <div class="block" :class="{isActive: active}" v-if="getBrendProducts">
             <a class="header">Возможно вы ищите:</a>
-            <ul class="container-brend" v-for="(item, i) in getBrendProducts">
+            <ul class="container-brend" v-for="(item, i) in getBrendProducts" @click="goNextCatalog(item.brend_Name)">
               <li>{{item.brend_Name}}</li>
             </ul>
         </div>
@@ -21,7 +21,7 @@
 <script>
 
   import {mapActions, mapGetters} from "vuex";
-
+  import router from "@/router";
   export default {
         name: "v-SearchModull",
         data(){
@@ -41,6 +41,14 @@
               Promise.reject(e)
             }
           },
+          onBlur(){
+            setTimeout(() => {return this.active = false}, 1000)
+          },
+          goNextCatalog(data){
+            if (data){
+              router.push({name:'v-BrendsPageProducts', params: {brend: data}})
+            }
+          }
         },
         computed:{
           ...mapGetters({

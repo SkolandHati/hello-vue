@@ -29,8 +29,8 @@ const router = createRouter({
                     component: Home,
                 },
                 {
+                    path: '/brends_product/:brend',
                     name: 'v-BrendsPageProducts',
-                    path: '/brends_product',
                     component: BrendsPageCatalog
                 },
                 {

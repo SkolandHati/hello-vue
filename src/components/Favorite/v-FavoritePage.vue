@@ -10,7 +10,7 @@
         </div>
         <div class="info_product">
           <h1 class="name">{{ item.name_products }}</h1>
-          <h2 class="price">{{item.price_product}}</h2>
+          <h2 class="price">$ {{item.price_product}}</h2>
           <p class="brend">{{item.name_brend}}</p>
           <div class="block_buttons">
             <button class="order">Оформить доставку</button>

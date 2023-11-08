@@ -6,7 +6,7 @@
                   crossorigin="anonymous">
       <div class="userbuttons">
         <div class="button" id="button-busket">
-          <button class="busket-btn" @click="$router.push({name: 'v-BusketPage'})">
+          <button class="busket-btn" @click="$router.push({name:'v-BusketPage'})">
             <i class="fas fa-solid fa-cart-plus"></i>
             <span class="circle" v-if="count !== 0 && is_auth">{{count}}</span>
           </button>
@@ -106,6 +106,11 @@
             }
           },
         },
+        // watch:{
+        //   busketproducts(){
+        //     this.calculateCountProducts()
+        //   }
+        // },
         setup(){
           const signOut = async () => {
             try {

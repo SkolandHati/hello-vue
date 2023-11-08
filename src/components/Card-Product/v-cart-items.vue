@@ -11,7 +11,7 @@
         <div class="pricesed">
             <h2>{{allproducts.price}} $</h2>
             <button class="add-basket" @click="addToCartInBusket(allproducts)">Добавить в корзину</button>
-            <button class="favorits"></button>
+            <button class="favorits" @click="addToCartInFavorite(allproducts)"></button>
         </div>
     </div>
 </template>
@@ -59,6 +59,26 @@
               Promise.reject(e)
             }
           },
+        async addToCartInFavorite(object) {
+          try {
+            if (!this.getUser){
+              return router.push({name :'v-SignIn'})
+            }
+            if (object) {
+              const obj = {
+                'image': object.image,
+                'name': object.name,
+                'id': object.id,
+                'price':object.price,
+                'quantity': 1,
+                'brend': object.brend
+              }
+              await this.addInBusket(obj)
+            }
+          }catch (e){
+            Promise.reject(e)
+          }
+        },
       },
       computed:{
         ...mapGetters({
