@@ -8,15 +8,17 @@
         <h1 id="header">Корзина Избранных Продуктов</h1>
         <div class="productItem" v-for="(item, i) in busketproducts">
           <img :src="require('../assets/images/Kenzo/'+ item.image_product)" alt="images">
-          <div class="navig-btn">
-            <button id="prod-button" class="plus" @click="plusCountProd(i)">+</button>
-            <button id="prod-button" class="minus" @click="minusCountProd(i)">-</button>
-            <button id="prod-button" class="delite" @click="deliteProductBusket(item.id_product)">delit</button>
-          </div>
-          <div class="productInfo">
+          <div class="user-block">
+            <div class="productInfo">
               <h1 id="product">{{item.name_product}}</h1>
               <h1 id="product">{{item.product_price * item.quantity}}</h1>
               <h1 id="product">Количество товаров в корзине {{item.quantity}}</h1>
+            </div>
+            <div class="navig-btn">
+              <button id="prod-button" class="plus" @click="plusCountProd(i)">+</button>
+              <button id="prod-button" class="minus" @click="minusCountProd(i)">-</button>
+              <button id="prod-button" class="delite" @click="deliteProductBusket(item.id_product)">delit</button>
+            </div>
           </div>
         </div>
       </div>
@@ -81,22 +83,6 @@ export default {
           console.log(e)
         }
       },
-      // async calculateCountProducts(){
-      //   try {
-      //     let data = await this.busketproducts
-      //     if (data){
-      //       const listPrice = []
-      //       for (const key in this.busketproducts){
-      //         listPrice.push(this.busketproducts[key].quantity)
-      //       }
-      //       return this.allCountProd = listPrice.reduce((sum, current) => sum + current, 0)}
-      //     else {
-      //       return  this.allCountProd  = 0
-      //     }
-      //   }catch (e){
-      //     Promise.reject(e)
-      //   }
-      // },
     },
     computed:{
       ...mapGetters({
@@ -145,11 +131,11 @@ export default {
 #busketContainer>.busket{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 650px;
+  width: 750px;
   height: 100%;
-  margin-left: 25%;
+  margin-left: 15%;
   margin-top: 2%;
-  border: 2px solid #6e6d6d;
+  border: 1px solid #6e6d6d;
   border-radius: 5px;
 }
 #busketContainer>.busket>.productInBusket{
@@ -162,46 +148,56 @@ export default {
 
 }
 #busketContainer>.busket>.productInBusket>.productItem>img{
-  width: 225px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   padding: 5px;
   padding-right: 0px;
   padding-left: 0px;
   border: 2px solid #3B5983;
-  border-radius: 1px;
+  border-radius: 5px;
 }
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn{
-  width: 50px;
+#busketContainer>.busket>.productInBusket>.productItem>.user-block{
+  margin-left: 30px;
+}
+#busketContainer>.busket>.productInBusket>.productItem>.user-block>.navig-btn{
+  display: flex;
+  width: 100%;
   height: 50px;
+  margin-top: 5px;
+  justify-content: center;
 }
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>#prod-button{
+#busketContainer>.busket>.productInBusket>.productItem>.user-block>.navig-btn>#prod-button{
   width: 50px;
   height: 50px;
   margin-left: 20px;
   margin-top: 15px;
   border-radius: 5px;
 }
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>.plus{
+#busketContainer>.busket>.productInBusket>.productItem>.user-block>.navig-btn>.plus{
   background-color: green;
   font-size: 25px;
 }
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>.minus{
+#busketContainer>.busket>.productInBusket>.productItem>.user-block>.navig-btn>.minus{
   background-color: red;
   font-size: 25px;
 }
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>.delite{
+#busketContainer>.busket>.productInBusket>.productItem>.user-block>.navig-btn>.delite{
   background-color: #6e6d6d;
   font-size: 20px;
 }
-#busketContainer>.busket>.productInBusket>.productItem>.productInfo{
+#busketContainer>.busket>.productInBusket>.productItem>.user-block>.productInfo{
   display: block;
+  width: 300px;
   margin-left: 35px;
 }
-#busketContainer>.busket>.productInBusket>.productItem>.productInfo>#product{
+#busketContainer>.busket>.productInBusket>.productItem>.user-block>.productInfo>#product{
   color: black;
-  border-top: 2px solid #c2b0b0;
+  border: 2px solid #c2b0b0;
+  border-radius: 5px;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   font-size: 25px;
 }
 #busketContainer>.busket>.productInBusket>h1{
