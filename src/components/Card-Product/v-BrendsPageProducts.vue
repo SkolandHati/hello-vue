@@ -16,8 +16,13 @@
     </div>
   </div>
   <div class="none" v-else>
-    <h1>Результаты поиска не увенчались упсехом</h1>
-    
+    <h1>Результаты поиска не увенчались успехом</h1>
+    <div class="item_brends" v-if="getBrendInfo">
+      <h2>Возможно вы искали...</h2>
+      <ul class="brend_name" v-for="(item, i) in getBrendInfo">
+        <li @click="reloadSearch(item.brend_Name)">{{item.brend_Name}}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -27,6 +32,7 @@ import vMainPanelUser from "@/components/User/v-main-panel-user.vue";
 import vCatalogProducts from "@/components/Card-Product/v-catalog-products.vue"
 import {mapGetters, mapActions} from "vuex";
 import vCartItems from "@/components/Card-Product/v-cart-items.vue";
+import router from "@/router";
 export default {
     name: 'v-BrendsPageProducts',
     components: {
@@ -73,6 +79,10 @@ export default {
         }catch (e){
           Promise.reject(e)
         }
+      },
+      reloadSearch(data){
+        router.push({name:'v-BrendsPageProducts', params: {brend: data}})
+        setTimeout(() => {window.location.reload()}, 1000)
       }
     },
     computed:{
@@ -127,5 +137,37 @@ export default {
   }
   .catalog>.items>.container-item>.image>img{
     height: 300px;
+  }
+  .none{
+    width: 95%;
+    height: 60px;
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-right: 20px;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 10px;
+  }
+  .none>h1{
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .none>.item_brends{
+    display: block;
+    margin-top: 25px;
+  }
+
+  .none>.item_brends>.brend_name>li{
+    height: 30px;
+    list-style-type: none;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-left: 35%;
+    margin-right: 40%;
+    padding-top: 15px;
+  }
+  .none>.item_brends>.brend_name>li:hover{
+    cursor: pointer;
+    background-color: #6e6d6d;
   }
 </style>
