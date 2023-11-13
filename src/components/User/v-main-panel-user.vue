@@ -1,17 +1,17 @@
 <template>
     <h1 @click="$router.push({name: 'v-HomePage'})">TopBrend'.</h1>
     <v-search-panel/>
-    <v-btn-user-basket-love/>
+    <vUI_UserButtons/>
 </template>
 
 <script>
     import vSearchPanel from './v-SearchModull.vue';
-    import vBtnUserBasketLove from './v-btn-user-basket-love.vue';
+    import vUI_UserButtons from './v-UI-UserButtons.vue';
     export default {
         name: "v-main-panel-user",
         components: {
             vSearchPanel,
-            vBtnUserBasketLove,
+            vUI_UserButtons,
         },
     }
 </script>
