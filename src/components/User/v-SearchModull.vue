@@ -128,7 +128,7 @@
       padding-bottom: 10px;
       padding-top: 10px;
       border-radius: 3px;
-      background-color: #545252;
+      background-color: rgb(57, 73, 82);
     }
     .block{
       display: none;
@@ -137,8 +137,9 @@
       left: 260px;
       width: 46%;
       display: block;
+      border-radius: 0 0 5px 5px;
       padding-bottom: 10px;
-      background-color: #989898;
+      background: rgb(57, 73, 82);
       position: relative;
       z-index: 0;
       transition: top 1s ease-out 0.5s;
@@ -151,18 +152,25 @@
       padding-left: 30px;
       padding-bottom: 5px;
       text-align: center;
+      color: #edf8ff;
     }
     .block>.container-brend{
       cursor: pointer;
       text-align: center;
       padding: 10px;
       margin: 3px;
-      border: 2px solid saddlebrown;
+      border: 2px solid #989191;
       border-radius: 5px;
       list-style-type:none;
     }
+    .block>.container-brend>a{
+      color: #edf8ff;
+    }
+    .block>.container-brend>li{
+      color: #edf8ff;
+    }
     .block>.container-brend:hover{
-      background-color: #750000;
+      background-color: #8f8f8f;
     }
 
 </style>

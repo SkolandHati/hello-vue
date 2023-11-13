@@ -9,33 +9,38 @@
           <img :src="require('../assets/images/Kenzo/'+ item.image_product)" alt="images">
         </div>
         <div class="info_product">
+          <button class="delite-product" @click="delitFavoriteProduct(item)">X</button>
           <h1 class="name">{{ item.name_products }}</h1>
           <h2 class="price">$ {{item.price_product}}</h2>
           <p class="brend">{{item.name_brend}}</p>
           <div class="block_buttons">
             <button class="order">Оформить доставку</button>
-            <button class="in_busket" @click="addInBusketProduct(item)">В корзину</button>
+            <div class="block-button-inbusket">
+              <button class="in_busket" @click="button_Submit_one($event);addInBusketProduct(item)">В корзину</button>
+              <span class="confirm" :class="{is_Active: active_first}"></span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="brend_random_product" v-if="getRandom">
-      <p class="info_brend">"Prada (произносится как Прада) — итальянская публичная компания, специализирующаяся на производстве модной одежды, обуви и аксессуаров, которой принадлежат одноимённые дом моды и торговая марка. Штаб-квартира расположена в Милане."</p>
-      <h1 class="head">Возможно вам понравится продукт, того же бренда:</h1>
+    <div class="brend_random_product" v-if="getRandom && brend">
+      <h1 class="head">{{brend.brend_Name}}</h1>
+      <p class="info_brend">{{brend.info_Brend}}</p>
+      <h1 class="text">Возможно вам понравиться:</h1>
       <div class="block_random">
-        <img :src="require('../assets/images/Kenzo/'+ getRandom.image)" alt="images">
+        <img :src="require('../assets/images/'+getRandom.brend +'/'+ getRandom.image)" alt="images">
         <div class="information_product">
           <h1 class="name">{{getRandom.name}}</h1>
           <h2 class="price">{{getRandom.price}}</h2>
           <p class="brend">{{getRandom.brend}}</p>
           <div class="random_button_block">
-            <button class="in_buskets" @click="addInBusketProduct(getRandom)">В корзину</button>
+            <button class="in_buskets"  @click="button_Submit_two($event);addInBusketProduct(getRandom)">В корзину</button>
+            <span class="confirm" :class="{is_Active: active}"></span>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -48,11 +53,20 @@ export default {
     components:{
       vMainPanel
     },
+    data(){
+      return {
+        brend: null,
+        active_first: false,
+        active: false,
+      }
+    },
     methods:{
       ...mapActions({
         getFavorites: 'favoriteProducts/getFavoriteP',
+        getterBrends: 'products/loadBrendsInfo',
         getRandomProduct: 'products/getRandomProduct',
-        addInBusket: 'busketProducts/appendBusket'
+        addInBusket: 'busketProducts/appendBusket',
+        delitFavoriteProduct: 'favoriteProducts/delitFavoriteProduct'
       }),
       async loadData(){
        try {
@@ -61,35 +75,63 @@ export default {
          Promise.reject(e)
        }
       },
-      async loadRandomProduct(){
+      async loadBrendForProduct(){
         try {
           await this.getRandomProduct()
+          await this.getterBrends()
+          if (this.getBrends && this.getRandom){
+             return this.brend = await this.getBrends.find(item => item.brend_Name === this.getRandom.brend)
+          }
         }catch (e){
           Promise.reject(e)
         }
       },
+      button_Submit_one(){
+        this.active_first = true
+      },
+      button_Submit_two(){
+        this.active = true
+      },
+
       addInBusketProduct(data){
-        const object = {
+        if (data.image === undefined){
+          const object_two = {
             'image': data.image_product,
             'name': data.name_products,
             'id': data.product_id,
             'price':data.price_product,
             'quantity': 1,
             'brend': data.name_brend
+          }
+          this.addInBusket(object_two)
+        }else {
+          const object = {
+            'image': data.image,
+            'name': data.name,
+            'id': data.id,
+            'price':data.price,
+            'quantity': 1,
+            'brend': data.brend
+          }
+          this.addInBusket(object)
         }
-        this.addInBusket(object)
+        setTimeout(() => {this.active = false;
+                                  this.active_first = false}, 1500)
       }
     },
     computed:{
       ...mapGetters({
         getterFavoriteProd:'favoriteProducts/GET_FAVORITE_PROD',
         getRandom: 'products/GETRANDOMPRODUCT',
+        getBrends: 'products/BRENDSINFO'
       })
     },
-    mounted() {
+    created() {
       this.loadData()
-      this.loadRandomProduct()
-    }
+    },
+    mounted() {
+        this.loadBrendForProduct()
+      }
 
 }
 
@@ -153,6 +195,9 @@ export default {
   border: 2px solid #1a6c80;
   border-radius: 6%;
 }
+.item_favorite_product>.info_product>.block_buttons>.block-button-inbusket{
+  display: flex;
+}
 .item_favorite_product>.info_product>.block_buttons>button{
   display: block;
   width: 140px;
@@ -162,6 +207,21 @@ export default {
   margin-left: 35px;
   margin-top: 20px;
   border-radius: 1%;
+}
+
+.item_favorite_product>.info_product>.block_buttons>.block-button-inbusket>.in_busket{
+  display: block;
+  width: 140px;
+  height:40px;
+  margin: 15px;
+  margin-right: 0px;
+  margin-left: 35px;
+  margin-top: 20px;
+  border-radius: 1%;
+}
+
+.item_favorite_product>.info_product>.block_buttons>.block-button-inbusket>.confirm{
+  display: none;
 }
 
 .item_favorite_product>.info_product>.block_buttons>.order{
@@ -174,15 +234,34 @@ export default {
   cursor: pointer;
 }
 
-.item_favorite_product>.info_product>.block_buttons>.in_busket{
+.item_favorite_product>.info_product>.block_buttons>.block-button-inbusket>.in_busket{
   background-color: #6e6d6d;
   border: 0;
   border-radius: 4%;
 }
 
-.item_favorite_product>.info_product>.block_buttons>.in_busket:hover{
+.item_favorite_product>.info_product>.block_buttons>.block-button-inbusket>.in_busket:hover{
   background-color: #d7d7d7;
   cursor: pointer;
+}
+
+.item_favorite_product>.info_product>.delite-product{
+  font-size:15px;
+  width: 25px;
+  height: 25px;
+  margin-left: 230px;
+  margin-top: 15px;
+  border: 1px solid #ff0000;
+  border-radius: 50%;
+  padding-left: 4px;
+  padding-top: 0px;
+  text-align: center;
+  background-color: #ff0e0e;
+}
+
+.item_favorite_product>.info_product>.delite-product:hover{
+  cursor: pointer;
+  background-color: #7e0000;
 }
 
 .item_favorite_product>.info_product>.name,.price,.brend{
@@ -194,12 +273,20 @@ export default {
   border: 0 ;
 }
 
+.item_favorite_product>.info_product>.name{
+  margin-top: 0px;
+}
+
 .brend_random_product{
+  max-width: 568px;
+  position: sticky;
+  top: 5px;
   text-align: center;
-  max-height: 500px;
+  max-height: 515px;
   margin: 20px;
   margin-left: 0px;
   padding: 15px;
+  padding-top: 5px;
   padding-left: 5px;
   padding-right: 5px;
   border: 2px solid #c6ecaf;
@@ -208,11 +295,19 @@ export default {
 
 .brend_random_product>.info_brend{
   text-align: center;
-
+  margin-top: 4px;
 }
 .brend_random_product>.head{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 25px;
+  text-align: center;
+}
+.brend_random_product>.text {
   font-size: 20px;
   text-align: center;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
 
 .brend_random_product>.block_random{
@@ -233,14 +328,50 @@ export default {
 .brend_random_product>.block_random>.information_product{
   width: 100%;
 }
-
+.brend_random_product>.block_random>.information_product>.random_button_block{
+  display: flex;
+}
 .brend_random_product>.block_random>.information_product>.random_button_block>button{
-  width: 69px;
-  height:30px;
-  margin: 10px;
-  margin-top: 18px;
+  display: block;
+  width: 120px;
+  height:40px;
+  margin: 15px;
+  margin-left: 82px;
+  margin-right: 2px;
+  margin-top: 30px;
+  border-radius: 1%;
+  border: 2px solid #c6ecaf;
+  background-color: #c6ecaf;
 }
 
+.brend_random_product>.block_random>.information_product>.random_button_block>button:hover{
+  cursor: pointer;
+  background-color: #9de879;
+}
 
+.brend_random_product>.block_random>.information_product>.random_button_block>.confirm{
+  display: none;
+}
+
+.brend_random_product>.block_random>.information_product>.random_button_block>.confirm.is_Active{
+  display: block;
+  margin-top: 32px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid #258804;
+  background-color: #258804;
+  border-radius: 50%;
+}
+
+.item_favorite_product>.info_product>.block_buttons>.block-button-inbusket>.confirm.is_Active{
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin-top: 25px;
+  margin-left: 2px;
+  border: 2px solid #258804;
+  background-color: #258804;
+  border-radius: 50%;
+}
 
 </style>

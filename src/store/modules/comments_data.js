@@ -61,8 +61,9 @@ export default {
                 Promise.reject(e)
             }
         },
-        async deliteComments({commit}, data){
+        async deliteComments({dispatch, commit}, data){
             try {
+                 await dispatch("updateDataComments")
                  await deliteCommentsDatabase(data)
                  if (data){
                     commit("DELITE_COMMENT_DB", data)

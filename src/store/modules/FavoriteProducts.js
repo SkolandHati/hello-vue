@@ -31,6 +31,15 @@ async function setterFavoriteProducts(bodyProduct){
     }
 }
 
+async function deliteFavotiteProductsDatabase(data){
+    try {
+        const {error} = await supabase.from('favoriteProdducts').delete().eq('id', data.id)
+        if (error) throw error
+    }catch (e){
+        console.log(e)
+    }
+}
+
 
 export default {
     namespaced: true,
@@ -53,6 +62,15 @@ export default {
             }catch (e){
                 Promise.reject(e)
             }
+        },
+        async delitFavoriteProduct({dispatch, commit}, data){
+            try {
+                await dispatch("SET_PRODUCTS_FAVORITE")
+                await deliteFavotiteProductsDatabase(data)
+                commit("DELITEFAVORITEPRODUCT", data)
+            }catch (e){
+                Promise.reject(e)
+            }
         }
     },
     mutations: {
@@ -61,6 +79,14 @@ export default {
         },
         APPEND_FAVORITE_PRODUCT(state, product){
             state.favorite_products.push(product)
+        },
+        DELITEFAVORITEPRODUCT(state, product){
+            let data = state.favorite_products.find(item => item.id === product.id)
+            state.favorite_products.forEach((items, index, arrye) => {
+                if (arrye[index] === data){
+                    arrye.splice(index, 1)
+                }
+            })
         }
     },
     getters: {
