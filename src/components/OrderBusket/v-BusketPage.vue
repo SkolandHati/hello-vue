@@ -135,6 +135,7 @@ export default {
   height: 100%;
   margin-left: 15%;
   margin-top: 2%;
+  margin-bottom: 20px;
   border: 1px solid #6e6d6d;
   border-radius: 5px;
 }
@@ -172,6 +173,7 @@ export default {
   margin-left: 20px;
   margin-top: 15px;
   border-radius: 5px;
+
 }
 #busketContainer>.busket>.productInBusket>.productItem>.user-block>.navig-btn>.plus{
   background-color: green;
@@ -202,7 +204,8 @@ export default {
 }
 #busketContainer>.busket>.productInBusket>h1{
   color: black;
-
+  margin-left: 60px;
+  margin-bottom: 30px;
 }
 #busketContainer>.busket>.productInBusket>#header{
   text-align: center;
@@ -211,9 +214,16 @@ export default {
 }
 
 #busketContainer>.busket>.infoAllBusket{
+  position: sticky;
+  top: 160px;
   margin: 15px;
+  margin-left: 80px;
+  margin-top: 0px;
   width: 330px;
-  height: 100%;
+  max-width: 330px;
+  max-height: 30%;
+  border-radius: 5px;
+  border: 1px solid black;
 }
 
 #busketContainer>.busket>.infoAllBusket>#infoPrice{
@@ -228,5 +238,4 @@ export default {
   width: 140px;
   height: 37px;
 }
-
 </style>
