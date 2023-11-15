@@ -1,0 +1,103 @@
+<template>
+    <form action="#" method="post" target="_blank">
+      <h1>Заполните все поля и заказывайте товары в один клик!</h1>
+      <fieldset class="block-inputs">
+        <div id="block" class="block-first-name">
+          <label id="label" for="login">Логин:*  </label>
+          <input class="input" type="text" name="name" placeholder="Логин " id="login" required>
+        </div>
+        <div id="block" class="block-first-name">
+          <label id="label" for="first_name">Имя:*  </label>
+          <input class="input" type="text" name="first_name" placeholder="Иван " id="first_name" required>
+        </div>
+        <div id="block" class="block-last-name">
+          <label id="label" for="last_name">Фамилия:*  </label>
+          <input class="input" type="text" name="last_name" placeholder="Иванов " id="last_name" required>
+        </div>
+        <div id="block" class="block-email">
+          <label id="label" for="email">E-mail:*  </label>
+          <input class="input" type="email" name="mail" placeholder="ivanov@gmail.com" id="email" required>
+        </div>
+        <div id="block" class="block-phone-number">
+          <label id="label" for="number">Тел.Номер:*  </label>
+          <input class="input" type="tel" name="numb" placeholder="88005553535" id="number" required>
+        </div>
+        <div id="block" class="bank-number">
+          <label id="label" for="bank-number">Карта Банка:*  </label>
+          <input class="input" type="number" name="numb" placeholder="8800-5553-5355-3535" id="bank-number" required>
+        </div>
+        <div class="submit-button">
+          <button type="submit">Сохранить данные</button>
+        </div>
+      </fieldset>
+    </form>
+</template>
+
+<script>
+  export default {
+    name: 'v-UserData'
+  }
+
+</script>
+
+<style scoped>
+
+form>h1{
+  margin-left: 190px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 22px;
+}
+form>.block-inputs{
+  margin-top: 15px;
+  margin-left: 50px;
+  width: 108%;
+  height: 85%;
+  border-radius: 5px;
+}
+form>.block-inputs>#block{
+  width: 500px;
+  height: 50px;
+  margin-top: 17px;
+  margin-left: 150px;
+  border: 1.5px solid #6e6d6d;
+  border-radius: 7px;
+}
+form>.block-inputs>#block>#label{
+  font-size: 18px;
+  margin: 15px;
+}
+form>.block-inputs>#block>.input{
+  width: 60%;
+  height: 27px;
+  text-align: center;
+  margin-top: 10px;
+  margin-left: 25px;
+}
+form>.block-inputs>#block>#login{
+  margin-left: 45px;
+}
+form>.block-inputs>#block>#first_name{
+  margin-left: 60px;
+}
+form>.block-inputs>#block>#last_name{
+  margin-left: 22px;
+}
+form>.block-inputs>#block>#email{
+  margin-left: 43px;
+}
+form>.block-inputs>#block>#number{
+  margin-left: 10px;
+}
+form>.block-inputs>#block>#bank-number{
+  margin-left: 0px;
+}
+form>.block-inputs>.submit-button>button{
+  margin: 10px;
+  width: 350px;
+  height: 35px;
+  margin-left: 230px;
+  margin-top: 15px;
+}
+</style>
