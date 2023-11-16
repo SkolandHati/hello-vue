@@ -13,6 +13,8 @@ const SignUp = () => import('@/components/User/v-SignUp.vue')
 const checkRegistration = () => import('@/components/User/v-checkregistration.vue')
 const SignIn = () => import('@/components/User/v-SignIn.vue')
 
+const UserSetting = () => import('@/components/User/v-UserSetting.vue')
+
 const BusketPage = () => import('@/components/OrderBusket/v-BusketPage.vue')
 
 const OrderPage = () => import('@/components/Order/v-OrderPage.vue')
@@ -54,6 +56,11 @@ const router = createRouter({
                     path:'/signin',
                     name:'v-SignIn',
                     component: SignIn
+                },
+                {
+                  path: '/settings',
+                  name: 'v-UserSetting',
+                  component:UserSetting
                 },
                 {
                     path:'/busket',
