@@ -12,7 +12,8 @@
           </button>
         </div>
         <div class="button" id="button-heart">
-          <button @click="$router.push({name:'vFavoritePage'})"> <i class="fas fa-solid fa-heart"></i></button>
+          <button class="fas fa-solid fa-heart" :class="{active: getFavoriteProducts.length !== 0}" @click="$router.push({name:'vFavoritePage'})">
+          </button>
         </div>
         <div class="button" id="button-user">
           <button class="fas fa-solid fa-user" :style="styleCheck"></button>
@@ -49,12 +50,20 @@
             getUser: 'user/getUser',
             outUser: 'user/outUser',
             loadDatafromDataBase: 'busketProducts/loadProductsData',
+            FavoriteProducts: 'favoriteProducts/getFavoriteP'
           }),
           async loadData() {
             try {
               await this.getUser()
             }
             catch (e) {
+              Promise.reject(e)
+            }
+          },
+          async loadFavoriteProducts(){
+            try {
+              await this.FavoriteProducts()
+            }catch (e){
               Promise.reject(e)
             }
           },
@@ -93,11 +102,13 @@
             userinsystem: 'user/USERINSYSTEM',
             is_auth: 'user/AUTH',
             busketproducts: 'busketProducts/BUSKETPRODUCTS',
+            getFavoriteProducts: 'favoriteProducts/GET_FAVORITE_PROD'
           }),
           styleCheck(){
             if (this.isActive){
               return {
-                border: '2px solid #53D31DFF'
+                border: '2px solid #53D31DFF',
+                color: '#b0f19d'
               }
             }else {
               return {
@@ -106,11 +117,6 @@
             }
           },
         },
-        // watch:{
-        //   busketproducts(){
-        //     this.calculateCountProducts()
-        //   }
-        // },
         setup(){
           const signOut = async () => {
             try {
@@ -125,6 +131,7 @@
           const isCurrentUser = async () => {
             try {
               const {error} = await supabase.auth.getSession()
+              if (error) throw error
             }catch (e){
               Promise.reject(e)
             }
@@ -137,6 +144,7 @@
         mounted() {
             this.checkUser()
             this.loadData()
+            this.loadFavoriteProducts()
             this.calculateCountProducts()
         }
     }
@@ -202,6 +210,7 @@
       z-index: 1;
       position: absolute;
     }
+
     .panel-user>.userbuttons>.button>.fas.fa-solid.fa-user:hover  ~.btn-auth-regist{
       width: 190px;
       display: block;
@@ -230,12 +239,6 @@
       cursor: pointer;
       right: 0px;
     }
-    /// Циркуль
-    .panel-user>.userbuttons>.button>.cont-circle{
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-    }
     .panel-user>.userbuttons>.button>.circle{
       width: 15px;
       height: 15px;
@@ -244,6 +247,9 @@
       border-radius: 50%;
       margin-top: 27px;
       padding-left: 5px;
+    }
+    .panel-user>.userbuttons>.button>.fas.fa-solid.fa-heart.active{
+      color: red;
     }
 
 </style>
