@@ -1,6 +1,6 @@
 <template>
     <form action="#" method="post" target="_blank">
-      <h1>Заполните все поля и заказывайте товары в один клик!</h1>
+      <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
       <fieldset class="block-inputs">
         <div id="block" class="block-first-name">
           <label id="label" for="login">Логин:*  </label>
@@ -26,7 +26,7 @@
           <label id="label" for="bank-number">Карта Банка:*  </label>
           <input class="input" type="number" name="numb" placeholder="8800-5553-5355-3535" id="bank-number" required>
         </div>
-        <div class="submit-button">
+        <div v-if="!defaultSetting" class="submit-button">
           <button type="submit">Сохранить данные</button>
         </div>
       </fieldset>
@@ -35,7 +35,12 @@
 
 <script>
   export default {
-    name: 'v-UserData'
+    name: 'v-UserData',
+    props:{
+      defaultSetting:{
+        type: Boolean
+      }
+    }
   }
 
 </script>

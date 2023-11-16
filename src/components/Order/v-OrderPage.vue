@@ -18,8 +18,8 @@
         </div>
       </div>
     </div>
-    <div>
-      
+    <div class="container-order-data">
+      <user-date :defaultSetting="activiti"/>
     </div>
   </div>
 </template>
@@ -27,10 +27,17 @@
 <script>
 
   import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+  import UserDate from "@/components/User/v-UserData.vue"
   export default {
     name: 'v-OrderPage',
     components:{
-      vMainPanelUser
+      vMainPanelUser,
+      UserDate
+    },
+    data(){
+      return {
+        activiti: true
+      }
     },
     methods:{
 
@@ -52,6 +59,10 @@
     background-color: rgb(57, 73, 82);
     width: 100%;
     height: 50px;
+  }
+
+  .container{
+    display: flex;
   }
 
   .container-products{
@@ -83,5 +94,11 @@
     text-align: center;
     font-size: 18px;
     margin-top: 30px;
+  }
+  .container>.container-order-data>user-date>h1{
+    display: none;
+  }
+  html body div#app div#app div#app div.container div.container-order-data form h1{
+    display: none;
   }
 </style>
