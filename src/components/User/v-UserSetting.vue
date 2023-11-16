@@ -99,4 +99,14 @@
     background-color: #d8f1d4;
     border: 1px solid #595959;
   }
+  .container-user-setting>.choice>#act.active_order{
+    background-color: #d8f1d4;
+    border: 1px solid #595959;
+  }
+  .container-user-setting>.user-order{
+    display: none;
+  }
+  .container-user-setting>.user-order.active_order{
+    display: block;
+  }
 </style>
