@@ -15,6 +15,8 @@ const SignIn = () => import('@/components/User/v-SignIn.vue')
 
 const BusketPage = () => import('@/components/OrderBusket/v-BusketPage.vue')
 
+const OrderPage = () => import('@/components/Order/v-OrderPage.vue')
+
 const FavoritePage = () => import('@/components/Favorite/v-FavoritePage.vue')
 
 const router = createRouter({
@@ -60,6 +62,11 @@ const router = createRouter({
                     meta: {
                         requireAuth: true
                     }
+                },
+                {
+                    path:'/order',
+                    name:'v-OrderPage',
+                    component:OrderPage
                 },
                 {
                     path:'/favorite_products',
