@@ -75,6 +75,7 @@
   .container-products>.info-busket>#info-price{
     text-align: center;
     font-size: 20px;
+    margin-bottom: 35px;
   }
   .container-products>.item{
     display: flex;
@@ -95,10 +96,7 @@
     font-size: 18px;
     margin-top: 30px;
   }
-  .container>.container-order-data>user-date>h1{
-    display: none;
-  }
-  html body div#app div#app div#app div.container div.container-order-data form h1{
-    display: none;
+  .container>.container-order-data {
+    margin-top: 50px;
   }
 </style>
