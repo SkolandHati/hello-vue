@@ -4,7 +4,10 @@
       <fieldset class="block-inputs" :class="{atherSetting: defaultSetting}">
         <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
           <label id="label" for="login">Логин:*  </label>
-          <input class="input" type="text" name="name" placeholder="Логин " id="login" required>
+          <input class="input" type="text" name="login"
+                 v-bind="us_login"
+                 :value="user.user_login"
+                 placeholder="Логин " id="login" required>
         </div>
         <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
           <label id="label" for="first_name">Имя:*  </label>
@@ -16,7 +19,7 @@
         </div>
         <div id="block" class="block-email" :class="{atherSetting: defaultSetting}">
           <label id="label" for="email">E-mail:*  </label>
-          <input class="input" type="email" name="mail" placeholder="ivanov@gmail.com" id="email" required>
+          <input class="input" type="email" name="mail" :value="user.user_email" placeholder="ivanov@gmail.com" id="email" required>
         </div>
         <div id="block" class="block-phone-number" :class="{atherSetting: defaultSetting}">
           <label id="label" for="number">Тел.Номер:*  </label>
@@ -34,12 +37,61 @@
 </template>
 
 <script>
+
+  import {mapGetters, mapActions} from "vuex";
+  import user from "@/store/modules/user";
+  import {reactive, ref} from "vue";
+
   export default {
     name: 'v-UserData',
     props:{
       defaultSetting:{
         type: Boolean
       }
+    },
+    data(){
+      return {
+          us_login: null,
+          us_first_name: null,
+          us_last_name: null,
+          us_email: null,
+          us_number_phone: null,
+          us_cart_bank: null
+      }
+    },
+    setup(){
+
+        const login = ref('')
+        const first_name = ref('')
+        const last_name = ref('')
+        const email = ref('')
+        const number_phone = ref('')
+        const cart_bank = ref('')
+
+
+
+    },
+    methods:{
+      ...mapActions({
+        getUserData: 'user/getUser'
+      }),
+      async loadData(){
+        try {
+          await this.getUserData()
+        }catch (e){
+          Promise.reject(e)
+        }
+      },
+
+    },
+    computed:{
+      ...mapGetters({
+        user: 'user/USERINSYSTEM'
+      })
+    },
+    mounted() {
+      this.loadData()
+      console.log(this.user)
     }
   }
 
