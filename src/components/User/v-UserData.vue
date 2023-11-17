@@ -5,41 +5,49 @@
         <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
           <label id="label" for="login">Логин:*  </label>
           <input class="input" type="text" name="login"
-                 v-bind="us_login"
                  :value="user.user_login"
                  placeholder="Логин " id="login" required>
         </div>
         <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
           <label id="label" for="first_name">Имя:*  </label>
-          <input class="input" type="text" name="first_name" placeholder="Иван " id="first_name" required>
+          <input class="input" type="text" name="first_name"
+                 v-model="first_name"
+                 placeholder="Иван " id="first_name" required>
         </div>
         <div id="block" class="block-last-name" :class="{atherSetting: defaultSetting}">
           <label id="label" for="last_name">Фамилия:*  </label>
-          <input class="input" type="text" name="last_name" placeholder="Иванов " id="last_name" required>
+          <input class="input" type="text" name="last_name"
+                 v-model="last_name"
+                 placeholder="Иванов " id="last_name" required>
         </div>
         <div id="block" class="block-email" :class="{atherSetting: defaultSetting}">
           <label id="label" for="email">E-mail:*  </label>
-          <input class="input" type="email" name="mail" :value="user.user_email" placeholder="ivanov@gmail.com" id="email" required>
+          <input class="input" type="email" name="mail"
+                 :value="user.user_email" placeholder="ivanov@gmail.com" id="email" required>
         </div>
         <div id="block" class="block-phone-number" :class="{atherSetting: defaultSetting}">
           <label id="label" for="number">Тел.Номер:*  </label>
-          <input class="input" type="tel" name="numb" placeholder="88005553535" id="number" required>
+          <input class="input" type="tel" name="numb"
+                 v-model="number_phone"
+                 placeholder="88005553535" id="number" required>
         </div>
         <div id="block" class="bank-number" :class="{atherSetting: defaultSetting}">
           <label id="label" for="bank-number">Карта Банка:*  </label>
-          <input class="input" type="number" name="numb" placeholder="8800-5553-5355-3535" id="bank-number" required>
+          <input class="input" type="number" name="numb"
+                 v-model="cart_bank"
+                 placeholder="8800-5553-5355-3535" id="bank-number" required>
         </div>
         <div v-if="!defaultSetting" class="submit-button">
           <button type="submit">Сохранить данные</button>
         </div>
       </fieldset>
+      {{us_login}}
     </form>
 </template>
 
 <script>
 
   import {mapGetters, mapActions} from "vuex";
-  import user from "@/store/modules/user";
   import {reactive, ref} from "vue";
 
   export default {
@@ -51,7 +59,7 @@
     },
     data(){
       return {
-          us_login: null,
+          us_login: this.user.user_login,
           us_first_name: null,
           us_last_name: null,
           us_email: null,
@@ -59,21 +67,10 @@
           us_cart_bank: null
       }
     },
-    setup(){
-
-        const login = ref('')
-        const first_name = ref('')
-        const last_name = ref('')
-        const email = ref('')
-        const number_phone = ref('')
-        const cart_bank = ref('')
-
-
-
-    },
     methods:{
       ...mapActions({
-        getUserData: 'user/getUser'
+        getUserData: 'user/getUser',
+        setterUserData: 'user/setUserData'
       }),
       async loadData(){
         try {
@@ -82,16 +79,50 @@
           Promise.reject(e)
         }
       },
-
     },
     computed:{
       ...mapGetters({
         user: 'user/USERINSYSTEM'
       })
     },
+    setup(){
+
+      const login = ref('')
+      const first_name = ref('')
+      const last_name = ref('')
+      const email = ref('')
+      const number_phone = ref('')
+      const cart_bank = ref('')
+
+      const submitUserInformation = async () => {
+        try {
+          const state_object = {
+            'user_id': this.user.user_id,
+            'login_user': login,
+            'first_user_name': first_name,
+            'last_user_name': last_name,
+            'email_user': email,
+            'number_phone_user': number_phone,
+            'cart_bank_user': cart_bank
+          }
+          await this.setterUserData(state_object)
+        }catch (e){
+          Promise.reject(e)
+        }
+      }
+      return {
+        login,
+        first_name,
+        last_name,
+        email,
+        number_phone,
+        cart_bank
+      }
+
+    },
     mounted() {
       this.loadData()
-      console.log(this.user)
+      console.log(this.login)
     }
   }
 
