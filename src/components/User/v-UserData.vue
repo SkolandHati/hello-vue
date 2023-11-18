@@ -5,8 +5,8 @@
         <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
           <label id="label" for="login">Логин:*  </label>
           <input class="input" type="text" name="login"
-                 :value="user.user_login"
-                 placeholder="Логин " id="login" required>
+                 :value="user.user_id !== undefined ? user.user_login: login || ''"
+                 placeholder="Логин" id="login" required>
         </div>
         <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
           <label id="label" for="first_name">Имя:*  </label>
@@ -23,7 +23,7 @@
         <div id="block" class="block-email" :class="{atherSetting: defaultSetting}">
           <label id="label" for="email">E-mail:*  </label>
           <input class="input" type="email" name="mail"
-                 :value="user.user_email" placeholder="ivanov@gmail.com" id="email" required>
+                 placeholder="ivanov@gmail.com" id="email" required>
         </div>
         <div id="block" class="block-phone-number" :class="{atherSetting: defaultSetting}">
           <label id="label" for="number">Тел.Номер:*  </label>
@@ -41,7 +41,7 @@
           <button type="submit">Сохранить данные</button>
         </div>
       </fieldset>
-      {{us_login}}
+      {{login}}
     </form>
 </template>
 
@@ -59,7 +59,7 @@
     },
     data(){
       return {
-          us_login: this.user.user_login,
+          us_login: null,
           us_first_name: null,
           us_last_name: null,
           us_email: null,
@@ -97,7 +97,7 @@
       const submitUserInformation = async () => {
         try {
           const state_object = {
-            'user_id': this.user.user_id,
+            'user_id': await this.user.user_id,
             'login_user': login,
             'first_user_name': first_name,
             'last_user_name': last_name,
