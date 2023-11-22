@@ -25,16 +25,6 @@
         type: Boolean
       }
     },
-    data(){
-      return {
-          us_login: null,
-          us_first_name: null,
-          us_last_name: null,
-          us_email: null,
-          us_number_phone: null,
-          us_cart_bank: null
-      }
-    },
     setup(){
 
       const login = ref('')
@@ -43,8 +33,6 @@
       const email = ref('')
       const number_phone = ref('')
       const cart_bank = ref('')
-
-      const labels = ['Логин', 'Имя', 'Фамилия', 'Email', 'Тел.Номер', 'Банк.Карта']
 
       const state = async () => {
         try {
@@ -89,7 +77,6 @@
         number_phone,
         cart_bank,
         state,
-        labels,
         submitUserInformation
       }
 

@@ -4,9 +4,8 @@
        v-for="(item, i) in labels">
     <label class="label">{{item}}</label>
     <input class="input" type="text"
-           v-model="state[i]"
+           v-model="state[Object.keys(this.state)[i]]"
            :placeholder="item" required>
-      {{state.email}}
   </div>
 </template>
 
@@ -29,25 +28,27 @@
       }
     },
     created() {
-      this.login = this.userDatas.user_login || ''
-      this.first_name = this.userDatas.user_first_name || ''
-      this.last_name = this.userDatas.user_last_name || ''
-      this.email = this.userDatas.user_email || ''
-      this.number_phone = this.userDatas.user_number_phone || ''
-      this.cart_bank = this.userDatas.user_cart_bunk_number || ''
+      this.state.login = this.userDatas.user_login || ''
+      this.state.first_name = this.userDatas.user_first_name || ''
+      this.state.last_name = this.userDatas.user_last_name || ''
+      this.state.email = this.userDatas.user_email || ''
+      this.state.number_phone = this.userDatas.user_number_phone || ''
+      this.state.cart_bank = this.userDatas.user_cart_bunk_number || ''
     },
     data(){
       return{
+        state: {
           login: '',
           first_name: '',
           last_name: '',
           email: '',
-          number_phone:'',
+          number_phone: '',
           cart_bank: ''
+        }
       }
     },
     mounted() {
-      console.log(this.state[1])
+      console.log()
     },
     methods:{
 
@@ -78,9 +79,6 @@
     text-align: center;
     margin-top: 10px;
     margin-left: 25px;
-  }
-  form>.block-inputs>#block>#login{
-    margin-left: 45px;
   }
   form>.block-inputs>#block>.input{
     margin-left: 10px;
