@@ -1,11 +1,13 @@
 <template>
   <div id="block" class="block-input"
        :class="{atherSetting: defaultSetting}"
-       v-for="(item, i) in labels">
+       v-for="(item, i) in labels" :key="item[i]">
     <label class="label">{{item}}</label>
     <input class="input" type="text"
            v-model="state[Object.keys(this.state)[i]]"
            :placeholder="item" required>
+    <span class="span-symbol-good" v-if="state[Object.keys(this.state)[i]] !== ''">&#128504;</span>
+    <span class="span-symbol-bad" v-else>&#10006;</span>
   </div>
 </template>
 
@@ -21,6 +23,7 @@
         required: true
       }
     },
+    emits: (["updateDataUser"]),
     setup(){
       const labels = ['Логин', 'Имя', 'Фамилия', 'Email', 'Тел.Номер', 'Банк.Карта']
       return {
@@ -47,11 +50,13 @@
         }
       }
     },
-    mounted() {
-      console.log()
+    watch:{
+      salary(newValue, oldValue){
+        console.log('ewgewgewgeg')
+        this.$emit('updateDataUser',this.state)
+      }
     },
     methods:{
-
     }
   }
 
@@ -80,8 +85,25 @@
     margin-top: 10px;
     margin-left: 25px;
   }
-  form>.block-inputs>#block>.input{
+  .input{
     margin-left: 10px;
+  }
+  .span-symbol-good,.span-symbol-bad{
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+    margin-top:15px;
+    text-align: center;
+    //padding-top: 5px;
+    border: 2px solid #4b4b4b;
+    border-radius: 50%;
+  }
+  .span-symbol-good{
+    background-color: #9edc86;
+  }
+  .span-symbol-bad{
+    background-color: #e71f1f;
+    border: 2px solid #6e6d6d;
   }
 
 </style>

@@ -2,7 +2,7 @@
     <form action="#" method="post" target="_blank">
       <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
       <fieldset class="block-inputs" :class="{atherSetting: defaultSetting}">
-        <inputModul :userDatas="user"/>
+        <inputModul :userDatas="user" @updateDataUser="loggersCounts"/>
         <div v-if="!defaultSetting" class="submit-button">
           <button type="submit" @click="submitUserInformation">Сохранить данные</button>
         </div>
@@ -34,24 +34,6 @@
       const number_phone = ref('')
       const cart_bank = ref('')
 
-      const state = async () => {
-        try {
-          const states = {
-            'user_id': 'egwegew',
-            'login_user': login.value,
-            'first_user_name': first_name,
-            'last_user_name': last_name,
-            'email_user': email,
-            'number_phone_user': number_phone,
-            'cart_bank_user': cart_bank
-          }
-          console.log(states)
-          //await this.setterUserData(state_object)
-        }catch (e){
-          Promise.reject(e)
-        }
-      }
-
       const submitUserInformation = async () => {
         try {
           const state_object = {
@@ -76,10 +58,14 @@
         email,
         number_phone,
         cart_bank,
-        state,
         submitUserInformation
       }
 
+    },
+    data(){
+      return{
+        updateUserData: null
+      }
     },
     computed:{
       ...mapGetters({
@@ -88,6 +74,7 @@
     },
     mounted() {
       this.loadData()
+      console.log(this.updateUserData)
     },
     methods:{
       ...mapActions({
@@ -101,6 +88,12 @@
           Promise.reject(e)
         }
       },
+      loggersCounts(someData){
+        console.log(someData)
+        if (someData){
+          this.updateUserData = someData
+        }
+      }
     },
   }
 
