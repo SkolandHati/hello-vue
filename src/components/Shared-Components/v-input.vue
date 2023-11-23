@@ -45,14 +45,23 @@
           first_name: '',
           last_name: '',
           email: '',
-          number_phone: '',
+          number_phone: Number,
           cart_bank: ''
         }
       }
     },
+    computed:{
+      salary() {
+        return this.state.login + ' '
+            + this.state.first_name + ' '
+            + this.state.last_name + ' '
+            + this.state.email + ' '
+            + this.state.number_phone + ' '
+            + this.state.cart_bank
+      }
+    },
     watch:{
-      salary(newValue, oldValue){
-        console.log('ewgewgewgeg')
+      salary(){
         this.$emit('updateDataUser',this.state)
       }
     },

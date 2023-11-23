@@ -4,7 +4,7 @@
       <fieldset class="block-inputs" :class="{atherSetting: defaultSetting}">
         <inputModul :userDatas="user" @updateDataUser="loggersCounts"/>
         <div v-if="!defaultSetting" class="submit-button">
-          <button type="submit" @click="submitUserInformation">Сохранить данные</button>
+          <button type="submit" :disabled="dataValidity" @click="submitUserInformation">Сохранить данные</button>
         </div>
       </fieldset>
     </form>
@@ -27,13 +27,6 @@
     },
     setup(){
 
-      const login = ref('')
-      const first_name = ref('')
-      const last_name = ref('')
-      const email = ref('')
-      const number_phone = ref('')
-      const cart_bank = ref('')
-
       const submitUserInformation = async () => {
         try {
           const state_object = {
@@ -52,12 +45,6 @@
         }
       }
       return {
-        login,
-        first_name,
-        last_name,
-        email,
-        number_phone,
-        cart_bank,
         submitUserInformation
       }
 
@@ -70,11 +57,19 @@
     computed:{
       ...mapGetters({
         user: 'user/USERINSYSTEM'
-      })
+      }),
+      dataValidity(){
+        if (this.updateUserData !== null) {
+            for (let i = 0; Object.keys(this.updateUserData).length > i; i++){
+              console.log(Object.values(this.updateUserData))
+            }
+        }else {
+          return false
+        }
+      }
     },
     mounted() {
       this.loadData()
-      console.log(this.updateUserData)
     },
     methods:{
       ...mapActions({
@@ -89,9 +84,26 @@
         }
       },
       loggersCounts(someData){
-        console.log(someData)
         if (someData){
           this.updateUserData = someData
+        }
+      },
+      async submitUserInformation(){
+        try {
+          if (this.updateUserData !== null){
+            const state_object = {
+              'user_id': await this.user.user_id,
+              'login_user': login,
+              'first_user_name': first_name,
+              'last_user_name': last_name,
+              'email_user': email,
+              'number_phone_user': number_phone,
+              'cart_bank_user': cart_bank
+            }
+            console.log(state_object)
+          }
+        }catch (e){
+          Promise.reject(e)
         }
       }
     },
