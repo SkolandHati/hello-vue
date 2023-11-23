@@ -1,10 +1,21 @@
 <template>
     <form action="#" method="post" target="_blank">
       <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
-      <fieldset class="block-inputs" :class="{atherSetting: defaultSetting}">
-        <inputModul :userDatas="user" @updateDataUser="loggersCounts"/>
-        <div v-if="!defaultSetting" class="submit-button">
-          <button type="submit" :disabled="dataValidity" @click="submitUserInformation">Сохранить данные</button>
+      <fieldset class="block-inputs"
+                :class="{atherSetting: defaultSetting}">
+        <inputModul :userDatas="user"
+                    @updateDataUser="loggersCounts"/>
+        <div class="block-native" v-if="!defaultSetting">
+          <div class="nav"
+               :class="{active: dataValidity !== false}">
+            <p class="native" >Заполните все поля *</p>
+          </div>
+          <div class="submit-button">
+            <button type="submit"
+                    :disabled="dataValidity === false && updateUserData !== null"
+                    :class="{fix: dataValidity !== false}"
+                    @click="submitUserInformation">Сохранить данные</button>
+          </div>
         </div>
       </fieldset>
     </form>
@@ -13,8 +24,6 @@
 <script>
   import inputModul from "@/components/Shared-Components/v-input.vue"
   import {mapGetters, mapActions} from "vuex";
-  import {ref} from "vue";
-
   export default {
     name: 'v-UserData',
     components:{
@@ -24,30 +33,6 @@
       defaultSetting:{
         type: Boolean
       }
-    },
-    setup(){
-
-      const submitUserInformation = async () => {
-        try {
-          const state_object = {
-            'user_id': await this.user.user_id,
-            'login_user': login,
-            'first_user_name': first_name,
-            'last_user_name': last_name,
-            'email_user': email,
-            'number_phone_user': number_phone,
-            'cart_bank_user': cart_bank
-          }
-          console.log(state_object)
-          //await this.setterUserData(state_object)
-        }catch (e){
-          Promise.reject(e)
-        }
-      }
-      return {
-        submitUserInformation
-      }
-
     },
     data(){
       return{
@@ -61,15 +46,23 @@
       dataValidity(){
         if (this.updateUserData !== null) {
             for (let i = 0; Object.keys(this.updateUserData).length > i; i++){
-              console.log(Object.values(this.updateUserData))
+              if (Object.values(this.updateUserData)[i] === null){
+                return false
+              }
             }
         }else {
           return false
         }
+      },
+    },
+    watch:{
+      updateUserData(){
+        this.loggersCounts()
       }
     },
     mounted() {
       this.loadData()
+      console.log(this.dataValidity)
     },
     methods:{
       ...mapActions({
@@ -90,17 +83,10 @@
       },
       async submitUserInformation(){
         try {
-          if (this.updateUserData !== null){
-            const state_object = {
-              'user_id': await this.user.user_id,
-              'login_user': login,
-              'first_user_name': first_name,
-              'last_user_name': last_name,
-              'email_user': email,
-              'number_phone_user': number_phone,
-              'cart_bank_user': cart_bank
-            }
-            console.log(state_object)
+          await this.user
+          if (this.updateUserData !== null && this.user !== null){
+            this.updateUserData.id = this.user.user_id
+            await this.setterUserData(this.updateUserData)
           }
         }catch (e){
           Promise.reject(e)
@@ -108,33 +94,54 @@
       }
     },
   }
-
 </script>
 
 <style scoped>
 
-  form>h1{
+  h1{
     margin-left: 190px;
     margin-top: 10px;
     margin-bottom: 5px;
     text-align: center;
     font-size: 22px;
   }
-  form>.block-inputs{
+  .block-inputs{
     margin-top: 15px;
     margin-left: 50px;
     width: 108%;
     height: 85%;
     border-radius: 5px;
   }
-  form>.block-inputs.atherSetting{
+  .atherSetting{
     width: 100%;
   }
-  form>.block-inputs>.submit-button>button{
+  .submit-button{
+    position: relative;
+    display: flex;
+  }
+  .block-native {
+    display: flex;
+  }
+  .native{
+    width: 160px;
+    height: 21px;
+    margin-top: 23px;
+    margin-left: 50px;
+  }
+  .active{
+    display: none;
+    width: 160px;
+    height: 21px;
+  }
+  .fix{
+    margin-left: 245px;
+  }
+  button{
+    position: relative;
     margin: 10px;
     width: 350px;
     height: 35px;
-    margin-left: 230px;
+    margin-left: 35px;
     margin-top: 15px;
   }
 </style>

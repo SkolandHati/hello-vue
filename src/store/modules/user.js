@@ -6,17 +6,17 @@ async function setDataInformationUser(object){
             const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
             const obj = {
                 "id": Number(randomID()),
-                "user_id": String(object.user_id),
-                "login_user": String(object.user_login),
-                "first_user_name": String(object.user_first_name),
-                "last_user_name": String(object.user_last_name),
-                "email_user": String(object.user_email),
-                "number_phone_user": Number(object.user_number_phone),
-                "cart_bank_user": Number(object.user_cart_bunk_number)
+                "user_id": String(object.id),
+                "login_user": String(object.login),
+                "first_user_name": String(object.first_name),
+                "last_user_name": String(object.last_name),
+                "email_user": String(object.email),
+                "number_phone_user": String(object.number_phone),
+                "cart_bank_user": String(object.cart_bank)
             }
             let {error} = await supabase.from('information_user')
                 .insert([obj]).select()
-            if (error) throw error
+            //if (error) throw error
         }else {
             console.log('Ошибка данных о пользователе')
         }
@@ -60,7 +60,7 @@ export default {
             try {
                 if (data){
                     await setDataInformationUser(data)
-                    commit("")
+                    commit("UPDATE_USER_INFO", data)
                 }
 
             }catch (e){
@@ -89,7 +89,14 @@ export default {
             state.user.user_email = email
         },
         UPDATE_USER_INFO(state, data){
-            state.user.id = data
+            state.user.user_id = data.id
+            state.user.user_login = data.login
+            state.user.user_first_name = data.first_name
+            state.user.user_last_name = data.last_name
+            state.user.user_email = data.email
+            state.user.user_number_phone = data.number_phone
+            state.user.user_cart_bunk_number = data.cart_bank
+            console.log(state.user)
         }
     },
     getters: {

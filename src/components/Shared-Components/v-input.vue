@@ -6,7 +6,7 @@
     <input class="input" type="text"
            v-model="state[Object.keys(this.state)[i]]"
            :placeholder="item" required>
-    <span class="span-symbol-good" v-if="state[Object.keys(this.state)[i]] !== ''">&#128504;</span>
+    <span class="span-symbol-good" v-if="state[Object.keys(this.state)[i]] !== null">&#128504;</span>
     <span class="span-symbol-bad" v-else>&#10006;</span>
   </div>
 </template>
@@ -31,22 +31,22 @@
       }
     },
     created() {
-      this.state.login = this.userDatas.user_login || ''
-      this.state.first_name = this.userDatas.user_first_name || ''
-      this.state.last_name = this.userDatas.user_last_name || ''
-      this.state.email = this.userDatas.user_email || ''
-      this.state.number_phone = this.userDatas.user_number_phone || ''
-      this.state.cart_bank = this.userDatas.user_cart_bunk_number || ''
+      this.state.login = this.userDatas.user_login || null
+      this.state.first_name = this.userDatas.user_first_name || null
+      this.state.last_name = this.userDatas.user_last_name || null
+      this.state.email = this.userDatas.user_email || null
+      this.state.number_phone = this.userDatas.user_number_phone || null
+      this.state.cart_bank = this.userDatas.user_cart_bunk_number || null
     },
     data(){
       return{
         state: {
-          login: '',
-          first_name: '',
-          last_name: '',
-          email: '',
-          number_phone: Number,
-          cart_bank: ''
+          login: null,
+          first_name: null,
+          last_name: null,
+          email: null,
+          number_phone: null,
+          cart_bank: null
         }
       }
     },
