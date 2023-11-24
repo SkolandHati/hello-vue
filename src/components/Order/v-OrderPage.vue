@@ -20,6 +20,9 @@
     </div>
     <div class="container-order-data">
       <user-date :defaultSetting="activiti"/>
+      <div class="buttons">
+        <button class="order"></button>
+      </div>
     </div>
   </div>
 </template>

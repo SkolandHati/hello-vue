@@ -22,7 +22,7 @@
       </div>
     <div class="infoAllBusket">
       <h1 id="infoPrice" >Стоимость всех товаров в корзине: {{calculateThePrice}}</h1>
-      <button id="button">Оформить заказ</button>
+      <button id="button" @click="goOrderPage">Оформить заказ</button>
       <button id="button" class="clearBusket" @click="clearBusket">Очистить корзину</button>
     </div>
     </div>
@@ -33,6 +33,7 @@
 
 import {mapGetters, mapActions} from "vuex";
 import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+import router from "@/router";
 export default {
     name: 'v-BusketPage',
     components:{
@@ -44,6 +45,34 @@ export default {
         fullPrice: 0,
       }
     },
+  computed:{
+    ...mapGetters({
+      busketproducts: 'busketProducts/BUSKETPRODUCTS',
+    }),
+    calculateThePrice(){
+      try {
+        if (this.busketproducts){
+          const listPrice = []
+          for (const key in this.busketproducts){
+            listPrice.push(this.busketproducts[key].product_price * this.busketproducts[key].quantity)
+          }
+          return this.fullPrice = listPrice.reduce((sum, current) => sum + current, 0)}
+        else {
+          return  this.fullPrice = 0
+        }
+      }catch (e){
+        console.log(e)
+      }
+    },
+  },
+  watch:{
+    busketproducts(){
+      this.loadsInBusketData()
+    },
+  },
+  mounted() {
+    this.loadsInBusketData()
+  },
     methods:{
       ...mapActions({
         loadDatafromDataBase: 'busketProducts/loadProductsData',
@@ -81,51 +110,12 @@ export default {
           console.log(e)
         }
       },
-      // async calculateCountProducts(){
-      //   try {
-      //     let data = await this.busketproducts
-      //     if (data){
-      //       const listPrice = []
-      //       for (const key in this.busketproducts){
-      //         listPrice.push(this.busketproducts[key].quantity)
-      //       }
-      //       return this.allCountProd = listPrice.reduce((sum, current) => sum + current, 0)}
-      //     else {
-      //       return  this.allCountProd  = 0
-      //     }
-      //   }catch (e){
-      //     Promise.reject(e)
-      //   }
-      // },
-    },
-    computed:{
-      ...mapGetters({
-        busketproducts: 'busketProducts/BUSKETPRODUCTS',
-      }),
-      calculateThePrice(){
-        try {
-          if (this.busketproducts){
-            const listPrice = []
-            for (const key in this.busketproducts){
-              listPrice.push(this.busketproducts[key].product_price * this.busketproducts[key].quantity)
-            }
-            return this.fullPrice = listPrice.reduce((sum, current) => sum + current, 0)}
-          else {
-            return  this.fullPrice = 0
-          }
-        }catch (e){
-          Promise.reject(e)
+      goOrderPage(){
+        if (this.dataBusket){
+          router.push({name: 'v-OrderPage'})
         }
-      },
+      }
     },
-    watch:{
-      busketproducts(){
-        this.loadsInBusketData()
-      },
-    },
-    mounted() {
-      this.loadsInBusketData()
-    }
 }
 
 </script>

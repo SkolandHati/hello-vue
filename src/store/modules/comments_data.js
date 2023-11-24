@@ -1,5 +1,5 @@
 import {supabase} from "@/services/APIauthorization";
-export async function setCommentsForProduct(bodyComment){
+async function setCommentsForProduct(bodyComment){
     try {
         const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
         const obj = {
@@ -17,7 +17,7 @@ export async function setCommentsForProduct(bodyComment){
     }
 }
 
-export async function getCommentsDataBase(productID){
+async function getCommentsDataBase(productID){
     try {
         let {data} = await supabase.from('comments').select('*').eq('product_id', productID)
         if (data){
@@ -27,7 +27,6 @@ export async function getCommentsDataBase(productID){
         console.log(e)
     }
 }
-
 async function deliteCommentsDatabase(data_comment) {
     try {
         let {error} = await supabase.from('comments').delete().eq('id', data_comment.id)

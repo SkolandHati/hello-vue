@@ -57,8 +57,13 @@ export default {
             try {
                 const result = await supabase.auth.getUser()
                 const data = await updateUserData()
-                if (data){
+                console.log(data)
+                if (!!data.length){
                     dispatch('updateUserInfo')
+                    if (result.data.user === null){
+                        commit("GET_USER", false, result.data.user)
+                    }
+                    commit("GET_USER_STATUS", result.data.user.aud)
                 }else {
                     if (result.data.user === null){
                         commit("GET_USER", false, result.data.user)

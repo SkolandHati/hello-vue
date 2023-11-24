@@ -5,6 +5,7 @@ import busketProducts from "@/store/modules/busketProducts";
 import favoriteProducts from "@/store/modules/FavoriteProducts"
 import user from "@/store/modules/user";
 import commentsModules from "@/store/modules/comments_data"
+import order from '@/store/modules/order'
 
 
 let store = {
@@ -13,7 +14,8 @@ let store = {
         busketProducts,
         favoriteProducts,
         user,
-        commentsModules
+        commentsModules,
+        order
     }
 }
 
