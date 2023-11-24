@@ -3,17 +3,17 @@
       <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
       <fieldset class="block-inputs"
                 :class="{atherSetting: defaultSetting}">
-        <inputModul :userDatas="user"
+        <v-input :userDatas="user"
                     @updateDataUser="loggersCounts"/>
         <div class="block-native" v-if="!defaultSetting">
           <div class="nav"
-               :class="{active: dataValidity !== false}">
+               :class="{active: !!dataValidity}">
             <p class="native" >Заполните все поля *</p>
           </div>
           <div class="submit-button">
             <button type="submit"
-                    :disabled="dataValidity === false && updateUserData !== null"
-                    :class="{fix: dataValidity !== false}"
+                    :disabled="!!dataValidity && !!updateUserData"
+                    :class="{fix: !!dataValidity}"
                     @click="submitUserInformation">Сохранить данные</button>
           </div>
         </div>
@@ -22,16 +22,17 @@
 </template>
 
 <script>
-  import inputModul from "@/components/Shared-Components/v-input.vue"
+  import vInput from "@/components/Shared-Components/v-input.vue"
   import {mapGetters, mapActions} from "vuex";
   export default {
     name: 'v-UserData',
     components:{
-      inputModul
+      vInput
     },
     props:{
       defaultSetting:{
-        type: Boolean
+        type: Boolean,
+        default: false
       }
     },
     data(){
@@ -62,7 +63,6 @@
     },
     mounted() {
       this.loadData()
-      console.log(this.dataValidity)
     },
     methods:{
       ...mapActions({
@@ -72,9 +72,8 @@
       async loadData(){
         try {
           await this.getUserData()
-        }catch (e){
-          Promise.reject(e)
-        }
+        }catch(e) {
+          console.log(e)}
       },
       loggersCounts(someData){
         if (someData){
@@ -89,7 +88,7 @@
             await this.setterUserData(this.updateUserData)
           }
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
       }
     },

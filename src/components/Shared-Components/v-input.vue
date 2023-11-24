@@ -1,7 +1,7 @@
 <template>
   <div id="block" class="block-input"
        :class="{atherSetting: defaultSetting}"
-       v-for="(item, i) in labels" :key="item[i]">
+       v-for="(item, i) in labels" :key="i">
     <label class="label">{{item}}</label>
     <input class="input" type="text"
            v-model="state[Object.keys(this.state)[i]]"
@@ -16,20 +16,15 @@
     name: 'v-input',
     props:{
       defaultSetting:{
-        type: Boolean
+        type: Boolean,
+        default: false
       },
       userDatas: {
         type: Object,
         required: true
       }
     },
-    emits: (["updateDataUser"]),
-    setup(){
-      const labels = ['Логин', 'Имя', 'Фамилия', 'Email', 'Тел.Номер', 'Банк.Карта']
-      return {
-        labels,
-      }
-    },
+    emits: ["updateDataUser"],
     created() {
       this.state.login = this.userDatas.user_login || null
       this.state.first_name = this.userDatas.user_first_name || null
@@ -47,7 +42,8 @@
           email: null,
           number_phone: null,
           cart_bank: null
-        }
+        },
+        labels: ['Логин', 'Имя', 'Фамилия', 'Email', 'Тел.Номер', 'Банк.Карта']
       }
     },
     computed:{
@@ -65,8 +61,6 @@
         this.$emit('updateDataUser',this.state)
       }
     },
-    methods:{
-    }
   }
 
 </script>

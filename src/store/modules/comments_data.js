@@ -24,7 +24,7 @@ export async function getCommentsDataBase(productID){
            return data
         }
     }catch (e){
-        Promise.reject(e)
+        console.log(e)
     }
 }
 

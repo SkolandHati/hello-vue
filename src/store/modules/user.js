@@ -1,5 +1,4 @@
 import {supabase} from "@/services/APIauthorization";
-
 async function setDataInformationUser(object){
     try {
         if (object){
@@ -16,12 +15,25 @@ async function setDataInformationUser(object){
             }
             let {error} = await supabase.from('information_user')
                 .insert([obj]).select()
-            //if (error) throw error
+            if (error) throw error
         }else {
             console.log('Ошибка данных о пользователе')
         }
     }catch (e){
-        Promise.reject(e)
+        console.log(e)
+    }
+}
+async function updateUserData(){
+    try {
+        let dataUser = await supabase.auth.getUser()
+        if (dataUser){
+            const {data, error} = await supabase.from('information_user').select('*').eq('user_id', dataUser.data.user.id)
+            return data
+        }else {
+            return null
+        }
+    }catch (e){
+        console.log(e)
     }
 }
 
@@ -41,37 +53,52 @@ export default {
         }
     },
     actions: {
-        async getUser({commit}){
+        async getUser({dispatch, commit}){
             try {
                 const result = await supabase.auth.getUser()
-                if (result.data.user === null){
-                    return commit("GET_USER", false, result.data.user)
+                const data = await updateUserData()
+                if (data){
+                    dispatch('updateUserInfo')
+                }else {
+                    if (result.data.user === null){
+                        commit("GET_USER", false, result.data.user)
+                    }
+                    commit("GET_USER_STATUS", result.data.user.aud)
+                    commit("GET_USER_ID", result.data.user.id)
+                    commit("GET_USER_LOGIN", result.data.user.user_metadata.first_name)
+                    commit("GET_USER_EMAIL", result.data.user.email)
                 }
-                commit("GET_USER_STATUS", result.data.user.aud)
-                commit("GET_USER_ID", result.data.user.id)
-                commit("GET_USER_LOGIN", result.data.user.user_metadata.first_name)
-                commit("GET_USER_EMAIL", result.data.user.email)
             }
             catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
-        async setUserData({commit}, data){
+        async updateUserInfo({commit}){
+            try {
+                let dataUser = await updateUserData()
+                if (dataUser){
+                    commit("UPDATE_USER_INFO", dataUser)
+                }
+            }catch (e){
+                console.log(e)
+            }
+        },
+        async setUserData({dispatch, commit}, data){
             try {
                 if (data){
                     await setDataInformationUser(data)
-                    commit("UPDATE_USER_INFO", data)
+                    dispatch('updateUserInfo')
                 }
 
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async outUser({commit}){
             try {
                 commit("GET_USER", null)
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
     },
@@ -89,14 +116,13 @@ export default {
             state.user.user_email = email
         },
         UPDATE_USER_INFO(state, data){
-            state.user.user_id = data.id
-            state.user.user_login = data.login
-            state.user.user_first_name = data.first_name
-            state.user.user_last_name = data.last_name
-            state.user.user_email = data.email
-            state.user.user_number_phone = data.number_phone
-            state.user.user_cart_bunk_number = data.cart_bank
-            console.log(state.user)
+            state.user.user_id = data[0].user_id
+            state.user.user_login = data[0].login_user
+            state.user.user_first_name = data[0].first_user_name
+            state.user.user_last_name = data[0].last_user_name
+            state.user.user_email = data[0].email_user
+            state.user.user_number_phone = data[0].number_phone_user
+            state.user.user_cart_bunk_number = data[0].cart_bank_user
         }
     },
     getters: {
