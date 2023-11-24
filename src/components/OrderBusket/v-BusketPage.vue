@@ -33,7 +33,6 @@
 
 import {mapGetters, mapActions} from "vuex";
 import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
-import router from "@/router";
 export default {
     name: 'v-BusketPage',
     components:{
@@ -122,105 +121,105 @@ export default {
 
 <style>
 
-.user-panel{
-  display: flex;
-  background-color: rgb(57, 73, 82);
-  width: 100%;
-  height: 50px;
-}
+  .user-panel{
+    display: flex;
+    background-color: rgb(57, 73, 82);
+    width: 100%;
+    height: 50px;
+  }
 
-#busketContainer{
-  display: flex;
-}
-#busketContainer>.busket{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 650px;
-  height: 100%;
-  margin-left: 25%;
-  margin-top: 2%;
-  border: 2px solid #6e6d6d;
-  border-radius: 5px;
-}
-#busketContainer>.busket>.productInBusket{
-  display: block;
-  margin: 25px;
-}
-#busketContainer>.busket>.productInBusket>.productItem{
-  display: flex;
-  margin-top: 10px;
+  #busketContainer{
+    display: flex;
+  }
+  .busket{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 650px;
+    height: 100%;
+    margin-left: 25%;
+    margin-top: 2%;
+    border: 2px solid #6e6d6d;
+    border-radius: 5px;
+  }
+  .productInBusket{
+    display: block;
+    margin: 25px;
+  }
+  .productItem{
+    display: flex;
+    margin-top: 10px;
 
-}
-#busketContainer>.busket>.productInBusket>.productItem>img{
-  width: 225px;
-  height: 200px;
-  padding: 5px;
-  padding-right: 0px;
-  padding-left: 0px;
-  border: 2px solid #3B5983;
-  border-radius: 1px;
-}
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn{
-  width: 50px;
-  height: 50px;
-}
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>#prod-button{
-  width: 50px;
-  height: 50px;
-  margin-left: 20px;
-  margin-top: 15px;
-  border-radius: 5px;
-}
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>.plus{
-  background-color: green;
-  font-size: 25px;
-}
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>.minus{
-  background-color: red;
-  font-size: 25px;
-}
-#busketContainer>.busket>.productInBusket>.productItem>.navig-btn>.delite{
-  background-color: #6e6d6d;
-  font-size: 20px;
-}
-#busketContainer>.busket>.productInBusket>.productItem>.productInfo{
-  display: block;
-  margin-left: 35px;
-}
-#busketContainer>.busket>.productInBusket>.productItem>.productInfo>#product{
-  color: black;
-  border-top: 2px solid #c2b0b0;
-  text-align: center;
-  margin-top: 20px;
-  font-size: 25px;
-}
-#busketContainer>.busket>.productInBusket>h1{
-  color: black;
+  }
+  img{
+    width: 225px;
+    height: 200px;
+    padding: 5px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border: 2px solid #3B5983;
+    border-radius: 1px;
+  }
+  .navig-btn{
+    width: 50px;
+    height: 50px;
+  }
+  #prod-button{
+    width: 50px;
+    height: 50px;
+    margin-left: 20px;
+    margin-top: 15px;
+    border-radius: 5px;
+  }
+  .plus{
+    background-color: green;
+    font-size: 25px;
+  }
+  .minus{
+    background-color: red;
+    font-size: 25px;
+  }
+  .delite{
+    background-color: #6e6d6d;
+    font-size: 20px;
+  }
+  .productInfo{
+    display: block;
+    margin-left: 35px;
+  }
+  #product{
+    color: black;
+    border-top: 2px solid #c2b0b0;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 25px;
+  }
+  h1{
+    color: black;
 
-}
-#busketContainer>.busket>.productInBusket>#header{
-  text-align: center;
-  margin-top: 0px;
-  width: 600px;
-}
+  }
+  #header{
+    text-align: center;
+    margin-top: 0px;
+    width: 600px;
+  }
 
-#busketContainer>.busket>.infoAllBusket{
-  margin: 15px;
-  width: 330px;
-  height: 100%;
-}
+  .infoAllBusket{
+    margin: 15px;
+    width: 330px;
+    height: 100%;
+  }
 
-#busketContainer>.busket>.infoAllBusket>#infoPrice{
-  color: black;
-  text-align: center;
-}
-#busketContainer>.busket>.infoAllBusket>#button{
-  display: block;
-  text-align: center;
-  margin: 25px;
-  margin-left: 90px;
-  width: 140px;
-  height: 37px;
-}
+  #infoPrice{
+    color: black;
+    text-align: center;
+  }
+  #button{
+    display: block;
+    text-align: center;
+    margin: 25px;
+    margin-left: 90px;
+    width: 140px;
+    height: 37px;
+  }
 
 </style>
