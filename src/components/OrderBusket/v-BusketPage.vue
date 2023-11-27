@@ -33,6 +33,7 @@
 
 import {mapGetters, mapActions} from "vuex";
 import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+import router from "@/router";
 export default {
     name: 'v-BusketPage',
     components:{
@@ -119,7 +120,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 
   .user-panel{
     display: flex;

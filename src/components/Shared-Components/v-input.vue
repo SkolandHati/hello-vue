@@ -1,6 +1,6 @@
 <template>
   <div id="block" class="block-input"
-       :class="{atherSetting: defaultSetting}"
+       :class="{atherSetting: defSetting}"
        v-for="(item, i) in labels" :key="i">
     <label class="label">{{item}}</label>
     <input class="input" type="text"
@@ -15,7 +15,7 @@
   export default {
     name: 'v-input',
     props:{
-      defaultSetting:{
+      defSetting:{
         type: Boolean,
         default: false
       },
@@ -90,6 +90,9 @@
   }
   .input{
     margin-left: 10px;
+  }
+  .atherSetting{
+    margin-left: 60px;
   }
   .span-symbol-good,.span-symbol-bad{
     width: 20px;

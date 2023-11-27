@@ -4,7 +4,8 @@
       <fieldset class="block-inputs"
                 :class="{atherSetting: defaultSetting}">
         <v-input :userDatas="user"
-                    @updateDataUser="loggersCounts"/>
+                 :defSetting="defaultSetting"
+                 @updateDataUser="loggersCounts"/>
         <div class="block-native" v-if="!defaultSetting">
           <div class="nav"
                :class="{active: !!dataValidity}">
@@ -112,7 +113,8 @@
     border-radius: 5px;
   }
   .atherSetting{
-    width: 100%;
+    width: 94%;
+    margin-left: 35px;
   }
   .submit-button{
     position: relative;
