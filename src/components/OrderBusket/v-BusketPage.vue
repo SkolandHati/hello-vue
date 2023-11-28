@@ -33,7 +33,6 @@
 
 import {mapGetters, mapActions} from "vuex";
 import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
-import router from "@/router";
 export default {
     name: 'v-BusketPage',
     components:{
@@ -112,7 +111,7 @@ export default {
       },
       goOrderPage(){
         if (this.dataBusket){
-          router.push({name: 'v-OrderPage'})
+          this.$router.push({name: 'v-OrderPage'})
         }
       }
     },
