@@ -6,16 +6,16 @@
         <v-input :userDatas="user"
                  :defSetting="defaultSetting"
                  @updateDataUser="loggersCounts"/>
-        <div class="block-native" v-if="!defaultSetting">
+        <div class="block-native">
           <div class="nav"
                :class="{active: !!dataValidity}">
             <p class="native" >Заполните все поля *</p>
           </div>
           <div class="submit-button">
             <button type="submit"
-                    :disabled="!!dataValidity && !!updateUserData"
-                    :class="{fix: !!dataValidity}"
-                    @click="submitUserInformation">Сохранить данные</button>
+                    :disabled="dataValidity === false && updateUserData !== null"
+                    :class="{fix: !!dataValidity, setting: defaultSetting}"
+                    @click.prevent="submitUserInformation">{{buttonTxt}}</button>
           </div>
         </div>
       </fieldset>
@@ -36,9 +36,11 @@
         default: false
       }
     },
+    emits: ["sendDataUser"],
     data(){
       return{
-        updateUserData: null
+        updateUserData: null,
+        buttonText: null
       }
     },
     computed:{
@@ -56,6 +58,13 @@
           return false
         }
       },
+      buttonTxt(){
+        if (this.defaultSetting){
+          return this.buttonText = 'Заказать'
+        }else {
+          return this.buttonText = 'Сохранить данные'
+        }
+      }
     },
     watch:{
       updateUserData(){
@@ -64,6 +73,7 @@
     },
     mounted() {
       this.loadData()
+
     },
     methods:{
       ...mapActions({
@@ -87,11 +97,14 @@
           if (this.updateUserData !== null && this.user !== null){
             this.updateUserData.id = this.user.user_id
             await this.setterUserData(this.updateUserData)
+            if (this.defaultSetting){
+              await this.$emit('sendDataUser',this.updateUserData)
+            }
           }
         }catch (e){
           console.log(e)
         }
-      }
+      },
     },
   }
 </script>
@@ -144,5 +157,8 @@
     height: 35px;
     margin-left: 35px;
     margin-top: 15px;
+  }
+  .setting{
+    margin-left: 0px;
   }
 </style>

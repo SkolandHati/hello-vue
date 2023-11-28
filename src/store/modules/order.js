@@ -13,12 +13,9 @@ async function setOrderInDataBase(order){
     try {
         const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
         if (order){
-            const objects = {
-                "id": order,
-                "user_id": order,
-                "products": order,
-            }
-            const {error} = await supabase.from('order_user').insert([objects]).select()
+            order.id = randomID()
+            const {error} = await supabase.from('order_user').insert([order]).select()
+            if (error) throw error
         }
     }catch (e){
         console.log(e)
@@ -36,6 +33,16 @@ export default {
                 let data = await getOrderDataBase()
                 if (data){
                     commit('SET_ORDER_STORE', data)
+                }
+            }catch (e){
+                console.log(e)
+            }
+        },
+        async setOrder({commit}, data){
+            try {
+                if (data){
+                    await setOrderInDataBase(data)
+                    commit('ADD_ORDER_IN_DATABASE', data)
                 }
             }catch (e){
                 console.log(e)

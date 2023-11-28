@@ -22,7 +22,7 @@
       userDatas: {
         type: Object,
         required: true
-      }
+      },
     },
     emits: ["updateDataUser"],
     created() {
