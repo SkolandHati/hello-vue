@@ -8,7 +8,7 @@
         <h1 id="info-price" >Стоимость всех товаров в корзине: {{calculateThePrice}}</h1>
       </div>
       <div class="mordor" v-if="getBusketProducts">
-        <div class="item" v-for="item in getBusketProducts">
+        <div class="item" v-for="(item, i) in getBusketProducts" :key="i">
             <div class="product-image">
               <img :src="require(`../assets/images/${item.product_brend}/${item.image_product}`)" alt="images">
             </div>
@@ -56,18 +56,14 @@
         userData:'user/USERINSYSTEM'
       }),
       calculateThePrice(){
-        try {
-          if (this.getBusketProducts){
-            const listPrice = []
-            for (const key in this.getBusketProducts){
-              listPrice.push(this.getBusketProducts[key].product_price * this.getBusketProducts[key].quantity)
-            }
-            return this.fullPrice = listPrice.reduce((sum, current) => sum + current, 0)}
-          else {
-            return  this.fullPrice = 0
+        if (this.getBusketProducts){
+          const listPrice = []
+          for (const key in this.getBusketProducts){
+            listPrice.push(this.getBusketProducts[key].product_price * this.getBusketProducts[key].quantity)
           }
-        }catch (e){
-          console.log(e)
+          return this.fullPrice = listPrice?.reduce((sum, current) => sum + current, 0)}
+        else {
+          return  this.fullPrice = 0
         }
       },
     },
@@ -84,17 +80,24 @@
         Promise.all([
             await this.getUserData(),
             await this.getDataBusket()]
-        ).then((results) => {
-        }).catch((error) => {
-              console.error('Ошибка:', error);
-            });
+        )
+      },
+      dataTime(){
+        let data = new Date()
+        let dataDel = new Date()
+        dataDel.setDate(5); dataDel.setMonth(data.getMonth()+1); dataDel.setHours(data.getHours()+3)
+        const obj = {
+          day_time: String(`${data.getDate()}.${data.getMonth()}.${data.getFullYear()} ${data.getHours()}:${data.getMinutes()}`),
+          day_time_delivery: String(`${dataDel.getDate()}.${dataDel.getMonth()}.${dataDel.getFullYear()} ${dataDel.getHours()}:${dataDel.getMinutes()}`),
+        }
+        return obj
       },
       async sortingFunc(){
         try {
           await this.getDataBusket()
           if (!!this.getBusketProducts){
             let list = []
-            this.getBusketProducts.forEach((item, index) => {
+            this.getBusketProducts?.forEach(item => {
               list.push({
                 image: item.image_product,
                 name: item.name_product,
@@ -112,11 +115,12 @@
         try {
           if (data && !!this.getBusketProducts){
             let dataProducts = await this.sortingFunc()
+            let dataTime = this.dataTime()
             const object = {
               user_id: data.id,
               products: dataProducts,
-              data_time: '11.12.2003',
-              time_zone: '15.12.2003'
+              data_time: dataTime.day_time,
+              time_zone: dataTime.day_time_delivery
             }
             await this.setOrder(object)
           }

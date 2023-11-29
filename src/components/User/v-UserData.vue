@@ -3,9 +3,12 @@
       <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
       <fieldset class="block-inputs"
                 :class="{atherSetting: defaultSetting}">
-        <v-input :userDatas="user"
-                 :defSetting="defaultSetting"
-                 @updateDataUser="loggersCounts"/>
+        <div class="inputs" v-for="(item, i) in labels">
+          <v-input :value="state[Object.keys(this.state)[i]]"
+                   :item="item"
+                   :defSetting="defaultSetting"
+                   @input="loggersCounts"/>
+        </div>
         <div class="block-native">
           <div class="nav"
                :class="{active: !!dataValidity}">
@@ -23,7 +26,7 @@
 </template>
 
 <script>
-  import vInput from "@/components/Shared-Components/v-input.vue"
+  import vInput from "@/components/kit/v-input.vue"
   import {mapGetters, mapActions} from "vuex";
   export default {
     name: 'v-UserData',
@@ -40,7 +43,16 @@
     data(){
       return{
         updateUserData: null,
-        buttonText: null
+        buttonText: null,
+        state: {
+          login: '',
+          first_name: '',
+          last_name: '',
+          email: '',
+          number_phone: '',
+          cart_bank: ''
+        },
+        labels: ['Логин', 'Имя', 'Фамилия', 'Email', 'Тел.Номер', 'Банк.Карта']
       }
     },
     computed:{
@@ -71,9 +83,17 @@
         this.loggersCounts()
       }
     },
+    created() {
+      this.state.login = this.user.user_login || ''
+      this.state.first_name = this.user.user_first_name || ''
+      this.state.last_name = this.user.user_last_name || ''
+      this.state.email = this.user.user_email || ''
+      this.state.number_phone = this.user.user_number_phone || ''
+      this.state.cart_bank = this.user.user_cart_bunk_number || ''
+    },
     mounted() {
       this.loadData()
-
+      console.log(this.state)
     },
     methods:{
       ...mapActions({
@@ -88,6 +108,7 @@
       },
       loggersCounts(someData){
         if (someData){
+          console.log(someData)
           this.updateUserData = someData
         }
       },

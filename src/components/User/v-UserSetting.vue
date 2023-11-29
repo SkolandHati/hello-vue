@@ -95,11 +95,11 @@
     cursor: pointer;
     background-color: #edf8ff;
   }
-  .active_data{
+  #act.active_data{
     background-color: #d8f1d4;
     border: 1px solid #595959;
   }
-  .active_order{
+  #act.active_order{
     background-color: #d8f1d4;
     border: 1px solid #595959;
   }

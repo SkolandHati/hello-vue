@@ -6,19 +6,21 @@
                   crossorigin="anonymous">
       <div class="userbuttons">
         <div class="button" id="button-busket">
-          <button class="busket-btn" @click="$router.push({name:'v-BusketPage'})">
+          <button class="busket-btn" @click="goBusketPage">
             <i class="fas fa-solid fa-cart-plus"></i>
             <span class="circle" v-if="count !== 0 && is_auth">{{count}}</span>
           </button>
         </div>
         <div class="button" id="button-heart">
-          <button class="fas fa-solid fa-heart" :class="{active: getFavoriteProducts.length !== 0}" @click="$router.push({name:'vFavoritePage'})">
+          <button class="fas fa-solid fa-heart"
+                  :class="{active: getFavoriteProducts.length !== 0}"
+                  @click="goFavoritePage">
           </button>
         </div>
         <div class="button" id="button-user">
           <button class="fas fa-solid fa-user" :style="styleCheck"></button>
           <div class="btn-auth-regist" v-if="is_auth">
-            <a @click=""> Настройки </a>
+            <a @click="goSettingPage"> Настройки </a>
             <a @click="signOut"> Выйти </a>
           </div>
           <div class="btn-auth-regist" v-else>
@@ -41,61 +43,6 @@
             isActive: false,
             count: 0
           }
-        },
-        methods: {
-          router() {
-            return router
-          },
-          ...mapActions({
-            getUser: 'user/getUser',
-            outUser: 'user/outUser',
-            loadDatafromDataBase: 'busketProducts/loadProductsData',
-            FavoriteProducts: 'favoriteProducts/getFavoriteP'
-          }),
-          async loadData() {
-            try {
-              await this.getUser()
-            }
-            catch (e) {
-              Promise.reject(e)
-            }
-          },
-          async loadFavoriteProducts(){
-            try {
-              await this.FavoriteProducts()
-            }catch (e){
-              Promise.reject(e)
-            }
-          },
-          async calculateCountProducts(){
-            try {
-              await this.loadDatafromDataBase()
-              let data = await this.busketproducts
-              if (data){
-                const listPrice = []
-                for (const key in this.busketproducts){
-                  listPrice.push(this.busketproducts[key].quantity)
-                }
-                return this.count = listPrice.reduce((sum, current) => sum + current, 0)}
-              else {
-                return  this.count  = 0
-              }
-            }catch (e){
-              Promise.reject(e)
-            }
-          },
-          async checkUser(){
-            try {
-              const data = supabase.auth.getSession()
-              if ((await data).data.session){
-                this.isActive = true
-              }else {
-                this.isActive = false
-              }
-            }catch (e){
-              Promise.reject(e)
-            }
-          },
         },
         computed:{
           ...mapGetters({
@@ -133,7 +80,7 @@
               const {error} = await supabase.auth.getSession()
               if (error) throw error
             }catch (e){
-              Promise.reject(e)
+              console.log(e)
             }
           }
           return {
@@ -146,11 +93,76 @@
             this.loadData()
             this.loadFavoriteProducts()
             this.calculateCountProducts()
-        }
+        },
+      methods: {
+        router() {
+          return router
+        },
+        ...mapActions({
+          getUser: 'user/getUser',
+          outUser: 'user/outUser',
+          loadDatafromDataBase: 'busketProducts/loadProductsData',
+          FavoriteProducts: 'favoriteProducts/getFavoriteP'
+        }),
+        async loadData() {
+          try {
+            await this.getUser()
+          }
+          catch (e) {
+            console.log(e)
+          }
+        },
+        async loadFavoriteProducts(){
+          try {
+            await this.FavoriteProducts()
+          }catch (e){
+            console.log(e)
+          }
+        },
+        async calculateCountProducts(){
+          try {
+            await this.loadDatafromDataBase()
+            let data = await this.busketproducts
+            if (data){
+              const listPrice = []
+              for (const key in this.busketproducts){
+                listPrice.push(this.busketproducts[key].quantity)
+              }
+              return this.count = listPrice.reduce((sum, current) => sum + current, 0)}
+            else {
+              return  this.count  = 0
+            }
+          }catch (e){
+            console.log(e)
+          }
+        },
+        async checkUser(){
+          try {
+            const data = supabase.auth.getSession()
+            if ((await data).data.session){
+              this.isActive = true
+            }else {
+              this.isActive = false
+            }
+          }catch (e){
+            console.log(e)
+          }
+        },
+        goBusketPage(){
+          return this.$router.push({name:'v-BusketPage'})
+        },
+        goFavoritePage(){
+          return this.$router.push({name:'vFavoritePage'})
+        },
+        goSettingPage(){
+          return this.$router.push({name:'v-UserSetting'})
+        },
+
+      },
     }
 </script>
 
-<style>
+<style scoped>
     .panel-user {
       width: 100%;
       display: block;
