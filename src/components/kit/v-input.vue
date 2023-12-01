@@ -2,13 +2,12 @@
   <div id="block" class="block-input"
        :class="{atherSetting: defSetting}">
     <label class="label">{{item}}</label>
-    <input class="input"
-           type="text"
-           :value="value"
-           @input="$emit('input', $event.target.value)"
+    <input class="input" type="text"
+           @input="$emit('update:modelValue', $event.target.value)"
+           :value="modelValue"
            :placeholder="item" required>
-    <span class="span-symbol-good">&#128504;</span>
-    <span class="span-symbol-bad">&#10006;</span>
+    <span class="span-symbol-good" v-if="!!modelValue">&#128504;</span>
+    <span class="span-symbol-bad" v-else>&#10006;</span>
   </div>
 </template>
 
@@ -16,11 +15,11 @@
   export default {
     name: 'v-input',
     model: {
-      prop: 'value',
-      event: 'input'
+      prop: ['modelValue'],
+      event: ['update:modelValue']
     },
     props:{
-      value: {
+        modelValue: {
         type: String,
         required: true
       },
@@ -33,10 +32,6 @@
         default: false
       },
     },
-    emits: ["input"],
-    mounted() {
-      console.log(this.value)
-    }
   }
 
 </script>

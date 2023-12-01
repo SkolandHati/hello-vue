@@ -4,10 +4,11 @@
       <fieldset class="block-inputs"
                 :class="{atherSetting: defaultSetting}">
         <div class="inputs" v-for="(item, i) in labels">
-          <v-input :value="state[Object.keys(this.state)[i]]"
+          <v-input :modelValue="state[Object.keys(this.state)[i]]"
+                   v-model="state[Object.keys(this.state)[i]]"
                    :item="item"
                    :defSetting="defaultSetting"
-                   @input="loggersCounts"/>
+                   />
         </div>
         <div class="block-native">
           <div class="nav"
@@ -16,7 +17,7 @@
           </div>
           <div class="submit-button">
             <button type="submit"
-                    :disabled="dataValidity === false && updateUserData !== null"
+                    :disabled="dataValidity === false"
                     :class="{fix: !!dataValidity, setting: defaultSetting}"
                     @click.prevent="submitUserInformation">{{buttonTxt}}</button>
           </div>
@@ -27,7 +28,7 @@
 
 <script>
   import vInput from "@/components/kit/v-input.vue"
-  import {mapGetters, mapActions} from "vuex";
+  import {mapGetters, mapActions, createLogger} from "vuex";
   export default {
     name: 'v-UserData',
     components:{
@@ -42,7 +43,6 @@
     emits: ["sendDataUser"],
     data(){
       return{
-        updateUserData: null,
         buttonText: null,
         state: {
           login: '',
@@ -60,15 +60,12 @@
         user: 'user/USERINSYSTEM'
       }),
       dataValidity(){
-        if (this.updateUserData !== null) {
-            for (let i = 0; Object.keys(this.updateUserData).length > i; i++){
-              if (Object.values(this.updateUserData)[i] === null){
-                return false
-              }
-            }
-        }else {
-          return false
+        for (let i = 0; Object.keys(this.state).length > i; i++){
+          if (!Object.values(this.state)[i]){
+            return false
+          }
         }
+        return true
       },
       buttonTxt(){
         if (this.defaultSetting){
@@ -76,11 +73,6 @@
         }else {
           return this.buttonText = 'Сохранить данные'
         }
-      }
-    },
-    watch:{
-      updateUserData(){
-        this.loggersCounts()
       }
     },
     created() {
@@ -93,7 +85,7 @@
     },
     mounted() {
       this.loadData()
-      console.log(this.state)
+      console.log(this.dataValidity)
     },
     methods:{
       ...mapActions({
@@ -106,20 +98,16 @@
         }catch(e) {
           console.log(e)}
       },
-      loggersCounts(someData){
-        if (someData){
-          console.log(someData)
-          this.updateUserData = someData
-        }
-      },
       async submitUserInformation(){
         try {
           await this.user
-          if (this.updateUserData !== null && this.user !== null){
-            this.updateUserData.id = this.user.user_id
-            await this.setterUserData(this.updateUserData)
+          let data = this.dataValidity
+          if (data && this.user){
+            console.log(true)
+            this.state.id = this.user.user_id
+            await this.setterUserData(this.state)
             if (this.defaultSetting){
-              await this.$emit('sendDataUser',this.updateUserData)
+              await this.$emit('sendDataUser',this.state)
             }
           }
         }catch (e){

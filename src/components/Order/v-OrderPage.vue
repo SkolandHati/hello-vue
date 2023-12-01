@@ -100,6 +100,7 @@
             this.getBusketProducts?.forEach(item => {
               list.push({
                 image: item.image_product,
+                brend: item.product_brend,
                 name: item.name_product,
                 price: item.product_price,
                 quantity: item.quantity
