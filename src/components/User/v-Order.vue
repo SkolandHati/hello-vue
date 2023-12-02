@@ -1,6 +1,6 @@
 <template>
   <div class="prime-container">
-    <h1 class="header">Таблица заказов</h1>
+    <h1 class="header">Заказы</h1>
     <div class="last-container" v-if="!!getOrder">
       <div class="order" v-for="(items, i) in getOrder" :key="i">
         <Carousel class="carousel" :autoplay="4000" :wrap-around="false">

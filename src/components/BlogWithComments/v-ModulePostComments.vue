@@ -1,6 +1,6 @@
 <template>
   <div class="container-post">
-    <button :disabled="!user_data.user_id"
+    <button :disabled="!user_data.user_login"
             :style="{backgroundColor: 'green'}"
             class="submit-comment"
             @click="addComment"
@@ -39,14 +39,13 @@ export default {
       ...mapActions({
         appendComment: "commentsModules/addCommentDatabase",
       }),
-
       async addComment(){
         const data = await this.productAll
-        if (data && this.user_data && this.comments !== null){
+        if (data && this.user_data && this.comments){
           const obj = {
             "content": String(this.comments),
             "user_id": String(this.user_data.user_id),
-            "author_name": String(this.user_data.user_name),
+            "author_name": String(this.user_data.user_login),
             "product_id": Number(this.productAll.id)
           }
           await this.appendComment(obj)
@@ -55,6 +54,9 @@ export default {
         }
       }
     },
+  mounted() {
+    console.log(this.user_data.user_login)
+  }
 }
 
 </script>
