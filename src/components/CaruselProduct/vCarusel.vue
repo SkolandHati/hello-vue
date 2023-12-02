@@ -21,7 +21,7 @@ import 'vue3-carousel/dist/carousel.css'
 import {mapActions, mapGetters} from "vuex";
 
 export default {
-  name: 'vCarusel-v2',
+  name: 'vCarusel',
   components: {
     Carousel,
     Slide,

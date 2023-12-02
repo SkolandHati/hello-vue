@@ -15,8 +15,8 @@
   export default {
     name: 'v-input',
     model: {
-      prop: ['modelValue'],
-      event: ['update:modelValue']
+      prop: 'modelValue',
+      event: 'update:modelValue'
     },
     props:{
         modelValue: {

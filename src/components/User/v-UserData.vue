@@ -40,7 +40,7 @@
         default: false
       }
     },
-    emits: ["sendDataUser"],
+    emits: "sendDataUser",
     data(){
       return{
         buttonText: null,
@@ -85,7 +85,6 @@
     },
     mounted() {
       this.loadData()
-      console.log(this.dataValidity)
     },
     methods:{
       ...mapActions({
@@ -103,7 +102,6 @@
           await this.user
           let data = this.dataValidity
           if (data && this.user){
-            console.log(true)
             this.state.id = this.user.user_id
             await this.setterUserData(this.state)
             if (this.defaultSetting){

@@ -100,6 +100,8 @@
     border: 1px solid #595959;
   }
   #act.active_order{
+    width: 100%;
+    height: 100%;
     background-color: #d8f1d4;
     border: 1px solid #595959;
   }

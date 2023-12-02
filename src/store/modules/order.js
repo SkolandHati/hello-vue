@@ -4,6 +4,7 @@ async function getOrderDataBase(){
         const {data} = await supabase.from('order_user').select('*')
         if (data){
             return data}
+        return false
     }catch (e){
         console.log(e)
     }
