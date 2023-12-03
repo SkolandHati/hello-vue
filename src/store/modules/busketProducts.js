@@ -2,20 +2,14 @@ import {supabase} from "@/services/APIauthorization";
 
 async function appProductInDatabase(bodyProduct){
     try {
-        console.log(bodyProduct)
-        const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
-        const obj = {
-            'id': randomID(),
-            'image_product': String(bodyProduct.image),
-            'name_product': String(bodyProduct.name),
-            'id_product':Number(bodyProduct.id),
-            'product_price':Number(bodyProduct.price),
-            'quantity': Number(bodyProduct.quantity),
-            'product_brend': String(bodyProduct.brend)
+        if (bodyProduct){
+            console.log(bodyProduct)
+            const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
+            bodyProduct.id = randomID(); bodyProduct.quantity = 1
+            let {data} = await supabase
+                .from('busketProducts')
+                .insert([bodyProduct]).select()
         }
-        let {data} = await supabase
-            .from('busketProducts')
-            .insert([obj]).select()
     }catch (e){
         console.log(e)
     }

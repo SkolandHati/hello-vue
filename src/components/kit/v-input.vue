@@ -71,7 +71,6 @@
     margin: 10px;
     margin-top:15px;
     text-align: center;
-    //padding-top: 5px;
     border: 2px solid #4b4b4b;
     border-radius: 50%;
   }

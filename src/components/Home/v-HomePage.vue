@@ -42,8 +42,7 @@
       margin-left: 10px;
     }
 
-    .cards>.head>h1{
-        //padding-left: 0px;
+    h1{
         color: black;
         text-align: center;
         margin: 0;
