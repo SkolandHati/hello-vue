@@ -1,24 +1,24 @@
 <template>
-    <div class="v-catalog-products">
-        <vCartItems v-if="products"
-        v-for="prodoos in visibleProducts"
-        :key="prodoos.id"
-        :allproducts="prodoos"/>
+    <div class="v-catalog-products" v-if="products">
+        <vCartItems
+          v-for="prodoos in visibleProducts"
+          :key="prodoos.id"
+          :products="prodoos"/>
     </div>
-  <PaginateMod v-if="productus" :current_page="currentPage"
+  <PaginateModul v-if="productus" :current_page="currentPage"
                :total_pages="totalPages"
-               @pagechanged="pageChanged"></PaginateMod>
+               @pagechanged="pageChanged"></PaginateModul>
 </template>
 
 <script>
-    import vCartItems from "./v-cart-items.vue"
     import {mapActions, mapGetters} from "vuex";
-    import PaginateMod from '@/components/Card-Product/v-PaginateModul.vue'
+    import vCartItems from "./v-cart-items.vue"
+    import PaginateModul from '@/components/Card-Product/v-PaginateModul.vue'
     export default {
       name: "v-catalog-products",
       components:{
         vCartItems,
-        PaginateMod
+        PaginateModul
       },
       data(){
         return {
@@ -26,39 +26,6 @@
           currentPage: 1,
           pageSize: 6
         };
-      },
-      methods:{
-        ...mapActions({
-          loadProducts: 'products/loadProducts',
-        }),
-        async loadData(){
-          try {
-            await this.loadProducts()
-          }
-          catch (e){
-            Promise.reject(e)
-          }
-        },
-        async loadCountProducts(){
-          try {
-            let data = await this.productus
-            let listProd = []
-            if (data){
-              data.forEach((item, index, arrey) => {
-                localStorage.setItem(index, JSON.stringify(item))
-              })
-              for (let i = 0; localStorage.length > i; i++){
-                listProd.push(JSON.parse(localStorage.getItem(i)))
-              }
-              return this.products = listProd
-            }
-          }catch (e){
-            Promise.reject(e)
-          }
-        },
-        pageChanged(pageNumber) {
-          this.currentPage = pageNumber;
-        }
       },
       computed:{
         ...mapGetters({
@@ -73,15 +40,44 @@
           return Math.ceil(this.products.length / this.pageSize);
         },
       },
-
-      inheritAttrs: false,
-
-      created() {
-        this.loadData()
-      },
       mounted() {
         this.loadCountProducts()
-      }
+        this.loadData()
+      },
+      methods:{
+        ...mapActions({
+          loadProducts: 'products/loadProducts',
+        }),
+        async loadData(){
+          try {
+            await this.loadProducts()
+          }
+          catch (e){
+            console.log(e)
+          }
+        },
+        async loadCountProducts(){
+          try {
+            let data = await this.productus
+            let listProd = []
+            if (data){
+              data?.forEach((item, index, arrey) => {
+                localStorage.setItem(index, JSON.stringify(item))
+              })
+              for (let i = 0; localStorage.length > i; i++){
+                listProd.push(JSON.parse(localStorage.getItem(i)))
+              }
+              return this.products = listProd
+            }
+          }catch (e){
+            console.log(e)
+          }
+        },
+        pageChanged(pageNumber) {
+          this.currentPage = pageNumber;
+        }
+      },
+      inheritAttrs: false,
     }
 
 </script>

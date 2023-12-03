@@ -54,9 +54,6 @@ export default {
         }
       }
     },
-  mounted() {
-    console.log(this.user_data.user_login)
-  }
 }
 
 </script>
@@ -69,7 +66,7 @@ export default {
     height: 50px;
     padding-bottom: 15px;
   }
-  .container-post>.submit-comment{
+  .submit-comment{
     width: 90px;
     height: 35px;
     margin-right: 20px;
@@ -78,15 +75,15 @@ export default {
     border-radius: 5px;
     border: 3px;
   }
-  .container-post>.submit-comment:hover{
+  .submit-comment:hover{
     cursor: pointer;
     border: 2px solid #46ff00;
   }
-  .container-post>.submit-comment>textarea{
+  .submit-comment>textarea{
     width: 432px;
     height: 25px;
   }
-  .container-post>.input-container>.input-message{
+  .input-message{
     width: 432px;
     height: 26px;
   }

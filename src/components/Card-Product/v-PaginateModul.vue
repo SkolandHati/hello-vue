@@ -1,6 +1,6 @@
 <template>
   <div class="container__paginate">
-    <button class="pagination" v-for="(item, i) in pages" :key="item[i]" :class="{active: current_page === item}" @click.prevent="navigate(item)">
+    <button class="pagination" v-for="(item, i) in pages" :key="i" :class="{active: current_page === item}" @click.prevent="navigate(item)">
       {{item}}
     </button>
   </div>
@@ -11,9 +11,7 @@ import {createLogger} from "vuex";
 
 export default {
     name: 'v-PaginateModul',
-    emits:[
-        'pagechanged'
-    ],
+    emits: 'pagechanged',
     props:{
       current_page:{
         type: Number,
@@ -30,13 +28,6 @@ export default {
         Active: false
       }
     },
-    methods:{
-      navigate(page) {
-        if (this.currentPage !== page) {
-          this.$emit('pagechanged', page);
-        }
-      }
-    },
     computed: {
       pages() {
         const pagesArray = [];
@@ -48,6 +39,13 @@ export default {
           }
         }
         return pagesArray;
+      }
+    },
+    methods:{
+      navigate(page) {
+        if (this.currentPage !== page) {
+          this.$emit('pagechanged', page);
+        }
       }
     },
 }
@@ -72,7 +70,7 @@ export default {
     border: 1px solid #989898;
     border-radius: 5px;
   }
-  .container__paginate>.pagination{
+  .pagination{
     display: flex;
     margin: 15px;
     width: 30px;
@@ -83,7 +81,7 @@ export default {
     border-radius: 50%;
   }
 
-  .container__paginate>.pagination:hover{
+  .pagination:hover{
     cursor: pointer;
     background-color: skyblue;
   }

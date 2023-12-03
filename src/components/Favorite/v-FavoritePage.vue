@@ -44,10 +44,8 @@
 </template>
 
 <script>
-
 import vMainPanel from "@/components/User/v-main-panel-user.vue"
 import {mapGetters, mapActions} from "vuex";
-
 export default {
     name: "vFavoritePage",
     components:{
@@ -92,7 +90,6 @@ export default {
       button_Submit_two(){
         this.active = true
       },
-
       addInBusketProduct(data){
         if (data.image === undefined){
           const object_two = {

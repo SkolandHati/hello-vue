@@ -1,9 +1,12 @@
 <template>
-  <carousel class="carousel" :autoplay="4000" :wrap-around="false">
-    <slide class="carousel_page" v-if="getCaruselProd" v-for="(item, i) in getCaruselProd" :key="item.id">
-      <div class="carousel__item" @click="$router.push({name: 'v-cart-item-page', params: {id: item.id}})">
+  <carousel class="carousel"
+            :autoplay="4000"
+            :wrap-around="false"
+            v-if="getCaruselProd">
+    <slide class="carousel_page" v-for="item in getCaruselProd" :key="item.id">
+      <div class="carousel__item" @click="goProductsPage(item.id)">
         <h1>{{item.name}}</h1>
-        <img :src="require('@/components/assets/images/'+ item.brend + '/' + item.image)" alt="images">
+        <img :src="require(`@/components/assets/images/${item.brend}/${item.image}`)" alt="images">
         <p>{{item.price}}</p>
       </div>
     </slide>
@@ -19,7 +22,6 @@
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 import {mapActions, mapGetters} from "vuex";
-
 export default {
   name: 'vCarusel',
   components: {
@@ -28,18 +30,6 @@ export default {
     Pagination,
     Navigation,
   },
-  methods:{
-    ...mapActions({
-      loadProductsCarusel: 'products/loadCaruselProd',
-    }),
-    async getCaruselProducts(){
-      try {
-            await this.loadProductsCarusel()
-      }catch (e){
-        Promise.reject(e)
-      }
-    }
-  },
   computed:{
     ...mapGetters({
       getCaruselProd: 'products/CAROSELPRODUCTS',
@@ -47,7 +37,24 @@ export default {
   },
   mounted() {
     this.getCaruselProducts()
-  }
+  },
+  methods:{
+    ...mapActions({
+      loadProductsCarusel: 'products/loadCaruselProd',
+    }),
+    async getCaruselProducts(){
+      try {
+        await this.loadProductsCarusel()
+      }catch (e){
+        console.log(e)
+      }
+    },
+    goProductsPage(id){
+      if (id){
+        this.$router.push({name: 'v-cart-item-page', params: {id: id}})
+      }
+    }
+  },
 }
 </script>
 

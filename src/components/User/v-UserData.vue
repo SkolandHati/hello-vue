@@ -28,7 +28,7 @@
 
 <script>
   import vInput from "@/components/kit/v-input.vue"
-  import {mapGetters, mapActions, createLogger} from "vuex";
+  import {mapGetters, mapActions} from "vuex";
   export default {
     name: 'v-UserData',
     components:{

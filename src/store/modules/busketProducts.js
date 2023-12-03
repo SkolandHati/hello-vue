@@ -47,7 +47,7 @@ async function minusProduct(dataProduct){
         let {error} = await supabase.from('busketProducts').update({'quantity': dataProduct.quantity}).eq('id_product', dataProduct.id_product)
         if (error) throw error
     }catch (e){
-        console.log("Неудалось увеличить кол-во продукта", e)
+        console.log("Неудалось уменьшить кол-во продукта", e)
     }
 }
 
@@ -56,17 +56,16 @@ async function deliteDataBusket(id){
         let {error} = await supabase.from('busketProducts').delete().eq('id_product', id)
         if (error) throw error
     }catch (e){
-        Promise.reject(e)
+        console.log(e)
     }
 }
 
 async function cleareDataBusket(){
     try {
         let {error} = await supabase.from('busketProducts').delete()
-        console.log('успешное удаление')
         if (error) throw error
     }catch (e){
-        Promise.reject(e)
+        console.log(e)
     }
 }
 
@@ -83,7 +82,7 @@ export default {
                     commit('LOADBUSKETDATA', data)
                 }
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async appendBusket({commit}, data){
@@ -91,7 +90,7 @@ export default {
                 await appProductInDatabase(data)
                 commit("ADDPRODINB", data)
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async plusProdBusket({commit, state}, index){
@@ -99,7 +98,7 @@ export default {
                 commit("PLUSPRODUCT", index)
                 await plusProduct(state.busketProduct[index])
             }  catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async minusProdBusket({commit, state}, index){
@@ -107,15 +106,14 @@ export default {
                 commit("MINUSPROD", index)
                 await minusProduct(state.busketProduct[index])
             }catch (e){
-                Promise.reject(e)
-            }
+                console.log(e)}
         },
         async deliteProduct({commit}, data){
             try {
                 await deliteDataBusket(data)
                 commit('DELITERPOD', data)
             }  catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async clearBusket({commit}){
@@ -123,7 +121,7 @@ export default {
                 await cleareDataBusket()
                 commit("CLEARBUSKET")
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         }
     },
@@ -141,8 +139,8 @@ export default {
             state.busketProduct[index].quantity--
         },
         DELITERPOD(state, data){
-            let datass = state.busketProduct.find(item => item.id === data.id)
-            state.busketProduct.forEach((items, index, arrye) => {
+            let datass = state.busketProduct?.find(item => item.id === data.id)
+            state.busketProduct?.forEach((items, index, arrye) => {
                 if (state.busketProduct[index] === datass){
                     state.busketProduct.splice(index, 1)
                 }
@@ -157,5 +155,4 @@ export default {
             return state.busketProduct
         },
     },
-    // strict: process.env.NODE_ENV !== 'production'
 }

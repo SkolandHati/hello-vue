@@ -13,23 +13,15 @@
         <div class="itemproduct">
           <div class="info-product">
             <div class="image-container">
-                <img :src="require('../assets/images/' + oneproduct.brend + '/'+ $route.params.id + '.jpeg')" alt="images">
+                <img :src="require(`../assets/images/${oneproduct.brend}/${$route.params.id}.jpeg`)" alt="images">
                 <h1 class="nameProducts">'{{oneproduct.name}}' B: {{oneproduct.brend}}</h1>
                 <h2 class="price"> $ {{oneproduct.price}}</h2>
             </div>
           </div>
           <div class="block-button">
             <button id="buy" class="button">Купить</button>
-            <button id="favorite" class="button" @click="addToFavoriteProduct(oneproduct.image,
-            oneproduct.name,
-            oneproduct.price,
-            oneproduct.brend,
-            oneproduct.id)">В избранное</button>
-            <button id="in-busket" class="button" @click="addToCartInBusket(oneproduct.image,
-            oneproduct.name,
-            oneproduct.id,
-            oneproduct.price,
-            oneproduct.brend)">В корзину</button>
+            <button id="favorite" class="button" @click="addToFavoriteProduct(oneproduct)">В избранное</button>
+            <button id="in-busket" class="button" @click="addToCartInBusket(oneproduct)">В корзину</button>
           </div>
         </div>
     </div>
@@ -40,12 +32,23 @@
     import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
     import vBlog from "@/components/BlogWithComments/v-Blog.vue"
     import {mapActions, mapGetters} from "vuex";
-    import router from "@/router";
     export default {
       name: "v-cart-item-page",
       components:{
           vMainPanelUser,
           vBlog
+      },
+      computed:{
+        ...mapGetters({
+          oneproduct: 'products/ONEPRODUCT',
+          busketProducts: 'busketProducts/BUSKETPRODUCTS',
+          getInfobrends: 'products/BRENDSINFO',
+          auth: 'user/AUTH',
+        }),
+      },
+      mounted() {
+        this.loadData()
+        this.getData()
       },
       methods:{
         ...mapActions({
@@ -55,19 +58,11 @@
           getUser: 'user/getUser',
           addProductInfavorite: 'favoriteProducts/setFavoriteProduct'
         }),
-        async loadBrendInfo(){
-          try {
+        async loadData(){
+          Promise.all([
+            await this.getUser(),
             await this.loadInfoBrend()
-          }catch (e){
-            Promise.reject(e)
-          }
-        },
-        async loadUserData(){
-          try {
-            await this.getUser()
-          }catch (e){
-            Promise.reject(e)
-          }
+          ])
         },
         async getData(){
           try {
@@ -78,126 +73,96 @@
           catch (e){
               console.log(e)}
         },
-        async addToCartInBusket(image, name, id, price, brend) {
+        async addToCartInBusket(product) {
           try {
             if (!this.auth){
-              return router.push({name :'v-SignIn'})
+              return this.$router.push({name :'v-SignIn'})
             }
             const prod = await this.oneproduct;
             if (prod) {
-              const obj = {
-                'image': image,
-                'name': name,
-                'id': id,
-                'price':price,
-                'quantity': 1,
-                'brend': brend
-              }
-              await this.addBusket(obj)
+              await this.addBusket(product)
             }
           }catch (e){
-            Promise.reject(e)
+            console.log(e)
           }
         },
-        async addToFavoriteProduct(image, nameProd, price, brend, id){
+        async addToFavoriteProduct(product){
           try {
             if (!this.auth){
-              return router.push({name :'v-SignIn'})
+              return this.$router.push({name :'v-SignIn'})
             }
             const prod = await this.oneproduct;
-            const obj = {
-              "image": String(image),
-              "name": String(nameProd),
-              "price": Number(price),
-              "brend": String(brend),
-              "id": Number(id)
-            }
             if (prod){
-                await this.addProductInfavorite(obj)
+                await this.addProductInfavorite(product)
             }
           }catch (e){
-            Promise.reject(e)
+            console.log(e)
           }
         }
       },
-      computed:{
-        ...mapGetters({
-          oneproduct: 'products/ONEPRODUCT',
-          busketProducts: 'busketProducts/BUSKETPRODUCTS',
-          getInfobrends: 'products/BRENDSINFO',
-          auth: 'user/AUTH',
-        }),
-      },
-      created() {
-        this.getData()
-      },
-      mounted() {
-        this.loadUserData()
-        this.loadBrendInfo()
-      }
     }
 </script>
 
 <style scoped>
-  .wrapper-container>.user-panel{
+  .user-panel{
       display: flex;
       background-color: rgb(57, 73, 82);
       width: 100%;
       height: 50px;
   }
-  .wrapper-container>.prime-container{
+  .prime-container{
     display: flex;
   }
-  .wrapper-container>.prime-container>.first-container>.brend-container>.head{
+  .brend-container>.head{
     text-align: center;
     margin: 10px;
   }
-  .wrapper-container>.prime-container>.first-container>.brend-container>h2{
+  .brend-container>h2{
     text-align: center;
     font-size: 15px;
     font-family: Padauk, sans-serif;
   }
-  .wrapper-container>.prime-container>.first-container>.brend-container>p{
+  .brend-container>p{
     margin-left: 5px;
     text-align: center;
   }
-  .wrapper-container>.prime-container>.first-container>.comments-block{
+  .comments-block{
     width: 100%;
     height: 90%;
   }
-  .wrapper-container>.prime-container>.first-container>.comments-block>h1{
+  .comments-block>h1{
     padding-left: 25px;
     text-align: center;
     font-size: 17px;
   }
-  .wrapper-container>.prime-container>.itemproduct{
+  .itemproduct{
     justify-content: right;
     display: flex;
   }
-  .wrapper-container>.prime-container>.itemproduct>.info-product{
+  .info-product{
     width: 70%;
     display: block;
     margin: 50px;
     margin-top: 25px;
   }
-  .wrapper-container>.prime-container>.itemproduct>.info-product>.image-container{
+  .image-container{
     text-align: center;
     border: 1px solid black;
     border-radius: 6px;
     padding-top: 10px;
   }
-  .wrapper-container>.prime-container>.itemproduct>.info-product>.image-container>img{
+  img{
     width: 350px;
     height: 350px;
   }
-  .wrapper-container>.prime-container>.itemproduct>.block-button{
+  .block-button{
     margin: 25px;
     margin-top: 25px;
     margin-bottom: 50px;
     border: 2px solid dimgrey;
     border-radius: 6px;
   }
-  .wrapper-container>.prime-container>.itemproduct>.block-button>.button{
+  .button{
     display: block;
     background: #c2c2c2;
     color:#088;
@@ -209,7 +174,7 @@
     text-align:center;
     transition:all 0.3s;
   }
-  .wrapper-container>.prime-container>.itemproduct>.block-button>.button:hover{
+  .block-button>.button:hover{
       cursor: pointer;
       box-shadow:0px -5px 0 #088 inset;
   }
