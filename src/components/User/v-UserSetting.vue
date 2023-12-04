@@ -19,7 +19,7 @@
 <script>
   import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
   import vUserData from "@/components/User/v-UserData.vue"
-  import vOrder from "@/components/User/v-Order.vue"
+  import vOrder from "@/components/Order/v-Order.vue"
   export default {
     name: 'v-UserSetting',
     components:{

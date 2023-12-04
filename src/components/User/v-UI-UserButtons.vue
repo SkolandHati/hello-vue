@@ -18,12 +18,23 @@
           </button>
         </div>
         <div class="button" id="button-user">
-          <button class="fas fa-solid fa-user" :style="styleCheck"></button>
-          <div class="btn-auth-regist" v-if="is_auth">
+          <button class="fas fa-solid fa-user"
+                  :style="styleCheck"
+                  v-on:mouseover="active_buttns = true"
+                  v-on:mouseout="outMouse"></button>
+          <div class="btn-auth-regist"
+               :class="{active_buttns}"
+               v-on:mouseover="active_panel = true"
+               v-on:mouseout="outMouse_two"
+               v-if="is_auth">
             <a @click="goSettingPage"> Настройки </a>
             <a @click="signOut"> Выйти </a>
           </div>
-          <div class="btn-auth-regist" v-else>
+          <div class="btn-auth-regist"
+               :class="{active_buttns}"
+               v-on:mouseover="active_panel = true"
+               v-on:mouseout="outMouse_two"
+               v-else>
             <a @click="goSignUpPage"> Регистрация </a>
             <a @click="goSignInPage"> Войти </a>
           </div>
@@ -35,12 +46,13 @@
 <script>
   import {mapGetters, mapActions} from "vuex";
   import {supabase} from "@/services/APIauthorization";
-  import {markRaw} from "vue";
   export default {
-    name: "v-btn-user-basket-love",
+    name: "v-UI-UserButtons",
     data(){
       return {
         isActive: false,
+        active_buttns: false,
+        active_panel: false,
         count: 0
       }
     },
@@ -100,6 +112,19 @@
         loadDatafromDataBase: 'busketProducts/loadProductsData',
         FavoriteProducts: 'favoriteProducts/getFavoriteP'
       }),
+      outMouse(){
+        setTimeout(() => {
+          if (this.active_panel){
+            return this.active_buttns = true
+          }
+          this.active_buttns = false
+        }, 1000)
+      },
+      outMouse_two(){
+        setTimeout(() => {
+          this.active_buttns = false
+        }, 1000)
+      },
       loadData() {
         Promise.all([
           this.getUser(),
@@ -214,19 +239,19 @@
       position: absolute;
     }
 
-    .fas.fa-solid.fa-user:hover  ~.btn-auth-regist{
+    .btn-auth-regist.active_buttns{
       width: 190px;
       display: block;
       height: 100px;
       right: 0px;
     }
-    .btn-auth-regist:hover{
+    .btn-auth-regist.active_buttns:hover{
       display: block;
       width: 190px;
       height: 100px;
       right: 0px;
     }
-    .btn-auth-regist>a{
+    .btn-auth-regist.active_buttns>a{
       text-align: center;
       display: block;
       width: 160px;
@@ -236,7 +261,7 @@
       padding-top: 10px;
       border: none;
     }
-    .btn-auth-regist>a:hover{
+    .btn-auth-regist.active_buttns>a:hover{
       color: #ffffff;
       background-color: dimgrey;
       cursor: pointer;

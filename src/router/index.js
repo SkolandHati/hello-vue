@@ -8,10 +8,10 @@ const BrendsPageCatalog = () => import('@/components/Card-Product/v-BrendsPagePr
 const Products = () => import('@/components/Card-Product/v-cart-items.vue')
 const ProductID = () => import('@/components/Card-Product/v-cart-item-page')
 
-const SignUp = () => import('@/components/User/v-SignUp.vue')
+const SignUp = () => import('@/components/RegisrationUser/v-SignUp.vue')
 
-const checkRegistration = () => import('@/components/User/v-checkregistration.vue')
-const SignIn = () => import('@/components/User/v-SignIn.vue')
+const checkRegistration = () => import('@/components/RegisrationUser/v-checkregistration.vue')
+const SignIn = () => import('@/components/RegisrationUser/v-SignIn.vue')
 
 const UserSetting = () => import('@/components/User/v-UserSetting.vue')
 
