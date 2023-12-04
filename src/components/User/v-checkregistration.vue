@@ -5,8 +5,7 @@
         <h1>Регистрация прошла успешна!</h1>
         <h2>Пользователь создан</h2>
         <div class="buttn">
-          <button @click="$router.push({name: 'v-HomePage'})">Завершить и вернуться к главной странице</button>
-          <button @click="$router.push({name: 'v-HomePage'})">Профиль</button>
+          <button @click="goHome">Завершить и вернуться к главной странице</button>
         </div>
       </div>
       <div class="window-danger" v-else>
@@ -19,22 +18,26 @@
 <script>
   import {mapGetters, mapActions} from "vuex";
   import {supabase} from "@/services/APIauthorization";
-  import router from "@/router";
-
   export default {
-    name: "checkRegister",
+    name: "checkregisteration",
+    computed:{
+      ...mapGetters({
+        userAuth: 'user/AUTH'
+      })
+    },
+    mounted() {
+      this.loadData()
+      this.loadUserData()
+    },
     methods:{
       ...mapActions({
         thenUser:'user/getUser'
       }),
-      router() {
-        return router
-      },
       async loadUserData(){
         try {
           await this.thenUser()
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
       },
       async loadData(){
@@ -46,19 +49,13 @@
             return false
           }
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
       },
+      goHome(){
+        return this.$router.push({name: 'v-HomePage'})
+      }
     },
-    computed:{
-      ...mapGetters({
-        userAuth: 'user/AUTH'
-      })
-    },
-    mounted() {
-      this.loadData()
-      this.loadUserData()
-    }
   }
 
 </script>
@@ -67,13 +64,13 @@
   body{
     background-color: #6e6d6d;
   }
-  .container>.container-main{
+  .container-main{
     width: 100%;
     height: 100%;
     padding: 0px;
     margin: 0px;
   }
-  .container>.container-main>.window-accept{
+  .window-accept{
     width: 500px;
     height: 400px;
     margin: 100px;
@@ -82,17 +79,17 @@
     border-radius: 10px;
     background-color: #ffffff;
   }
-  .container>.container-main>.window-accept>h1, h2{
+  .window-accept>h1, h2{
     text-align: center;
   }
-  .container>.container-main>.window-accept>.buttn{
+  .buttn{
     width: 480px;
     height: 300px;
     display: block;
     margin-top: 50px;
     margin-left: 10px;
   }
-  .container>.container-main>.window-accept>.buttn>button{
+  .buttn>button{
     width: 270px;
     height: 35px;
     cursor: pointer;
@@ -102,7 +99,7 @@
     left: 50%;
     transform: translate(-50%, 0);
   }
-  .container>.container-main>.window-danger>h1{
+  h1{
     color: brown;
   }
 

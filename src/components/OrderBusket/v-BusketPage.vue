@@ -7,7 +7,7 @@
       <div class="productInBusket" v-if=busketproducts>
         <h1 id="header">Корзина Избранных Продуктов</h1>
         <div class="productItem" v-for="(item, i) in busketproducts">
-          <img :src="require('../assets/images/Kenzo/'+ item.image_product)" alt="images">
+          <img :src="require(`../assets/images/${item.product_brend}/${item.image_product}`)" alt="images">
           <div class="navig-btn">
             <button id="prod-button" class="plus" @click="plusCountProd(i)">+</button>
             <button id="prod-button" class="minus" @click="minusCountProd(i)">-</button>
@@ -85,21 +85,21 @@ export default {
           await this.loadDatafromDataBase()
           this.dataBusket = this.busketproducts
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
       },
       async plusCountProd(index){
         try {
           await this.plusProdBusket(index)
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
       },
       async minusCountProd(index){
         try {
           await this.minusProdBusket(index)
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
       },
       async deliteProductBusket(id){

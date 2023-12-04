@@ -9,9 +9,9 @@
     </div>
     <div class="catalog" v-if="getProductsCatalog">
       <vCartItems
-          v-for="prodoos in getProductsCatalog"
-          :key="prodoos.id"
-          :allproducts="prodoos"/>
+          v-for="(prodoos,i) in getProductsCatalog"
+          :key="i"
+          :products="prodoos"/>
     </div>
   </div>
   <div class="none" v-else>
@@ -74,7 +74,7 @@ export default {
           await this.loadInfo()
           let data = await this.getBrendInfo
           if (data){
-            this.data_brend =  data?.find(item => item.brend_Name === this.$route.params.brend)
+            this.data_brend = data?.find(item => item.brend_Name === this.$route.params.brend)
             return this.data_brend
           }
         }
@@ -102,11 +102,11 @@ export default {
     border-radius: 5px;
     border: 2px solid black;
   }
-  .brend-info>.header{
+  .header{
     text-align: center;
     margin-top: 15px;
   }
-  .brend-info>.info{
+  .info{
     text-align: center;
   }
   .catalog{
@@ -123,7 +123,7 @@ export default {
   .container-item{
     border-radius: 4px;
   }
-  .catalog>.items>.container-item>.image>img{
+  .image>img{
     height: 300px;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <section class="imgcont">
+  <section class="container">
     <main>
       <div class="circle">
       </div>
@@ -40,7 +40,6 @@
 <script>
   import {ref, reactive} from "vue";
   import {supabase} from "@/services/APIauthorization";
-  import router from "@/router";
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, minLength, maxLength } from '@vuelidate/validators'
 
@@ -89,7 +88,7 @@
             });
             if (error) throw error
           }catch (error){
-            alert(error.error_description || error.message)
+            console.log(error.error_description || error.message)
           }
         }
         return {
@@ -111,27 +110,22 @@
               return false
             }
           }catch (e){
-            Promise.reject(e)
+            console.log(e)
           }
         }
-      },
-      methods:{
-          router() {
-            return router
-          },
       },
   }
 </script>
 
 <style scoped>
-  .imgcont {
+  .container {
     background-image: none;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
   }
-  .imgcont>main {
+  main {
     background: #F1F5FE;
     height: 100vh;
     display: flex;
@@ -139,7 +133,7 @@
     justify-content: center;
     align-items: center;
   }
-  .imgcont>main>.circle {
+  .circle {
     position: absolute;
     z-index: auto;
     height: auto;
@@ -158,27 +152,23 @@
       width: 2534px;
       height: 2534px;
     }
-
     25% {
       width: 1500px;
       height: 1500px;
     }
-
     50% {
       width: 1000px;
       height: 1000px;
     }
-
     75% {
       opacity: .75;
     }
-
     100% {
       width: 534px;
       height: 534px;
     }
   }
-  .imgcont>main>.register-form-container>.form-field>input{
+  .form-field>input{
     height: 45px;
     width: 93%;
     font-size: 14px;
@@ -188,17 +178,17 @@
     padding-left: 25px;
     color: #3B5983;
   }
-  .imgcont>main>.register-form-container>.form-field>input{
+  .form-field>input{
     outline: none;
     border: 2px solid #C1F9CD;
   }
-  .imgcont>main>.register-form-container>.form-field>h1{
+  .form-field>h1{
     color: red;
     font-size: 15px;
     text-align: center;
     margin-bottom: 0px;
   }
-  .imgcont>main>.register-form-container {
+  .register-form-container {
     opacity: 0;
     position: relative;
     z-index: 2;
@@ -239,7 +229,7 @@
       opacity: 1;
     }
   }
-  .imgcont>main>.register-form-container>.form-title {
+  .form-title {
     text-align: center;
     color: #30507D;
     font-weight: 500;
@@ -247,14 +237,11 @@
     line-height: 23px;
     margin-bottom: 38px;
   }
-
-  .imgcont>main>.register-form-container>.form-field {
+  .form-field {
     padding-bottom: 5px;
     margin-bottom: 7px;
-
   }
-
-  .imgcont>main>.register-form-container>.form-button>.route{
+  .form-button>.route{
     font-weight: bold;
     font-size: 14px;
     display: block;
@@ -267,8 +254,7 @@
     line-height: 45px;
     cursor: pointer;
   }
-
-  .imgcont>main>.register-form-container>.form-button>.route>.button.button {
+  .form-button>.route>.button.button {
     border-radius: 8px;
     width: 100%;
     height: 100%;
@@ -277,10 +263,8 @@
     font-size: 14px;
     color: #fff;
     cursor: pointer;
-
   }
-
-  .imgcont>main>.register-form-container>.form-button>.button{
+  .form-button>.button{
     font-weight: bold;
     font-size: 14px;
     display: block;
@@ -293,26 +277,22 @@
     line-height: 45px;
     cursor: pointer;
   }
-
-  .imgcont>main>.register-form-container>.form-button>.route>.button:hover {
+  .form-button>.route>.button:hover {
     background: #E2E6F0;
     color: #fff;;
   }
-
-  .imgcont>main>.register-form-container>.form-button>button {
+  .form-button>button {
     text-decoration: none;
   }
-  .imgcont>main>.register-form-container>.form-button>a {
+  .form-button>a {
     color: #C6CFDC;
     background: #F2F6FF;
   }
-
-  .imgcont>main>.register-form-container>.form-button>a:hover {
+  .form-button>a:hover {
     background: #E2E6F0;
     color: #fff;
   }
-
-  .imgcont>main>.register-form-container>.form-button>.divider {
+  .form-button>.divider {
     font-weight: 500;
     font-size: 12px;
     line-height: 14px;
@@ -321,5 +301,4 @@
     padding-top: 15px;
     padding-bottom: 15px;
   }
-
 </style>

@@ -49,7 +49,6 @@
     },
     mounted() {
       this.loadData()
-      console.log(this.getOrder)
     },
     methods:{
       ...mapActions({
