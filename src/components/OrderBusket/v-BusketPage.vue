@@ -7,24 +7,26 @@
       <div class="productInBusket" v-if=busketproducts>
         <h1 id="header">Корзина Избранных Продуктов</h1>
         <div class="productItem" v-for="(item, i) in busketproducts">
-          <img :src="require(`../assets/images/${item.product_brend}/${item.image_product}`)" alt="images">
+          <imageComponent :productBrend="item.product_brend"
+                          :imageProduct="item.image_product"
+                          :settingBusketPage="true"></imageComponent>
           <div class="navig-btn">
-            <button id="prod-button" class="plus" @click="plusCountProd(i)">+</button>
-            <button id="prod-button" class="minus" @click="minusCountProd(i)">-</button>
-            <button id="prod-button" class="delite" @click="deliteProductBusket(item.id_product)">delit</button>
+            <button id="prod-button" class="plus" @click="countProduct(i, 'plus')">+</button>
+            <button id="prod-button" class="minus" @click="countProduct(i, 'minus')">-</button>
+            <button id="prod-button" class="delite" @click="countProduct(item.id_product)">delit</button>
           </div>
           <div class="productInfo">
               <h1 id="product">{{item.name_product}}</h1>
-              <h1 id="product">{{item.product_price * item.quantity}}</h1>
+              <h1 id="product">{{item.price_product * item.quantity}}</h1>
               <h1 id="product">Количество товаров в корзине {{item.quantity}}</h1>
           </div>
         </div>
       </div>
-    <div class="infoAllBusket">
-      <h1 id="infoPrice" >Стоимость всех товаров в корзине: {{calculateThePrice}}</h1>
-      <button id="button" @click="goOrderPage">Оформить заказ</button>
-      <button id="button" class="clearBusket" @click="clearBusket">Очистить корзину</button>
-    </div>
+      <div class="infoAllBusket">
+        <h1 id="infoPrice" >Стоимость всех товаров в корзине: {{calculateThePrice}}</h1>
+        <button id="button" @click="goOrderPage">Оформить заказ</button>
+        <button id="button" class="clearBusket" @click="clearBusket">Очистить корзину</button>
+      </div>
     </div>
   </div>
 </template>
@@ -33,14 +35,15 @@
 
 import {mapGetters, mapActions} from "vuex";
 import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+import imageComponent from "@/components/kit/ImageComponent.vue";
 export default {
     name: 'v-BusketPage',
     components:{
-      vMainPanelUser
+      vMainPanelUser,
+      imageComponent
     },
     data(){
       return {
-        dataBusket: null,
         fullPrice: 0,
       }
     },
@@ -53,9 +56,9 @@ export default {
         if (this.busketproducts){
           const listPrice = []
           for (const key in this.busketproducts){
-            listPrice.push(this.busketproducts[key].product_price * this.busketproducts[key].quantity)
+            listPrice.push(this.busketproducts[key].price_product * this.busketproducts[key].quantity)
           }
-          return this.fullPrice = listPrice.reduce((sum, current) => sum + current, 0)}
+          return this.fullPrice = listPrice?.reduce((sum, current) => sum + current, 0)}
         else {
           return  this.fullPrice = 0
         }
@@ -83,25 +86,29 @@ export default {
       async loadsInBusketData(){
         try {
           await this.loadDatafromDataBase()
-          this.dataBusket = this.busketproducts
         }catch (e){
           console.log(e)
         }
       },
-      async plusCountProd(index){
+      async countProduct(index, smbl){
         try {
-          await this.plusProdBusket(index)
+          let symbol = ['plus','minus','delite']
+          switch (smbl) {
+            case symbol[0]:
+              await this.plusProdBusket(index);
+              break;
+            case symbol[1]:
+              await this.minusProdBusket(index);
+              break;
+            case symbol[2]:
+              await this.deliteDataProduct(index);
+              break;
+          }
         }catch (e){
           console.log(e)
         }
       },
-      async minusCountProd(index){
-        try {
-          await this.minusProdBusket(index)
-        }catch (e){
-          console.log(e)
-        }
-      },
+
       async deliteProductBusket(id){
         try {
           await this.deliteDataProduct(id)
@@ -110,7 +117,7 @@ export default {
         }
       },
       goOrderPage(){
-        if (this.dataBusket){
+        if (this.busketproducts){
           this.$router.push({name: 'v-OrderPage'})
         }
       }

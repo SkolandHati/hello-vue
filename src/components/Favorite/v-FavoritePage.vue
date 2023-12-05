@@ -14,8 +14,10 @@
           <h2 class="price">$ {{item.price_product}}</h2>
           <p class="brend">{{item.product_brend}}</p>
           <div class="block_buttons">
+            <Button :dataButton="'Оформить заказ'"
+                    :anotherSetting="true"
+                    @click="goOrderPage"></Button>
             <Button :dataButton="'В корзину'"
-                    :active="active"
                     @click="addInBusketProduct"/>
           </div>
         </div>
@@ -31,6 +33,9 @@
           <h1 class="name">{{getRandom.name_products}}</h1>
           <h2 class="price">{{getRandom.price_product}}</h2>
           <p class="brend">{{getRandom.name_brend}}</p>
+          <Button class="random_button"
+                  :dataButton="'В корзину'"
+                  @click="addInBusketProduct"></Button>
         </div>
       </div>
     </div>
@@ -51,7 +56,6 @@ export default {
       return {
         brend: null,
         active_first: false,
-        active: false,
       }
     },
     computed:{
@@ -95,11 +99,15 @@ export default {
         if (data){
           this.addInBusket(data)
         }
-        this.active = true
-        setTimeout(() => {return this.active = false}, 800)
       },
       goCartItem(id){
         this.$router.push({name: 'v-cart-item-page', params: {id: id}})
+      },
+      goOrderPage(data){
+        if (data){
+        this.addInBusket(data)
+      }
+        this.$router.push({name: 'v-OrderPage'})
       }
     },
 }
@@ -244,24 +252,10 @@ export default {
   margin-right: 0px;
   margin-left: 3px;
 }
-
 .information_product{
   width: 100%;
 }
-.random_button_block>button{
-  display: block;
-  width: 120px;
-  height:40px;
-  margin: 15px;
-  margin-left: 82px;
-  margin-right: 2px;
-  margin-top: 30px;
-  border-radius: 1%;
-  border: 2px solid #c6ecaf;
-  background-color: #c6ecaf;
-}
-.random_button_block>button:hover{
-  cursor: pointer;
-  background-color: #9de879;
+.random_button{
+  margin-left: 65px;
 }
 </style>

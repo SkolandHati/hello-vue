@@ -3,12 +3,19 @@ import {supabase} from "@/services/APIauthorization";
 async function appProductInDatabase(bodyProduct){
     try {
         if (bodyProduct){
-            console.log(bodyProduct)
             const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
-            bodyProduct.id = randomID(); bodyProduct.quantity = 1
+            const obj = {
+                id: randomID(),
+                image_product: bodyProduct.image,
+                name_product: bodyProduct.name,
+                id_product: bodyProduct.id,
+                quantity: 1,
+                product_brend: bodyProduct.brend,
+                price_product: bodyProduct.price
+            }
             let {data} = await supabase
                 .from('busketProducts')
-                .insert([bodyProduct]).select()
+                .insert([obj]).select()
         }
     }catch (e){
         console.log(e)

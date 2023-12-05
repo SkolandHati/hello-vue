@@ -140,7 +140,7 @@
             for (const key in this.busketproducts){
               listPrice.push(this.busketproducts[key].quantity)
             }
-            return this.count = listPrice.reduce((sum, current) => sum + current, 0)}
+            return this.count = listPrice?.reduce((sum, current) => sum + current, 0)}
           else {
             return  this.count  = 0
           }
