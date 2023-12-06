@@ -26,12 +26,12 @@
 
 <style scoped>
   .settingBusketPage>img{
-    width: 225px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     padding: 5px;
     padding-right: 0px;
     padding-left: 0px;
     border: 2px solid #3B5983;
-    border-radius: 1px;
+    border-radius: 5px;
   }
 </style>
