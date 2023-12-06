@@ -13,7 +13,7 @@
           <div class="navig-btn">
             <button id="prod-button" class="plus" @click="countProduct(i, 'plus')">+</button>
             <button id="prod-button" class="minus" @click="countProduct(i, 'minus')">-</button>
-            <button id="prod-button" class="delite" @click="countProduct(item.id_product)">delit</button>
+            <button id="prod-button" class="delite" @click="countProduct(item.id_product, 'delite')">delit</button>
           </div>
           <div class="productInfo">
               <h1 id="product">{{item.name_product}}</h1>
