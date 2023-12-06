@@ -10,15 +10,17 @@
           <imageComponent :productBrend="item.product_brend"
                           :imageProduct="item.image_product"
                           :settingBusketPage="true"></imageComponent>
-          <div class="navig-btn">
-            <button id="prod-button" class="plus" @click="countProduct(i, 'plus')">+</button>
-            <button id="prod-button" class="minus" @click="countProduct(i, 'minus')">-</button>
-            <button id="prod-button" class="delite" @click="countProduct(item.id_product)">delit</button>
-          </div>
           <div class="productInfo">
-              <h1 id="product">{{item.name_product}}</h1>
-              <h1 id="product">{{item.price_product * item.quantity}}</h1>
-              <h1 id="product">Количество товаров в корзине {{item.quantity}}</h1>
+              <div class="productInfo">
+                <h1 id="product">{{item.name_product}}</h1>
+                <h1 id="product">{{item.price_product * item.quantity}}</h1>
+                <h1 id="product">Количество товаров в корзине {{item.quantity}}</h1>
+              </div>
+              <div class="navig-btn">
+                <button id="prod-button" class="plus" @click="countProduct(i, 'plus')">+</button>
+                <button id="prod-button" class="minus" @click="countProduct(i, 'minus')">-</button>
+                <button id="prod-button" class="delite" @click="countProduct(item.id_product, 'delit')">X</button>
+              </div>
           </div>
         </div>
       </div>
@@ -108,14 +110,6 @@ export default {
           console.log(e)
         }
       },
-
-      async deliteProductBusket(id){
-        try {
-          await this.deliteDataProduct(id)
-        }catch (e){
-          console.log(e)
-        }
-      },
       goOrderPage(){
         if (this.busketproducts){
           this.$router.push({name: 'v-OrderPage'})
@@ -141,11 +135,12 @@ export default {
   .busket{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    width: 650px;
+    width: 750px;
     height: 100%;
-    margin-left: 25%;
+    margin-left: 15%;
     margin-top: 2%;
-    border: 2px solid #6e6d6d;
+    margin-bottom: 20px;
+    border: 1px solid #6e6d6d;
     border-radius: 5px;
   }
   .productInBusket{
@@ -157,18 +152,27 @@ export default {
     margin-top: 10px;
 
   }
-  img{
-    width: 225px;
-    height: 200px;
+  imageComponent>img{
+    width: 300px;
+    height: 300px;
     padding: 5px;
     padding-right: 0px;
     padding-left: 0px;
     border: 2px solid #3B5983;
-    border-radius: 1px;
+    border-radius: 5px;
   }
   .navig-btn{
-    width: 50px;
     height: 50px;
+  }
+  .navig-btn{
+    display: flex;
+    width: 100%;
+    height: 50px;
+    margin-top: 5px;
+    justify-content: center;
+  }
+  .user-block{
+    margin-left: 30px;
   }
   #prod-button{
     width: 50px;
@@ -196,26 +200,36 @@ export default {
   #product{
     color: black;
     border-top: 2px solid #c2b0b0;
+    border: 2px solid #c2b0b0;
+    border-radius: 5px;
     text-align: center;
     margin-top: 20px;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 25px;
   }
   h1{
     color: black;
-
   }
   #header{
     text-align: center;
     margin-top: 0px;
     width: 600px;
   }
-
   .infoAllBusket{
+    position: sticky;
+    top: 160px;
     margin: 15px;
+    margin-left: 130px;
+    margin-top: 0px;
     width: 330px;
     height: 100%;
+    max-width: 330px;
+    max-height: 30%;
+    border-radius: 5px;
+    border: 1px solid black;
   }
-
   #infoPrice{
     color: black;
     text-align: center;
@@ -228,5 +242,4 @@ export default {
     width: 140px;
     height: 37px;
   }
-
 </style>
