@@ -52,7 +52,7 @@ export default {
                 let data = await getFavoriteProducts()
                 commit('SET_PRODUCTS_FAVORITE', data)
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async setFavoriteProduct({commit}, product){
@@ -60,7 +60,7 @@ export default {
                 await setterFavoriteProducts(product)
                 commit("APPEND_FAVORITE_PRODUCT", product)
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async delitFavoriteProduct({dispatch, commit}, data){
@@ -69,7 +69,7 @@ export default {
                 await deliteFavotiteProductsDatabase(data)
                 commit("DELITEFAVORITEPRODUCT", data)
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         }
     },
@@ -81,8 +81,8 @@ export default {
             state.favorite_products.push(product)
         },
         DELITEFAVORITEPRODUCT(state, product){
-            let data = state.favorite_products.find(item => item.id === product.id)
-            state.favorite_products.forEach((items, index, arrye) => {
+            let data = state.favorite_products?.find(item => item.id === product.id)
+            state.favorite_products?.forEach((items, index, arrye) => {
                 if (arrye[index] === data){
                     arrye.splice(index, 1)
                 }

@@ -1,114 +1,170 @@
 <template>
     <form action="#" method="post" target="_blank">
       <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
-      <fieldset class="block-inputs" :class="{atherSetting: defaultSetting}">
-        <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
-          <label id="label" for="login">Логин:*  </label>
-          <input class="input" type="text" name="name" placeholder="Логин " id="login" required>
+      <fieldset class="block-inputs"
+                :class="{atherSetting: defaultSetting}">
+        <div class="inputs" v-for="(item, i) in labels">
+          <v-input :modelValue="state[Object.keys(this.state)[i]]"
+                   v-model="state[Object.keys(this.state)[i]]"
+                   :item="item"
+                   :defSetting="defaultSetting"
+                   />
         </div>
-        <div id="block" class="block-first-name" :class="{atherSetting: defaultSetting}">
-          <label id="label" for="first_name">Имя:*  </label>
-          <input class="input" type="text" name="first_name" placeholder="Иван " id="first_name" required>
-        </div>
-        <div id="block" class="block-last-name" :class="{atherSetting: defaultSetting}">
-          <label id="label" for="last_name">Фамилия:*  </label>
-          <input class="input" type="text" name="last_name" placeholder="Иванов " id="last_name" required>
-        </div>
-        <div id="block" class="block-email" :class="{atherSetting: defaultSetting}">
-          <label id="label" for="email">E-mail:*  </label>
-          <input class="input" type="email" name="mail" placeholder="ivanov@gmail.com" id="email" required>
-        </div>
-        <div id="block" class="block-phone-number" :class="{atherSetting: defaultSetting}">
-          <label id="label" for="number">Тел.Номер:*  </label>
-          <input class="input" type="tel" name="numb" placeholder="88005553535" id="number" required>
-        </div>
-        <div id="block" class="bank-number" :class="{atherSetting: defaultSetting}">
-          <label id="label" for="bank-number">Карта Банка:*  </label>
-          <input class="input" type="number" name="numb" placeholder="8800-5553-5355-3535" id="bank-number" required>
-        </div>
-        <div v-if="!defaultSetting" class="submit-button">
-          <button type="submit">Сохранить данные</button>
+        <div class="block-native">
+          <div class="nav"
+               :class="{active: !!dataValidity}">
+            <p class="native" >Заполните все поля *</p>
+          </div>
+          <div class="submit-button">
+            <button type="submit"
+                    :disabled="dataValidity === false"
+                    :class="{fix: !!dataValidity, setting: defaultSetting}"
+                    @click.prevent="submitUserInformation">{{buttonTxt}}</button>
+          </div>
         </div>
       </fieldset>
     </form>
 </template>
 
 <script>
+  import vInput from "@/components/kit/v-input.vue"
+  import {mapGetters, mapActions} from "vuex";
   export default {
     name: 'v-UserData',
+    components:{
+      vInput
+    },
     props:{
       defaultSetting:{
-        type: Boolean
+        type: Boolean,
+        default: false
       }
-    }
+    },
+    emits: "sendDataUser",
+    data(){
+      return{
+        buttonText: null,
+        state: {
+          login: '',
+          first_name: '',
+          last_name: '',
+          email: '',
+          number_phone: '',
+          cart_bank: ''
+        },
+        labels: ['Логин', 'Имя', 'Фамилия', 'Email', 'Тел.Номер', 'Банк.Карта']
+      }
+    },
+    computed:{
+      ...mapGetters({
+        user: 'user/USERINSYSTEM'
+      }),
+      dataValidity(){
+        for (let i = 0; Object.keys(this.state).length > i; i++){
+          if (!Object.values(this.state)[i]){
+            return false
+          }
+        }
+        return true
+      },
+      buttonTxt(){
+        if (this.defaultSetting){
+          return this.buttonText = 'Заказать'
+        }else {
+          return this.buttonText = 'Сохранить данные'
+        }
+      }
+    },
+    created() {
+      this.state.login = this.user.user_login || ''
+      this.state.first_name = this.user.user_first_name || ''
+      this.state.last_name = this.user.user_last_name || ''
+      this.state.email = this.user.user_email || ''
+      this.state.number_phone = this.user.user_number_phone || ''
+      this.state.cart_bank = this.user.user_cart_bunk_number || ''
+    },
+    mounted() {
+      this.loadData()
+    },
+    methods:{
+      ...mapActions({
+        getUserData: 'user/getUser',
+        setterUserData: 'user/setUserData'
+      }),
+      async loadData(){
+        try {
+          await this.getUserData()
+        }catch(e) {
+          console.log(e)}
+      },
+      async submitUserInformation(){
+        try {
+          await this.user
+          let data = this.dataValidity
+          if (data && this.user){
+            this.state.id = this.user.user_id
+            await this.setterUserData(this.state)
+            if (this.defaultSetting){
+              await this.$emit('sendDataUser',this.state)
+            }
+          }
+        }catch (e){
+          console.log(e)
+        }
+      },
+    },
   }
-
 </script>
 
 <style scoped>
-
-  form>h1{
+  h1{
     margin-left: 190px;
     margin-top: 10px;
     margin-bottom: 5px;
     text-align: center;
     font-size: 22px;
   }
-  form>.block-inputs{
+  .block-inputs{
     margin-top: 15px;
     margin-left: 50px;
     width: 108%;
     height: 85%;
     border-radius: 5px;
   }
-  form>.block-inputs>#block{
-    width: 500px;
-    height: 50px;
-    margin-top: 17px;
-    margin-left: 150px;
-    border: 1.5px solid #6e6d6d;
-    border-radius: 7px;
+  .atherSetting{
+    width: 94%;
+    margin-left: 35px;
   }
-  form>.block-inputs>#block.atherSetting{
-    margin-left: 70px;
+  .submit-button{
+    position: relative;
+    display: flex;
   }
-  form>.block-inputs.atherSetting{
-    width: 100%;
+  .block-native {
+    display: flex;
   }
-  form>.block-inputs>#block>#label{
-    font-size: 18px;
-    margin: 15px;
+  .native{
+    width: 160px;
+    height: 21px;
+    margin-top: 23px;
+    margin-left: 50px;
   }
-  form>.block-inputs>#block>.input{
-    width: 60%;
-    height: 27px;
-    text-align: center;
-    margin-top: 10px;
-    margin-left: 25px;
+  .active{
+    display: none;
+    width: 160px;
+    height: 21px;
   }
-  form>.block-inputs>#block>#login{
-    margin-left: 45px;
+  .fix{
+    margin-left: 245px;
   }
-  form>.block-inputs>#block>#first_name{
-    margin-left: 60px;
-  }
-  form>.block-inputs>#block>#last_name{
-    margin-left: 22px;
-  }
-  form>.block-inputs>#block>#email{
-    margin-left: 43px;
-  }
-  form>.block-inputs>#block>#number{
-    margin-left: 10px;
-  }
-  form>.block-inputs>#block>#bank-number{
-    margin-left: 0px;
-  }
-  form>.block-inputs>.submit-button>button{
+  button{
+    position: relative;
     margin: 10px;
     width: 350px;
     height: 35px;
-    margin-left: 230px;
+    margin-left: 35px;
     margin-top: 15px;
+  }
+  .setting{
+    margin-left: 0px;
   }
 </style>

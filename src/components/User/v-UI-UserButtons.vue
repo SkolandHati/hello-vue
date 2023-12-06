@@ -6,24 +6,37 @@
                   crossorigin="anonymous">
       <div class="userbuttons">
         <div class="button" id="button-busket">
-          <button class="busket-btn" @click="$router.push({name:'v-BusketPage'})">
+          <button class="busket-btn" @click="goBusketPage">
             <i class="fas fa-solid fa-cart-plus"></i>
             <span class="circle" v-if="count !== 0 && is_auth">{{count}}</span>
           </button>
         </div>
         <div class="button" id="button-heart">
-          <button class="fas fa-solid fa-heart" :class="{active: getFavoriteProducts.length !== 0}" @click="$router.push({name:'vFavoritePage'})">
+          <button class="fas fa-solid fa-heart"
+                  :class="{active: getFavoriteProducts.length !== 0}"
+                  @click="goFavoritePage">
           </button>
         </div>
         <div class="button" id="button-user">
-          <button class="fas fa-solid fa-user" :style="styleCheck"></button>
-          <div class="btn-auth-regist" v-if="is_auth">
-            <a @click=""> Настройки </a>
+          <button class="fas fa-solid fa-user"
+                  :style="styleCheck"
+                  v-on:mouseover="active_buttns = true"
+                  v-on:mouseout="outMouse"></button>
+          <div class="btn-auth-regist"
+               :class="{active_buttns}"
+               v-on:mouseover="active_panel = true"
+               v-on:mouseout="outMouse_two"
+               v-if="is_auth">
+            <a @click="goSettingPage"> Настройки </a>
             <a @click="signOut"> Выйти </a>
           </div>
-          <div class="btn-auth-regist" v-else>
-            <a @click="$router.push({name: 'v-SignUp'})"> Регистрация </a>
-            <a @click="$router.push({name: 'v-SignIn'})"> Войти </a>
+          <div class="btn-auth-regist"
+               :class="{active_buttns}"
+               v-on:mouseover="active_panel = true"
+               v-on:mouseout="outMouse_two"
+               v-else>
+            <a @click="goSignUpPage"> Регистрация </a>
+            <a @click="goSignInPage"> Войти </a>
           </div>
         </div>
       </div>
@@ -31,150 +44,166 @@
 </template>
 
 <script>
-    import router from "@/router";
-    import {mapGetters, mapActions} from "vuex";
-    import {supabase} from "@/services/APIauthorization";
-    export default {
-        name: "v-btn-user-basket-love",
-        data(){
+  import {mapGetters, mapActions} from "vuex";
+  import {supabase} from "@/services/APIauthorization";
+  export default {
+    name: "v-UI-UserButtons",
+    data(){
+      return {
+        isActive: false,
+        active_buttns: false,
+        active_panel: false,
+        count: 0
+      }
+    },
+    computed:{
+      ...mapGetters({
+        userinsystem: 'user/USERINSYSTEM',
+        is_auth: 'user/AUTH',
+        busketproducts: 'busketProducts/BUSKETPRODUCTS',
+        getFavoriteProducts: 'favoriteProducts/GET_FAVORITE_PROD'
+      }),
+      styleCheck(){
+        if (this.isActive){
           return {
-            isActive: false,
-            count: 0
+            border: '2px solid #53D31DFF',
+            color: '#b0f19d'
           }
-        },
-        methods: {
-          router() {
-            return router
-          },
-          ...mapActions({
-            getUser: 'user/getUser',
-            outUser: 'user/outUser',
-            loadDatafromDataBase: 'busketProducts/loadProductsData',
-            FavoriteProducts: 'favoriteProducts/getFavoriteP'
-          }),
-          async loadData() {
-            try {
-              await this.getUser()
-            }
-            catch (e) {
-              Promise.reject(e)
-            }
-          },
-          async loadFavoriteProducts(){
-            try {
-              await this.FavoriteProducts()
-            }catch (e){
-              Promise.reject(e)
-            }
-          },
-          async calculateCountProducts(){
-            try {
-              await this.loadDatafromDataBase()
-              let data = await this.busketproducts
-              if (data){
-                const listPrice = []
-                for (const key in this.busketproducts){
-                  listPrice.push(this.busketproducts[key].quantity)
-                }
-                return this.count = listPrice.reduce((sum, current) => sum + current, 0)}
-              else {
-                return  this.count  = 0
-              }
-            }catch (e){
-              Promise.reject(e)
-            }
-          },
-          async checkUser(){
-            try {
-              const data = supabase.auth.getSession()
-              if ((await data).data.session){
-                this.isActive = true
-              }else {
-                this.isActive = false
-              }
-            }catch (e){
-              Promise.reject(e)
-            }
-          },
-        },
-        computed:{
-          ...mapGetters({
-            userinsystem: 'user/USERINSYSTEM',
-            is_auth: 'user/AUTH',
-            busketproducts: 'busketProducts/BUSKETPRODUCTS',
-            getFavoriteProducts: 'favoriteProducts/GET_FAVORITE_PROD'
-          }),
-          styleCheck(){
-            if (this.isActive){
-              return {
-                border: '2px solid #53D31DFF',
-                color: '#b0f19d'
-              }
-            }else {
-              return {
-                border: '2px solid #7BA7AB'
-              }
-            }
-          },
-        },
-        setup(){
-          const signOut = async () => {
-            try {
-              const {error} = await supabase.auth.signOut().then()
-              window.location.reload()
-              if (error) throw error;
-            }
-            catch (error){
-              alert(error.error_description || error.message)
-            }
-          }
-          const isCurrentUser = async () => {
-            try {
-              const {error} = await supabase.auth.getSession()
-              if (error) throw error
-            }catch (e){
-              Promise.reject(e)
-            }
-          }
+        }else {
           return {
-            signOut,
-            isCurrentUser
+            border: '2px solid #7BA7AB'
           }
-        },
-        mounted() {
-            this.checkUser()
-            this.loadData()
-            this.loadFavoriteProducts()
-            this.calculateCountProducts()
         }
-    }
+      },
+    },
+    setup(){
+      const signOut = async () => {
+        try {
+          const {error} = await supabase.auth.signOut().then()
+          window.location.reload()
+          if (error) throw error;
+        }
+        catch (error){
+          console.log(error.error_description || error.message)
+        }
+      }
+      const isCurrentUser = async () => {
+        try {
+          const {error} = await supabase.auth.getSession()
+          if (error) throw error
+        }catch (e){
+          console.log(e)
+        }
+      }
+      return {
+        signOut,
+        isCurrentUser
+      }
+    },
+    mounted() {
+      this.checkUser()
+      this.loadData()
+      this.calculateCountProducts()
+    },
+    methods: {
+      ...mapActions({
+        getUser: 'user/getUser',
+        outUser: 'user/outUser',
+        loadDatafromDataBase: 'busketProducts/loadProductsData',
+        FavoriteProducts: 'favoriteProducts/getFavoriteP'
+      }),
+      outMouse(){
+        setTimeout(() => {
+          if (this.active_panel){
+            return this.active_buttns = true
+          }
+          this.active_buttns = false
+        }, 1000)
+      },
+      outMouse_two(){
+        setTimeout(() => {
+          this.active_buttns = false
+        }, 1000)
+      },
+      loadData() {
+        Promise.all([
+          this.getUser(),
+          this.FavoriteProducts()
+        ])
+      },
+      async calculateCountProducts(){
+        try {
+          await this.loadDatafromDataBase()
+          let data = await this.busketproducts
+          if (data){
+            const listPrice = []
+            for (const key in this.busketproducts){
+              listPrice.push(this.busketproducts[key].quantity)
+            }
+            return this.count = listPrice?.reduce((sum, current) => sum + current, 0)}
+          else {
+            return  this.count  = 0
+          }
+        }catch (e){
+          console.log(e)
+        }
+      },
+      async checkUser(){
+        try {
+          const data = supabase.auth.getSession()
+          if ((await data).data.session){
+            this.isActive = true
+          }else {
+            this.isActive = false
+          }
+        }catch (e){
+          console.log(e)
+        }
+      },
+      goBusketPage(){
+        return this.$router.push({name:'v-BusketPage'})
+      },
+      goFavoritePage(){
+        return this.$router.push({name:'vFavoritePage'})
+      },
+      goSettingPage(){
+        return this.$router.push({name:'v-UserSetting'})
+      },
+      goSignUpPage(){
+        return this.$router.push({name:'v-SignUp'})
+      },
+      goSignInPage(){
+        return this.$router.push({name:'v-SignIn'})
+      }
+    },
+  }
 </script>
 
-<style>
+<style scoped>
     .panel-user {
       width: 100%;
       display: block;
     }
-    .panel-user>.userbuttons{
+    .userbuttons{
       display: flex;
       float: right;
       width: 200px;
       height: 50px;
     }
-    .panel-user>.userbuttons>.button{
+    .userbuttons>.button{
       display: block;
     }
-    .panel-user>.userbuttons>#button-busket{
+    .userbuttons>#button-busket{
       display: flex;
       width: 60px;
     }
-    .panel-user>.userbuttons>.button>.busket-btn{
+    .busket-btn{
       margin-right: 0px;
       display: flex;
       padding: 8px;
       padding-top: 10px;
     }
-    .panel-user>.userbuttons>.button>.busket-btn>.circle{
+    .circle{
       width: 20px;
       height: 20px;
       background-color: rgb(83, 211, 29);
@@ -186,13 +215,12 @@
       color: #1a6c80;
       text-align: center;
     }
-    .panel-user>.userbuttons>.button>button{
+    .button>button{
       position: relative;
       width: 40px;
       height: 40px;
       margin-right: 20px;
       margin-top: 4px;
-    //padding: 0px;
       color: #e5e5e5;
       background-color: rgb(57, 73, 82);
       border-radius: 50%;
@@ -200,7 +228,7 @@
       cursor: pointer;
       font-size: 16px
     }
-    .panel-user>.userbuttons>.button>.btn-auth-regist{
+    .btn-auth-regist{
       width: 150px;
       height: 100px;
       color: #e5e5e5;
@@ -211,19 +239,19 @@
       position: absolute;
     }
 
-    .panel-user>.userbuttons>.button>.fas.fa-solid.fa-user:hover  ~.btn-auth-regist{
+    .btn-auth-regist.active_buttns{
       width: 190px;
       display: block;
       height: 100px;
       right: 0px;
     }
-    .panel-user>.userbuttons>.button>.btn-auth-regist:hover{
+    .btn-auth-regist.active_buttns:hover{
       display: block;
       width: 190px;
       height: 100px;
       right: 0px;
     }
-    .panel-user>.userbuttons>.button>.btn-auth-regist>a{
+    .btn-auth-regist.active_buttns>a{
       text-align: center;
       display: block;
       width: 160px;
@@ -233,13 +261,13 @@
       padding-top: 10px;
       border: none;
     }
-    .panel-user>.userbuttons>.button>.btn-auth-regist>a:hover{
+    .btn-auth-regist.active_buttns>a:hover{
       color: #ffffff;
       background-color: dimgrey;
       cursor: pointer;
       right: 0px;
     }
-    .panel-user>.userbuttons>.button>.circle{
+    .button>.circle{
       width: 15px;
       height: 15px;
       display: inline-block;
@@ -248,8 +276,7 @@
       margin-top: 27px;
       padding-left: 5px;
     }
-    .panel-user>.userbuttons>.button>.fas.fa-solid.fa-heart.active{
+    .fas.fa-solid.fa-heart.active{
       color: red;
     }
-
 </style>

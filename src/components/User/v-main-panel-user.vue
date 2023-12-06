@@ -1,5 +1,5 @@
 <template>
-    <h1 @click="$router.push({name: 'v-HomePage'})">TopBrend'.</h1>
+    <h1 @click="goHomePage">TopBrend'.</h1>
     <v-search-panel/>
     <vUI_UserButtons/>
 </template>
@@ -13,6 +13,11 @@
             vSearchPanel,
             vUI_UserButtons,
         },
+        methods:{
+          goHomePage(){
+            return this.$router.push({name:'v-HomePage'})
+          }
+        }
     }
 </script>
 

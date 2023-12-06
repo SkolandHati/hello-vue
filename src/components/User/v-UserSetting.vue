@@ -19,7 +19,7 @@
 <script>
   import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
   import vUserData from "@/components/User/v-UserData.vue"
-  import vOrder from "@/components/User/v-Order.vue"
+  import vOrder from "@/components/Order/v-Order.vue"
   export default {
     name: 'v-UserSetting',
     components:{
@@ -65,19 +65,19 @@
     margin: 40px;
     margin-top: 20px;
   }
-  .container-user-setting>.user-data{
+  .user-data{
     display: none;
   }
-  .container-user-setting>.user-data.active_data{
+  .active_data{
     display: block;
   }
-  .container-user-setting>.choice {
+  .choice {
     margin: 15px;
   }
-  .container-user-setting>.choice>h1{
+  h1{
     text-align: center;
   }
-  .container-user-setting>.choice>#act{
+  #act{
     width: 260px;
     max-width: 260px;
     height: 50px;
@@ -90,23 +90,25 @@
     color: #3b3b3b;
     background-color: #989898;
   }
-  .container-user-setting>.choice>#act:hover{
+  #act:hover{
     border: 1px solid #595959;
     cursor: pointer;
     background-color: #edf8ff;
   }
-  .container-user-setting>.choice>#act.active_data{
+  #act.active_data{
     background-color: #d8f1d4;
     border: 1px solid #595959;
   }
-  .container-user-setting>.choice>#act.active_order{
+  #act.active_order{
+    width: 100%;
+    height: 100%;
     background-color: #d8f1d4;
     border: 1px solid #595959;
   }
-  .container-user-setting>.user-order{
+  .user-order{
     display: none;
   }
-  .container-user-setting>.user-order.active_order{
+  .active_order{
     display: block;
   }
 </style>

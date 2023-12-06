@@ -7,84 +7,82 @@
       <h1 class="header">{{data_brend.brend_Name}}</h1>
       <p class="info">{{data_brend.info_Brend}}</p>
     </div>
-    <div class="catalog">
+    <div class="catalog" v-if="getProductsCatalog">
       <vCartItems
-          v-if="getProductsCatalog"
-          v-for="prodoos in getProductsCatalog"
-          :key="prodoos.id"
-          :allproducts="prodoos"/>
+          v-for="(prodoos,i) in getProductsCatalog"
+          :key="i"
+          :products="prodoos"/>
     </div>
   </div>
   <div class="none" v-else>
     <h1>Результаты поиска не увенчались упсехом</h1>
-    
   </div>
 </template>
 
 <script>
 
+import {mapGetters, mapActions} from "vuex";
 import vMainPanelUser from "@/components/User/v-main-panel-user.vue";
 import vCatalogProducts from "@/components/Card-Product/v-catalog-products.vue"
-import {mapGetters, mapActions} from "vuex";
 import vCartItems from "@/components/Card-Product/v-cart-items.vue";
 export default {
-    name: 'v-BrendsPageProducts',
-    components: {
-      vCartItems,
-      vMainPanelUser,
-      vCatalogProducts
-    },
-    data(){
-      return {
-          data_brend: null
-      }
-    },
-    methods:{
-      ...mapActions({
-        loadProducts: 'products/loadProdcutsCatalog',
-        loadBrendsInfo: 'products/loadBrendsInfo'
-      }),
-      async loadDataForCatalog(){
-        try {
-          if (this.$route.params.brend){
-            await this.loadProducts(this.$route.params.brend)
-          }
-        }catch (e){
-          Promise.reject(e)
-        }
-      },
-      async loadInfo(){
-        try {
-          await this.loadBrendsInfo()
-        }catch (e){
-          Promise.reject(e)
-        }
-      },
-      async getBrend(){
-        try {
-          if (this.$route.params.brend){
-            await this.loadInfo()
-            let data = await this.getBrendInfo
-            if (data){
-              let brend =  data.find(item => item.brend_Name === this.$route.params.brend)
-              return this.data_brend = brend
-            }
-          }
-        }catch (e){
-          Promise.reject(e)
-        }
-      }
-    },
-    computed:{
-      ...mapGetters({
-        getProductsCatalog:'products/PRODUCTSFORCATALOG',
-        getBrendInfo: 'products/BRENDSINFO'
-      })
-    },
-    mounted() {
-      this.loadDataForCatalog()
-      this.getBrend()
+  name: 'BrendsPageProducts',
+  components: {
+    vCartItems,
+    vMainPanelUser,
+    vCatalogProducts
+  },
+  data(){
+    return {
+      data_brend: null
     }
+  },
+  computed:{
+    ...mapGetters({
+      getProductsCatalog:'products/PRODUCTSFORCATALOG',
+      getBrendInfo: 'products/BRENDSINFO'
+    })
+  },
+  mounted() {
+    this.loadDataForCatalog()
+    this.getBrend()
+  },
+  methods:{
+    ...mapActions({
+      loadProducts: 'products/loadProdcutsCatalog',
+      loadBrendsInfo: 'products/loadBrendsInfo'
+    }),
+    async loadDataForCatalog(){
+      try {
+        if (this.$route.params.brend){
+          await this.loadProducts(this.$route.params.brend)
+        }
+      }catch (e){
+        console.log(e)
+      }
+    },
+    async loadInfo(){
+      try {
+        await this.loadBrendsInfo()
+      }catch (e){
+        console.log(e)
+      }
+    },
+    async getBrend(){
+      try {
+        if (this.$route.params.brend){
+          await this.loadInfo()
+          let data = await this.getBrendInfo
+          if (data){
+            this.data_brend = data?.find(item => item.brend_Name === this.$route.params.brend)
+            return this.data_brend
+          }
+        }
+      }catch (e){
+        console.log(e)
+      }
+    }
+  },
 }
 
 </script>
@@ -104,11 +102,11 @@ export default {
     border-radius: 5px;
     border: 2px solid black;
   }
-  .brend-info>.header{
+  .header{
     text-align: center;
     margin-top: 15px;
   }
-  .brend-info>.info{
+  .info{
     text-align: center;
   }
   .catalog{
@@ -118,14 +116,14 @@ export default {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
   }
-  .catalog>.items{
+  .items{
     padding: 50px;
     padding-top: 25px;
   }
-  .catalog>.items>.container-item{
+  .container-item{
     border-radius: 4px;
   }
-  .catalog>.items>.container-item>.image>img{
+  .image>img{
     height: 300px;
   }
 </style>

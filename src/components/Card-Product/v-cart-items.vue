@@ -1,94 +1,84 @@
 <template>
-    <div class="items" v-if="allproducts">
-      <div class="container-item" @click="$router.push({name: 'v-cart-item-page', params: {id: allproducts.id}})">
+    <div class="items" v-if="products">
+      <div class="container-item" @click="goCartItem">
         <div class="image">
-          <img :src="require('@/components/assets/images/'+ allproducts.brend + '/' + allproducts.image)" alt="images">
+          <img :src="require(`@/components/assets/images/${products.brend}/${products.image}`)" alt="images">
         </div>
         <div class="nameds">
-          <p>{{allproducts.name}}</p>
+          <p>{{products.name}}</p>
         </div>
       </div>
         <div class="pricesed">
-            <h2>{{allproducts.price}} $</h2>
-            <button class="add-basket" @click="addToCartInBusket(allproducts)">Добавить в корзину</button>
-            <button class="favorits" @click="addToCartInFavorite(allproducts)"></button>
+            <h2>{{products.price}} $</h2>
+            <button class="add-basket" @click="addToCartInBusket(products)">Добавить в корзину</button>
+            <button class="favorits" @click="addToCartInFavorite(products)"></button>
         </div>
     </div>
 </template>
 
 <script>
-    import {mapActions, mapGetters} from "vuex";
-    import router from "@/router";
-    export default {
-      name: "v-cart-item",
-      props:{
-        allproducts: {
-          type: Object,
-          require:true
+  import {mapActions, mapGetters} from "vuex";
+  export default {
+    name: "v-cart-item",
+    props:{
+      products: {
+        type: Object,
+        require:true
+      }
+    },
+    computed:{
+      ...mapGetters({
+        getUser: 'user/AUTH'
+      })
+    },
+    mounted() {
+      this.loadData()
+    },
+    methods: {
+      ...mapActions({
+        loadUser: 'user/getUsers',
+        addInBusket: 'busketProducts/appendBusket'
+      }),
+      async loadData(){
+        try {
+          await this.loadUser()
+        }catch (e){
+          console.log(e)
         }
       },
-      methods: {
-        ...mapActions({
-          loadUser: 'user/getUsers',
-          addInBusket: 'busketProducts/appendBusket'
-        }),
-        async loadData(){
-          try {
-            await this.loadUser()
-          }catch (e){
-            Promise.reject(e)
+      async addToCartInBusket(object) {
+        try {
+          if (!this.getUser){
+            return this.$router.push({name :'v-SignIn'})
           }
-        },
-        async addToCartInBusket(object) {
-          try {
-            if (!this.getUser){
-              return router.push({name :'v-SignIn'})
-            }
-            if (object) {
-              const obj = {
-                'image': object.image,
-                'name': object.name,
-                'id': object.id,
-                'price':object.price,
-                'quantity': 1,
-                'brend': object.brend
-              }
-              await this.addInBusket(obj)
-            }
-            }catch (e){
-              Promise.reject(e)
-            }
-          },
-        async addToCartInFavorite(object) {
-          try {
-            if (!this.getUser){
-              return router.push({name :'v-SignIn'})
-            }
-            if (object) {
-              const obj = {
-                'image': object.image,
-                'name': object.name,
-                'id': object.id,
-                'price':object.price,
-                'quantity': 1,
-                'brend': object.brend
-              }
-              await this.addInBusket(obj)
-            }
-          }catch (e){
-            Promise.reject(e)
+          if (object) {
+            object.quantity = 1
+            await this.addInBusket(object)
           }
-        },
+        }catch (e){
+          console.log(e)
+        }
       },
-      computed:{
-        ...mapGetters({
-          getUser: 'user/AUTH'
-        })
+      async addToCartInFavorite(object) {
+        try {
+          if (!this.getUser){
+            return this.$router.push({name :'v-SignIn'})
+          }
+          if (object) {
+            object.quantity = 1
+            await this.addInBusket(object)
+          }
+        }catch (e){
+          console.log(e)
+        }
       },
-      mounted() {
-        this.loadData()
+      goCartItem(){
+        if (this.products){
+          this.$router.push({name: 'v-cart-item-page', params: {id: this.products.id}})
+        }
       }
     }
+  }
 
 </script>
 
@@ -102,54 +92,51 @@
         height: 300px;
         box-shadow: 0 0 4px 0;
         border-radius: 5px;
-
     }
-    .items>.container-item>.nameds{
+    .nameds{
         display: flex;
         justify-content: center;
     }
-    .items>.container-item>.nameds>p{
+    p{
         font-size: 27px;
         color: black;
-        
     }
-    .items>.pricesed {
-        /* margin-top: 10px; */
+    .pricesed {
         margin-left: 10px;
         margin-right: 10px;
 
         display: flex;
         justify-content: center;
     }
-    .items>.pricesed>.add-basket{
+    .add-basket{
         margin-top: 10px;
         width: 90px;
         height: 30px;
         font-size: 10px;
     }
-    .items>.pricesed>.favorits{
+    .favorits{
         margin-top: 5px;
         margin-left: 20px;
         width: 40px;
         height: 40px;
     }
-    .items>.pricesed>h2{
+    h2{
         margin: 0;
         padding-right: 10px;
         padding-top: 10px;
         font-size: 20px;
         color: black;
     }
-    .items>.container-item>.image{
+    .image{
         padding-top: 15px;
         display: flex;
         justify-content: center;
     }
-    .items>.container-item>.image>img{
+    img{
         width: 200px;
         height: 200px;
     }
-    .items>.container-item:hover{
+    .container-item:hover{
       background-color: aliceblue;
       color: #7BA7AB;
       cursor: pointer;

@@ -17,7 +17,7 @@
           <a href="#" class="button button-google" @click="signIn"> Войти</a>
           </router-link>
             <p>Или</p>
-            <a href="#" class="button button-google" @click="$router.push({name: 'v-SignUp'})"> Зарегистрироваться</a>
+            <a href="#" class="button button-google" @click="goSignUp"> Зарегистрироваться</a>
         </div>
       </div>
     </main>
@@ -25,13 +25,9 @@
 </template>
 
 <script>
-
-//import router from "@/router";
-import {supabase} from "@/services/APIauthorization";
-import {ref} from "vue";
-import router from "@/router";
-
-export default {
+  import {supabase} from "@/services/APIauthorization";
+  import {ref} from "vue";
+  export default {
     name: 'v-SignIn',
     setup(){
       let email = ref('')
@@ -46,19 +42,18 @@ export default {
               password: password.value
             })
         }catch (e){
-          Promise.reject(e)
+          console.log(e)
         }
+      }
+      const goSignUp = () => {
+        return this.$router.push({name: 'v-SignUp'})
       }
       return {
         email,
         password,
-        signIn
+        signIn,
+        goSignUp
       }
-    },
-    methods:{
-      router() {
-        return router
-      },
     },
 
 }
@@ -73,7 +68,7 @@ export default {
       box-sizing: border-box;
       font-family: 'Roboto', sans-serif;
     }
-    .imgcont>main {
+    main {
       background: #F1F5FE;
       height: 100vh;
       display: flex;
@@ -81,7 +76,7 @@ export default {
       justify-content: center;
       align-items: center;
     }
-    .imgcont>main>.circle {
+    .circle {
       position: absolute;
       z-index: auto;
       height: auto;
@@ -120,7 +115,7 @@ export default {
         height: 534px;
       }
     }
-    .imgcont>main>.register-form-container>.form-field>input{
+    .form-field>input{
       height: 45px;
       width: 93%;
       font-size: 14px;
@@ -130,11 +125,11 @@ export default {
       padding-left: 25px;
       color: #3B5983;
     }
-    .imgcont>main>.register-form-container>.form-field>input{
+    .form-field>input{
       outline: none;
       border: 2px solid #C1F9CD;
     }
-    .imgcont>main>.register-form-container {
+    .register-form-container {
       opacity: 0;
       position: relative;
       z-index: 2;
@@ -175,7 +170,7 @@ export default {
         opacity: 1;
       }
     }
-    .imgcont>main>.register-form-container>.form-title {
+    .register-form-container>.form-title {
       text-align: center;
       color: #30507D;
       font-weight: 500;
@@ -184,12 +179,12 @@ export default {
       margin-bottom: 38px;
     }
 
-    .imgcont>main>.register-form-container>.form-field {
+    .register-form-container>.form-field {
       margin-bottom: 13px;
 
     }
-    .imgcont>main>.register-form-container>.form-button>.route>.button,
-    .imgcont>main>.register-form-container>.form-button>.button{
+    .form-button>.route>.button,
+    .form-button>.button{
       font-weight: bold;
       font-size: 14px;
       display: block;
@@ -202,27 +197,27 @@ export default {
       line-height: 45px;
       cursor: pointer;
     }
-    .imgcont>main>.register-form-container>.form-button>.route>.button:hover,
-    .imgcont>main>.register-form-container>.form-button>.button{
+    .form-button>.route>.button:hover,
+    .form-button>.button{
       background-color: #0D6CF2;
     }
 
-    .imgcont>main>.register-form-container>.form-button>.route>.button-google,
-    .imgcont>main>.register-form-container>.form-button>.button{
+    .form-button>.route>.button-google,
+    .form-button>.button{
       text-decoration: none;
     }
 
-    .imgcont>main>.register-form-container>.form-button>.route>a.button-google,
-    .imgcont>main>.register-form-container>.form-button>.button{
+    .form-button>.route>a.button-google,
+    .form-button>.button{
       color: #fff;
       background: #0D6CF2;
     }
-    .imgcont>main>.register-form-container>.form-button>.route>a.button-google:hover,
-    .imgcont>main>.register-form-container>.form-button>.button{
+    .form-button>.route>a.button-google:hover,
+    .form-button>.button{
       background: #3a58be;
       color: #fff;
     }
-    html body div#app div#app div#app section.imgcont main div.register-form-container div.form-button p {
+    .form-button p {
       font-weight: 500;
       font-size: 12px;
       line-height: 14px;
