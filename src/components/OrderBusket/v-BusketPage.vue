@@ -36,7 +36,7 @@
 <script>
 
 import {mapGetters, mapActions} from "vuex";
-import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
 import imageComponent from "@/components/kit/ImageComponent.vue";
 export default {
     name: 'v-BusketPage',

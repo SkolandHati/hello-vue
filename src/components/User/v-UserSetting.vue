@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+  import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
   import vUserData from "@/components/User/v-UserData.vue"
   import vOrder from "@/components/Order/v-Order.vue"
   export default {

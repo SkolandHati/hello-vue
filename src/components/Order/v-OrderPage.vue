@@ -36,7 +36,7 @@
 <script>
 
   import {mapActions, mapGetters} from "vuex";
-  import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+  import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
   import UserData from "@/components/User/v-UserData.vue"
   export default {
     name: 'v-OrderPage',

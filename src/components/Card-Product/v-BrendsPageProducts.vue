@@ -22,7 +22,7 @@
 <script>
 
 import {mapGetters, mapActions} from "vuex";
-import vMainPanelUser from "@/components/User/v-main-panel-user.vue";
+import vMainPanelUser from "@/components/User/v-MainPanelUser.vue";
 import vCatalogProducts from "@/components/Card-Product/v-catalog-products.vue"
 import vCartItems from "@/components/Card-Product/v-cart-items.vue";
 export default {

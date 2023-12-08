@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+    import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
     import vBlog from "@/components/BlogWithComments/v-Blog.vue"
     import {mapActions, mapGetters} from "vuex";
     export default {

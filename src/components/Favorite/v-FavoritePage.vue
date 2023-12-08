@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import vMainPanel from "@/components/User/v-main-panel-user.vue"
+import vMainPanel from "@/components/User/v-MainPanelUser.vue"
 import Button from "@/components/kit/v-Button.vue"
 import {mapGetters, mapActions} from "vuex";
 export default {
