@@ -1,5 +1,5 @@
 <template>
-  <div id="q-app" style="min-height: 100vh;">
+  <div id="q-app">
       <div class="bg-blue-grey-6 text-white">
         <q-toolbar inset>
           <q-breadcrumbs active-color="white" style="font-size: 22px">

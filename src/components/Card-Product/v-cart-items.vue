@@ -2,7 +2,7 @@
   <div class="items" v-if="products">
     <div class="q-pa-md row items-start q-gutter-md">
       <q-card class="my-card" flat bordered>
-        <q-img :src="require(`@/components/assets/images/${products.brend}/${products.image}`)" alt="images"></q-img>
+        <q-img @click="goCartItem" :src="require(`@/components/assets/images/${products.brend}/${products.image}`)" alt="images"></q-img>
         <q-card-section>
           <div class="text-overline text-orange-9" v-if="brend">Бренд {{this.brend}}
             <q-btn color="grey" round flat dense
@@ -57,6 +57,11 @@
         brends: 'products/BRENDSINFO'
       })
     },
+    watch:{
+      brends(){
+        this.getBrendsInfo(this.products.brend)
+      }
+    },
     mounted() {
       this.loadData()
       this.getBrendsInfo(this.products.brend)
@@ -106,7 +111,6 @@
             let brnd = data?.find(item => item.brend_Name === brend_name)
             this.brend = brnd.brend_Name
             this.brendInfo = brnd.info_Brend
-            console.log(brnd)
           }
         }catch (e){
           console.log(e)
@@ -131,5 +135,6 @@
   }
   .my-card:hover{
     cursor: pointer;
+    border: 2px #3b3a3a;
   }
 </style>

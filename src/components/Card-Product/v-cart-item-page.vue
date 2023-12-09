@@ -1,29 +1,25 @@
 <template>
-  <div class="wrapper-container">
-    <div class="user-panel">
-      <vMainPanelUser/>
+  <vMainPanelUser/>
+  <div class="container" style="display: flex;">
+    <div class="item" v-if="oneproduct">
+      <q-card class="my-card" flat bordered>
+        <q-img style="width: 300px; height: 300px" :src="require(`@/components/assets/images/${oneproduct.brend}/${oneproduct.image}`)"
+               alt="images"></q-img>
+        <q-card-section>
+          <div class="text-overline text-orange-9" v-if="brend">Бренд {{this.brend}}
+            <q-btn color="grey" round flat dense
+                   :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                   @click="expanded = !expanded"
+            ></q-btn>
+          </div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{oneproduct.name}}</div>
+        </q-card-section>
+      </q-card>
     </div>
-      <div class="prime-container" v-if="oneproduct">
-        <div class="first-container">
-          <div class="comments-block">
-            <h1>Оставить комментарий о товаре : {{oneproduct.name}}</h1>
-            <v-blog :productData="oneproduct"/>
-          </div>
-        </div>
-        <div class="itemproduct">
-          <div class="info-product">
-            <div class="image-container">
-                <img :src="require(`../assets/images/${oneproduct.brend}/${$route.params.id}.jpeg`)" alt="images">
-                <h1 class="nameProducts">'{{oneproduct.name}}' B: {{oneproduct.brend}}</h1>
-                <h2 class="price"> $ {{oneproduct.price}}</h2>
-            </div>
-          </div>
-          <div class="block-button">
-            <button id="buy" class="button">Купить</button>
-            <button id="favorite" class="button" @click="addToFavoriteProduct(oneproduct)">В избранное</button>
-            <button id="in-busket" class="button" @click="addToCartInBusket(oneproduct)">В корзину</button>
-          </div>
-        </div>
+    <div class="q-pa-md column q-gutter-sm">
+      <q-btn unelevated rounded color="green" label="Купить"></q-btn>
+      <q-btn unelevated rounded color="primary" label="В избранное"></q-btn>
+      <q-btn unelevated rounded color="red" label="В корзину"></q-btn>
     </div>
   </div>
 </template>
@@ -58,11 +54,15 @@
           getUser: 'user/getUser',
           addProductInfavorite: 'favoriteProducts/setFavoriteProduct'
         }),
-        async loadData(){
-          Promise.all([
-            await this.getUser(),
-            await this.loadInfoBrend()
-          ])
+        loadData(){
+          try {
+            Promise.all([
+              this.getUser(),
+              this.loadInfoBrend()
+            ])
+          }catch (e){
+            console.log(e)
+          }
         },
         async getData(){
           try {
@@ -104,79 +104,16 @@
 </script>
 
 <style scoped>
-  .user-panel{
-      display: flex;
-      background-color: rgb(57, 73, 82);
-      width: 100%;
-      height: 50px;
-  }
-  .prime-container{
-    display: flex;
-  }
-  .brend-container>.head{
-    text-align: center;
-    margin: 10px;
-  }
-  .brend-container>h2{
-    text-align: center;
-    font-size: 15px;
-    font-family: Padauk, sans-serif;
-  }
-  .brend-container>p{
-    margin-left: 5px;
-    text-align: center;
-  }
-  .comments-block{
-    width: 100%;
-    height: 90%;
-  }
-  .comments-block>h1{
-    padding-left: 25px;
-    text-align: center;
-    font-size: 17px;
-  }
-  .itemproduct{
-    justify-content: right;
-    display: flex;
-  }
-  .info-product{
-    width: 70%;
-    display: block;
-    margin: 50px;
-    margin-top: 25px;
-  }
-  .image-container{
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 6px;
-    padding-top: 10px;
-  }
-  img{
-    width: 350px;
-    height: 350px;
-  }
-  .block-button{
-    margin: 25px;
-    margin-top: 25px;
-    margin-bottom: 50px;
-    border: 2px solid dimgrey;
-    border-radius: 6px;
-  }
-  .button{
-    display: block;
-    background: #c2c2c2;
-    color:#088;
-    text-decoration:none;
+  .q-pa-md{
+    margin: 20px;
+    padding-top: 80px;
+    float: right;
     width: 200px;
-    height: 45px;
-    margin-top: 20px;
-    margin-bottom: 25px;
-    text-align:center;
-    transition:all 0.3s;
+    height: 500px;
+    border: 1px solid #568fe3;
+    border-radius: 7px;
   }
-  .block-button>.button:hover{
-      cursor: pointer;
-      box-shadow:0px -5px 0 #088 inset;
+  .q-btn{
+    margin-top: 50px;
   }
-
 </style>

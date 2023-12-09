@@ -11,7 +11,7 @@
       </div>
     </slide>
     <template #addons>
-      <Navigation />
+      <Navigation class="navigate"/>
       <Pagination />
     </template>
   </carousel>
@@ -67,14 +67,15 @@ export default {
   touch-action: pan-y;
   overscroll-behavior: none;
   width: 430px;
-  margin-top: 33px;
+  height: 600px;
+  margin-top: 24px;
 }
 .carousel__item {
   height: 500px;
   width: 82%;
   background-color: var(--vc-clr-primary);
   color: var(--vc-clr-white);
-  font-size: 20px;
+  font-size: 12px;
   border-radius: 8px;
   display: block;
   justify-content: center;
@@ -85,9 +86,10 @@ export default {
   cursor: pointer;
 }
 .carousel__item>h1{
+  height: 60px;
+  font-size: 18px;
   text-align: center;
   padding-left: 0;
-  margin-bottom: 25px;
 }
 .carousel__item>p{
   text-align: center;
@@ -95,6 +97,7 @@ export default {
 .carousel__item>img{
   width: 300px;
   height: 330px;
+  border-radius: 7px;
 }
 html body div#app div#app div#app div.contaner-homepage section.carousel ol.carousel__pagination{
   padding-left: 0;
