@@ -6,6 +6,9 @@
             <q-breadcrumbs-el class="home" label="TopBrend'." icon="home" @click="goHomePage"></q-breadcrumbs-el>
           </q-breadcrumbs>
         </q-toolbar>
+        <div class="search-panel">
+          <vSearchPanel ></vSearchPanel>
+        </div>
         <div class="user-buttons">
           <vUI_UserButtons></vUI_UserButtons>
         </div>

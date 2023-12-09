@@ -29,7 +29,8 @@
       },
       computed:{
         ...mapGetters({
-          productus:'products/PRODUCTS'
+          productus:'products/PRODUCTS',
+          brends: 'products/BRENDSINFO'
         }),
         visibleProducts() {
           const start = (this.currentPage - 1) * this.pageSize;

@@ -1,19 +1,37 @@
 <template>
-    <div class="items" v-if="products">
-      <div class="container-item" @click="goCartItem">
-        <div class="image">
-          <img :src="require(`@/components/assets/images/${products.brend}/${products.image}`)" alt="images">
-        </div>
-        <div class="nameds">
-          <p>{{products.name}}</p>
-        </div>
-      </div>
-        <div class="pricesed">
-            <h2>{{products.price}} $</h2>
-            <button class="add-basket" @click="addToCartInBusket(products)">Добавить в корзину</button>
-            <button class="favorits" @click="addToCartInFavorite(products)"></button>
-        </div>
+  <div class="items" v-if="products">
+    <div class="q-pa-md row items-start q-gutter-md">
+      <q-card class="my-card" flat bordered>
+        <q-img :src="require(`@/components/assets/images/${products.brend}/${products.image}`)" alt="images"></q-img>
+        <q-card-section>
+          <div class="text-overline text-orange-9" v-if="brend">Бренд {{this.brend}}
+            <q-btn color="grey" round flat dense
+                :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                @click="expanded = !expanded"
+            ></q-btn>
+          </div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{products.name}}</div>
+        </q-card-section>
+        <q-card-actions>
+          <q-btn flat color="primary"
+                 label="В избранное"
+                 @click="addButtons(products, 'in_favorite')"></q-btn>
+          <q-btn flat color="secondary"
+                 label="В корзину"
+                 @click="addButtons(products, 'in_busket')"></q-btn>
+          <q-space></q-space>
+        </q-card-actions>
+        <q-slide-transition>
+          <div v-show="expanded" v-if="brendInfo">
+            <q-separator></q-separator>
+            <q-card-section class="text-subtitle2">
+              {{brendInfo}}
+            </q-card-section>
+          </div>
+        </q-slide-transition>
+      </q-card>
     </div>
+  </div>
 </template>
 
 <script>
@@ -24,49 +42,71 @@
       products: {
         type: Object,
         require:true
+      },
+    },
+    data(){
+      return {
+        expanded: false,
+        brend: null,
+        brendInfo: null
       }
     },
     computed:{
       ...mapGetters({
-        getUser: 'user/AUTH'
+        getUser: 'user/AUTH',
+        brends: 'products/BRENDSINFO'
       })
     },
     mounted() {
       this.loadData()
+      this.getBrendsInfo(this.products.brend)
+      console.log(this.brend, this.brendInfo)
     },
     methods: {
       ...mapActions({
         loadUser: 'user/getUsers',
-        addInBusket: 'busketProducts/appendBusket'
+        addInBusket: 'busketProducts/appendBusket',
+        addInFavorite: 'favoriteProducts/setFavoriteProduct',
+        loadBrendsInfo: 'products/loadBrendsInfo'
       }),
-      async loadData(){
-        try {
-          await this.loadUser()
-        }catch (e){
-          console.log(e)
-        }
+     loadData(){
+        Promise.all([
+            this.loadUser(),
+            this.loadBrendsInfo()
+        ])
       },
-      async addToCartInBusket(object) {
+      async addButtons(object, x){
         try {
           if (!this.getUser){
             return this.$router.push({name :'v-SignIn'})
           }
+          const landmark = ['in_busket', 'in_favorite']
           if (object) {
-            object.quantity = 1
-            await this.addInBusket(object)
+            switch (x) {
+              case landmark[0]:
+                object.quantity = 1
+                await this.addInBusket(object)
+                break;
+              case landmark[1]:
+                object.quantity = 1
+                await this.addInFavorite(object)
+                break;
+              default:
+                break
+            }
           }
         }catch (e){
           console.log(e)
         }
       },
-      async addToCartInFavorite(object) {
+      async getBrendsInfo(brend_name){
         try {
-          if (!this.getUser){
-            return this.$router.push({name :'v-SignIn'})
-          }
-          if (object) {
-            object.quantity = 1
-            await this.addInBusket(object)
+          let data = await this.brends
+          if (data){
+            let brnd = data?.find(item => item.brend_Name === brend_name)
+            this.brend = brnd.brend_Name
+            this.brendInfo = brnd.info_Brend
+            console.log(brnd)
           }
         }catch (e){
           console.log(e)
@@ -79,67 +119,17 @@
       }
     }
   }
-
 </script>
-
 <style scoped>
-    .items{
-        display: block;
-        margin-top: 10px;
-        margin-left: 12px;
-        margin-bottom: 40px;
-        width: 280px;
-        height: 300px;
-        box-shadow: 0 0 4px 0;
-        border-radius: 5px;
-    }
-    .nameds{
-        display: flex;
-        justify-content: center;
-    }
-    p{
-        font-size: 27px;
-        color: black;
-    }
-    .pricesed {
-        margin-left: 10px;
-        margin-right: 10px;
-
-        display: flex;
-        justify-content: center;
-    }
-    .add-basket{
-        margin-top: 10px;
-        width: 90px;
-        height: 30px;
-        font-size: 10px;
-    }
-    .favorits{
-        margin-top: 5px;
-        margin-left: 20px;
-        width: 40px;
-        height: 40px;
-    }
-    h2{
-        margin: 0;
-        padding-right: 10px;
-        padding-top: 10px;
-        font-size: 20px;
-        color: black;
-    }
-    .image{
-        padding-top: 15px;
-        display: flex;
-        justify-content: center;
-    }
-    img{
-        width: 200px;
-        height: 200px;
-    }
-    .container-item:hover{
-      background-color: aliceblue;
-      color: #7BA7AB;
-      cursor: pointer;
-      border-radius: 5px;
-    }
+  .items{
+    margin: 20px;
+  }
+  .my-card{
+    width: 100%;
+    justify-content: center;
+    max-width: 350px;
+  }
+  .my-card:hover{
+    cursor: pointer;
+  }
 </style>

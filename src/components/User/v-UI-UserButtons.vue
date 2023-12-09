@@ -5,13 +5,20 @@
           <q-btn class="quasar-btn"
                  flat round dense icon="shopping_cart"
                  @click="goBusketPage"></q-btn>
-          <q-badge class="count" rounded color="green" :label='count'></q-badge>
+          <q-badge class="count"
+                   rounded color="green"
+                   :label='count'
+                   v-if="!!count"></q-badge>
         </div>
         <div class="block-btn-2">
         <q-btn class="quasar-btn"
                flat round dense icon="favorite"
                :class="{active: getFavoriteProducts.length !== 0}"
                @click="goFavoritePage"></q-btn>
+          <q-badge class="count"
+                   rounded color="green"
+                   v-if="!!getFavoriteProducts.length"
+                   :label='getFavoriteProducts.length'></q-badge>
         </div>
         <div class="block-btn-3">
         <q-btn class="quasar-btn"
@@ -177,11 +184,12 @@
 
 <style scoped>
     .panel-user {
+      margin-top: 5px;
       width: 100%;
       display: flex;
     }
     .quasar-btn{
-      margin-right: 10px;
+      margin-right: 20px;
       display: flex;
     }
     .block-btn-1,.block-btn-2,.block-btn-3{
@@ -199,7 +207,7 @@
       height: 10px;
       border-radius: 50%;
       position: relative;
-      margin-top: 8px;
+      margin-top: 12px;
     }
     .dropdown-container{
       display: none;
