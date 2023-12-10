@@ -3,18 +3,38 @@
     <v-main-panel-user/>
   </div>
   <div class="busket-container">
-    <div class="item-container" style="width: 50%;" v-if="busketproducts">
-      <q-banner class="bg-primary text-white">Корзина Избранных Продуктов</q-banner>
-      <div class="cart-container" v-for="(item, i) in busketproducts" :key="i">
-        <vCartItems :products="item" ></vCartItems>
+    <div class="item-container" style="width: 80%;" v-if="busketproducts">
+      <q-banner class="bg-primary text-white" style="border-radius: 0 7px 7px 0">Корзина Избранных Продуктов</q-banner>
+      <div class="container">
+        <div class="cart-container" v-for="(item, i) in busketproducts" :key="i">
+        <vCartItems class="cart-item" :products="item" ></vCartItems>
+        <q-btn-group style="width: 300px; margin-left: 23.5%;">
+          <q-btn color="green"
+                 icon="plus_one"
+                 style="width: 33.3%;"
+                 @click="countProduct(i, 'plus')"></q-btn>
+          <q-btn color="dark"
+                 icon="remove"
+                 style="width: 33.3%;"
+                 @click="countProduct(i, 'minus')"></q-btn>
+          <q-btn color="red"
+                 icon="remove_shopping_cart"
+                 style="width: 33.3%;"
+                 @click="countProduct(item.id_product, 'delit')"></q-btn>
+        </q-btn-group>
+        </div>
+       </div>
       </div>
-    </div>
-    <div class="info-all-busket" style="width: 50%; height: 100%">
-      <q-banner class="bg-primary text-white">Стоимость всех товаров в корзине: {{calculateThePrice}}</q-banner>
-        <q-btn style="display: block" unelevated rounded color="green"
+    <div class="info-all-busket" style="width: 18%; height: 400px;">
+      <q-banner class="info-banner bg-primary text-white">Стоимость всех товаров в корзине: {{calculateThePrice}}</q-banner>
+        <q-btn class="buttns"
+               style="display: block"
+               unelevated rounded color="green"
                label="Оформить заказ"
                @click="goOrderPage"></q-btn>
-        <q-btn style="display: block"  unelevated rounded color="red"
+        <q-btn class="buttns"
+               style="display: block"
+               unelevated rounded color="red"
                label="Очистить корзину"
                @click="clearBusket"></q-btn>
     </div>
@@ -116,11 +136,39 @@ export default {
    display: flex;
  }
  .info-all-busket{
-   border: 2px solid red;
+   top: 100px;
+   position: sticky;
+   margin: 15px;
+   margin-top: 80px;
+   border: 2px solid dimgrey;
    border-radius: 7px;
    text-align:center;
+
  }
- .block-buttons{
+ .item-container{
+   text-align: center;
+ }
+ :deep(.items){
+   margin-bottom: 0px;
+   padding-left: 12%;
+   color: dimgray;
+ }
+ :deep(.card-actions){
+   display: none;
+ }
+ .container{
+   display: grid;
+   grid-template-columns: repeat(2, 1fr)
+ }
+ :deep(.q-btn-group.row.no-wrap.inline){
    display: block;
+   margin-left: 60px;
+ }
+ :deep(.info-banner.q-banner.row.items-center.bg-primary.text-white){
+   margin-top: 70px;
+ }
+ .buttns{
+   margin: 0 auto;
+   margin-top: 50px;
  }
 </style>

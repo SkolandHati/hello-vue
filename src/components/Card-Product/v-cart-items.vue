@@ -14,7 +14,7 @@
           </div>
           <div class="text-h5 q-mt-sm q-mb-xs">{{products.name_product}}</div>
         </q-card-section>
-        <q-card-actions>
+        <q-card-actions class="card-actions">
           <q-btn flat color="primary"
                  label="В избранное"
                  @click="addButtons(products, 'in_favorite')"></q-btn>
