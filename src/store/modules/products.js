@@ -69,7 +69,7 @@ export default {
             state.products = products
         },
         SET_PRODUCTS_CATALOG(state, nameBrend){
-            let list = state.products?.filter(item => item.brend === nameBrend)
+            let list = state.products?.filter(item => item.product_brend === nameBrend)
             state.catalogProducts = list
         },
         ONE_SET_PRODUCTS(state, products) {
@@ -78,7 +78,7 @@ export default {
         SET_CAROUSEL_PRODUCTS(state){
             const randomNumber = () => { return Math.floor(Math.random() *(4 - 1) + 1)}
             let data = state.brends[randomNumber()].brend_Name
-            let list = state.products?.filter(item => item.brend === data)
+            let list = state.products?.filter(item => item.product_brend === data)
             state.caruselProducts = list
         },
         SET_RANDOM_PROD(state, prod){

@@ -2,7 +2,9 @@
   <div class="items" v-if="products">
     <div class="q-pa-md row items-start q-gutter-md">
       <q-card class="my-card" flat bordered>
-        <q-img @click="goCartItem" :src="require(`@/components/assets/images/${products.brend}/${products.image}`)" alt="images"></q-img>
+        <q-img @click="goCartItem"
+               :src="require(`@/components/assets/images/${products.product_brend}/${products.image_product}`)"
+               alt="images"></q-img>
         <q-card-section>
           <div class="text-overline text-orange-9" v-if="brend">Бренд {{this.brend}}
             <q-btn color="grey" round flat dense
@@ -10,7 +12,7 @@
                 @click="expanded = !expanded"
             ></q-btn>
           </div>
-          <div class="text-h5 q-mt-sm q-mb-xs">{{products.name}}</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{products.name_product}}</div>
         </q-card-section>
         <q-card-actions>
           <q-btn flat color="primary"
@@ -59,13 +61,12 @@
     },
     watch:{
       brends(){
-        this.getBrendsInfo(this.products.brend)
+        this.getBrendsInfo(this.products.product_brend)
       }
     },
     mounted() {
       this.loadData()
-      this.getBrendsInfo(this.products.brend)
-      console.log(this.brend, this.brendInfo)
+      this.getBrendsInfo(this.products.product_brend)
     },
     methods: {
       ...mapActions({
@@ -118,7 +119,7 @@
       },
       goCartItem(){
         if (this.products){
-          this.$router.push({name: 'v-cart-item-page', params: {id: this.products.id}})
+          this.$router.push({name: 'v-cart-item-page', params: {id: this.products.id_product}})
         }
       }
     }

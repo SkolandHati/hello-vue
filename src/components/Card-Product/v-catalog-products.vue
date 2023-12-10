@@ -1,13 +1,14 @@
 <template>
     <div class="v-catalog-products" v-if="products">
         <vCartItems
-          v-for="prodoos in visibleProducts"
-          :key="prodoos.id"
-          :products="prodoos"/>
+          v-for="prodcs in visibleProducts"
+          :key="prodcs.id_product"
+          :products="prodcs"/>
     </div>
-  <PaginateModul v-if="productus" :current_page="currentPage"
-               :total_pages="totalPages"
-               @pagechanged="pageChanged"></PaginateModul>
+  <PaginateModul v-if="productus"
+                 :current_page="currentPage"
+                 :total_pages="totalPages"
+                 @pagechanged="pageChanged"></PaginateModul>
 </template>
 
 <script>

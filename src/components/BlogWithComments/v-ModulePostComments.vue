@@ -1,16 +1,13 @@
 <template>
   <div class="container-post">
-    <button :disabled="!user_data.user_login"
-            :style="{backgroundColor: 'green'}"
-            class="submit-comment"
-            @click="addComment"
-            @keyup.enter="addComment">ОТПРАВИТЬ</button>
-    <div class="input-container">
-      <textarea id="inputs-text"
-                class="input-message"
-                placeholder="Введите сообшение"
-                required v-model="comments"></textarea>
-    </div>
+    <q-btn color="green"
+           style="width: 100px; height: 35px;"
+           :disabled="!user_data.user_login"
+           @click="addComment">Отправить</q-btn>
+    <q-input placeholder="Комментарий:" class="input_2"
+             style="width: 95%; height: 35px;"
+             outlined required v-model="comments"
+             ></q-input>
   </div>
 </template>
 
@@ -32,7 +29,7 @@ export default {
     },
     data(){
       return{
-        comments: null
+        comments: null,
       }
     },
     methods:{
@@ -59,32 +56,21 @@ export default {
 </script>
 
 <style scoped>
-
   .container-post{
+    padding: 15px;
     display: flex;
-    width: 100%;
-    height: 50px;
-    padding-bottom: 15px;
   }
-  .submit-comment{
-    width: 90px;
+  :deep(.q-field__control::before){
     height: 35px;
-    margin-right: 20px;
-    margin-left: 25px;
-    padding: 6px;
-    border-radius: 5px;
-    border: 3px;
   }
-  .submit-comment:hover{
-    cursor: pointer;
-    border: 2px solid #46ff00;
+  :deep(.q-field__control::after){
+    height: 35px;
   }
-  .submit-comment>textarea{
-    width: 432px;
-    height: 25px;
+  :deep(.q-field__label.no-pointer-events.absolute.ellipsis){
+    font-size: 14px;
   }
-  .input-message{
-    width: 432px;
-    height: 26px;
+  :deep(.q-field__native.q-placeholder){
+    padding-top: 5px;
+    margin-bottom: 15px;
   }
 </style>

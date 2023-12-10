@@ -3,11 +3,11 @@
             :autoplay="4000"
             :wrap-around="false"
             v-if="getCaruselProd">
-    <slide class="carousel_page" v-for="item in getCaruselProd" :key="item.id">
-      <div class="carousel__item" @click="goProductsPage(item.id)">
-        <h1>{{item.name}}</h1>
-        <img :src="require(`@/components/assets/images/${item.brend}/${item.image}`)" alt="images">
-        <p>{{item.price}}</p>
+    <slide class="carousel_page" v-for="item in getCaruselProd" :key="item.id_product">
+      <div class="carousel__item" @click="goProductsPage(item.id_product)">
+        <h1>{{item.name_product}}</h1>
+        <img :src="require(`@/components/assets/images/${item.product_brend}/${item.image_product}`)" alt="images">
+        <p>$ {{item.price_product}}</p>
       </div>
     </slide>
     <template #addons>
