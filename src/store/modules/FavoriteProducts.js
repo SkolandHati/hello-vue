@@ -14,27 +14,25 @@ async function getFavoriteProducts(){
 
 async function setterFavoriteProducts(bodyProduct){
     try {
-        const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
-        const obj = {
-            "id": Number(randomID()),
-            "image_product": String(bodyProduct.image),
-            "name_products": String(bodyProduct.name),
-            "price_product": Number(bodyProduct.price),
-            "name_brend": String(bodyProduct.brend),
-            "product_id": Number(bodyProduct.id)
+        if (bodyProduct){
+            const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
+            bodyProduct.id = randomID()
+            console.log(bodyProduct)
+            let {data, error} = await supabase.from('favoriteProdducts')
+                .insert([bodyProduct]).select()
+            if (error) throw error
         }
-        let {data, error} = await supabase.from('favoriteProdducts')
-            .insert([obj]).select()
-        if (error) throw error
     }catch (e){
         console.log(e)
     }
 }
 
-async function deliteFavotiteProductsDatabase(data){
+async function deliteFavotiteProductsDatabase(id){
     try {
-        const {error} = await supabase.from('favoriteProdducts').delete().eq('id', data.id)
-        if (error) throw error
+        if (id){
+            const {error} = await supabase.from('favoriteProdducts').delete().eq('id', id)
+            if (error) throw error
+        }
     }catch (e){
         console.log(e)
     }
@@ -80,8 +78,9 @@ export default {
         APPEND_FAVORITE_PRODUCT(state, product){
             state.favorite_products.push(product)
         },
-        DELITEFAVORITEPRODUCT(state, product){
-            let data = state.favorite_products?.find(item => item.id === product.id)
+        DELITEFAVORITEPRODUCT(state, id){
+            let data = state.favorite_products?.find(item => item.id === id)
+            console.log(data)
             state.favorite_products?.forEach((items, index, arrye) => {
                 if (arrye[index] === data){
                     arrye.splice(index, 1)

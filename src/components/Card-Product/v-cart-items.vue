@@ -12,13 +12,22 @@
                 @click="expanded = !expanded"
             ></q-btn>
           </div>
-          <div class="text-h5 q-mt-sm q-mb-xs">{{products.name_product}}</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">
+            {{products.name_product}},
+            $ {{products.price_product}}
+          </div>
         </q-card-section>
         <q-card-actions class="card-actions">
-          <q-btn flat color="primary"
+          <q-btn class="button-delite"
+                 flat color="red"
+                 label="Удалить из избранного"
+                 @click="addButtons(products, 'favorite_delite')"></q-btn>
+          <q-btn class="button-favorite"
+                 flat color="primary"
                  label="В избранное"
                  @click="addButtons(products, 'in_favorite')"></q-btn>
-          <q-btn flat color="secondary"
+          <q-btn class="button-busket"
+                 flat color="secondary"
                  label="В корзину"
                  @click="addButtons(products, 'in_busket')"></q-btn>
           <q-space></q-space>
@@ -73,6 +82,7 @@
         loadUser: 'user/getUsers',
         addInBusket: 'busketProducts/appendBusket',
         addInFavorite: 'favoriteProducts/setFavoriteProduct',
+        delitFavoriteProduct: 'favoriteProducts/delitFavoriteProduct',
         loadBrendsInfo: 'products/loadBrendsInfo'
       }),
      loadData(){
@@ -86,7 +96,7 @@
           if (!this.getUser){
             return this.$router.push({name :'v-SignIn'})
           }
-          const landmark = ['in_busket', 'in_favorite']
+          const landmark = ['in_busket', 'in_favorite', 'favorite_delite']
           if (object) {
             switch (x) {
               case landmark[0]:
@@ -96,6 +106,9 @@
               case landmark[1]:
                 object.quantity = 1
                 await this.addInFavorite(object)
+                break;
+              case landmark[2]:
+                await this.delitFavoriteProduct(object.id)
                 break;
               default:
                 break
@@ -137,5 +150,11 @@
   .my-card:hover{
     cursor: pointer;
     border: 2px #3b3a3a;
+  }
+  :deep(.q-card__actions){
+    display: ruby-base-container;
+  }
+  :deep(.button-delite){
+    display: none;
   }
 </style>

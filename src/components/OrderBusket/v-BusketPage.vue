@@ -8,7 +8,7 @@
       <div class="container">
         <div class="cart-container" v-for="(item, i) in busketproducts" :key="i">
         <vCartItems class="cart-item" :products="item" ></vCartItems>
-        <q-btn-group style="width: 300px; margin-left: 23.5%;">
+        <q-btn-group style="width: 300px; margin-left: 23.5%; margin-bottom: 20px">
           <q-btn color="green"
                  icon="plus_one"
                  style="width: 33.3%;"
@@ -20,7 +20,7 @@
           <q-btn color="red"
                  icon="remove_shopping_cart"
                  style="width: 33.3%;"
-                 @click="countProduct(item.id_product, 'delit')"></q-btn>
+                 @click="countProduct(item.id, 'delite')"></q-btn>
         </q-btn-group>
         </div>
        </div>
@@ -79,11 +79,11 @@ export default {
       }
     },
   },
-  // watch:{
-  //   busketproducts(){
-  //     this.loadsInBusketData()
-  //   },
-  // },
+  watch:{
+    busketproducts(){
+      this.loadsInBusketData()
+    },
+  },
   mounted() {
     this.loadsInBusketData()
     console.log(this.busketproducts)

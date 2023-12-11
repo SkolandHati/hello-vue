@@ -7,10 +7,10 @@ export async function getPRoducts(){
     })
 }
 
-export async function getProductID(id){
+export async function getProductID(id_product){
     return requestProducts({
         method:"GET",
-        url: `/${id}`,
+        url: `/${id_product}`,
     })
 }
 
