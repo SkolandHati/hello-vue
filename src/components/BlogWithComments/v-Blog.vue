@@ -46,7 +46,6 @@
     mounted() {
       this.loadUserData()
       this.loadCommentDataBase()
-      console.log(this.getDataComments)
     },
     methods:{
       ...mapActions({
@@ -64,7 +63,7 @@
       async loadCommentDataBase(){
         try {
           let data = await this.productData
-          await this.responseDataComments(data.id)
+          await this.responseDataComments(data.id_product)
         }catch (e){
           console.log(e)
         }

@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="random-product">
-      <q-banner class="banner" style="text-align: center;">Товары добавленные в избранное</q-banner>
+      <q-banner class="banner-carusel" style="text-align: center;">Возможно вам понравиться:</q-banner>
       <vCarusel style="float: right"></vCarusel>
     </div>
   </div>
@@ -21,41 +21,27 @@
 <script>
 import {mapGetters, mapActions} from "vuex";
 import vMainPanel from "@/components/User/v-MainPanelUser.vue"
-import Button from "@/components/kit/v-Button.vue"
 import vCartItems from "@/components/Card-Product/v-cart-items.vue"
 import vCarusel from "@/components/CaruselProduct/vCarusel.vue"
 export default {
     name: "vFavoritePage",
     components:{
       vMainPanel,
-      Button,
       vCartItems,
       vCarusel
-    },
-    data(){
-      return {
-        brend: null,
-        active_first: false,
-      }
     },
     computed:{
       ...mapGetters({
         getterFavoriteProd:'favoriteProducts/GET_FAVORITE_PROD',
-        getRandom: 'products/GETRANDOMPRODUCT',
-        getBrends: 'products/BRENDSINFO'
       })
     },
     mounted() {
       this.loadData()
-      // this.loadBrendForProduct()
     },
     methods:{
       ...mapActions({
         getFavorites: 'favoriteProducts/getFavoriteP',
-        getterBrends: 'products/loadBrendsInfo',
-        getRandomProduct: 'products/getRandomProduct',
         addInBusket: 'busketProducts/appendBusket',
-        delitFavoriteProduct: 'favoriteProducts/delitFavoriteProduct'
       }),
       async loadData(){
        try {
@@ -63,20 +49,6 @@ export default {
        } catch (e){
          console.log(e)
        }
-      },
-      // async loadBrendForProduct(){
-      //   try {
-      //     await this.getRandomProduct()
-      //     await this.getterBrends()
-      //     if (this.getBrends && this.getRandom){
-      //        return this.brend = await this.getBrends?.find(item => item.brend_Name === this.getRandom.product_brend)
-      //     }
-      //   }catch (e){
-      //     console.log(e)
-      //   }
-      // },
-      goCartItem(id){
-        this.$router.push({name: 'v-cart-item-page', params: {id: id}})
       },
       goOrderPage(data){
         if (data){
@@ -114,5 +86,15 @@ export default {
   }
   :deep(.carousel__pagination){
     padding: 0px;
+  }
+  :deep(.q-banner.row.items-center.banner-carusel>.q-banner__content){
+    width: 100%;
+    padding: 8px 16px;
+    margin: 0px;
+    margin-left: 5%;
+    margin-right: 6%;
+  }
+  :deep(.carousel){
+    margin-top: 5px;
   }
 </style>

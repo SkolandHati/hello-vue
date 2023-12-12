@@ -1,7 +1,7 @@
 <template>
   <vMainPanelUser/>
   <div class="container-product" style="display: flex;">
-    <div class="blog">
+    <div class="blog" v-if="oneproduct">
       <q-banner class="bg-primary text-white">Оставьте комментарий о товаре!</q-banner>
       <vBlog :product-data="oneproduct"></vBlog>
     </div>
@@ -72,7 +72,7 @@
         },
         async getData(){
           try {
-            if (this.$route.params.id){
+            if (this.$route.params.id_product){
               await this.loadsProduct(this.$route.params.id_product)
             }
           }
