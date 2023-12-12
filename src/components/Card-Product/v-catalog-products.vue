@@ -81,9 +81,7 @@
       },
       inheritAttrs: false,
     }
-
 </script>
-
 <style scoped>
     .v-catalog-products {
       display: grid;

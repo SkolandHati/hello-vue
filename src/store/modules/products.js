@@ -1,5 +1,26 @@
-import {getPRoducts, getProductID, getInfoBrends} from "@/services/entities/product_request"
+import {getProductID, getInfoBrends} from "@/services/entities/product_request"
+import {supabase} from "@/services/APIauthorization";
 
+async function getProductsDataBase(){
+    try {
+        let {data} = await supabase.from('products').select('*')
+        if (data){
+            return data
+        }
+    }catch (e){
+        console.log(e)
+    }
+}
+async function getProductsIDDataBase(id){
+    try {
+        let {data} = await supabase.from('products').select('*').eq('id_product', id)
+        if (data){
+            return data
+        }
+    }catch (e){
+        console.log(e)
+    }
+}
 export default {
     namespaced: true,
     state:{
@@ -13,7 +34,7 @@ export default {
     actions: {
         async loadProducts({commit}) {
             try {
-                const result = await getPRoducts()
+                const result = await getProductsDataBase()
                 commit("SET_PRODUCTS_STATE", result)
             } catch (e) {
                 console.log(e)
@@ -21,7 +42,7 @@ export default {
         },
         async loadsProduct({commit, state}, id_product){
             try {
-                const result = await getProductID(id_product)
+                const result = await getProductsIDDataBase(id_product)
                 commit("ONE_SET_PRODUCTS", result)
             }
             catch (e){
@@ -63,7 +84,8 @@ export default {
             state.catalogProducts = list
         },
         ONE_SET_PRODUCTS(state, products) {
-            state.oneproduct = products
+            state.oneproduct = products[0]
+            console.log(state.oneproduct)
         },
         SET_CAROUSEL_PRODUCTS(state){
             const randomNumber = () => { return Math.floor(Math.random() *(4 - 1) + 1)}

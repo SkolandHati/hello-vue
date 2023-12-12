@@ -1,7 +1,7 @@
 <template>
   <vMainPanelUser/>
   <div class="container-product" style="display: flex;">
-    <div class="blog" v-if="oneproduct">
+    <div class="blog">
       <q-banner class="bg-primary text-white">Оставьте комментарий о товаре!</q-banner>
       <vBlog :product-data="oneproduct"></vBlog>
     </div>
@@ -50,7 +50,6 @@
       },
       mounted() {
         this.loadData()
-        this.getData()
       },
       methods:{
         ...mapActions({
@@ -64,20 +63,12 @@
           try {
             Promise.all([
               this.getUser(),
-              this.loadInfoBrend()
+              this.loadsProduct(this.$route.params.id_product),
+              this.loadInfoBrend(),
             ])
           }catch (e){
             console.log(e)
           }
-        },
-        async getData(){
-          try {
-            if (this.$route.params.id_product){
-              await this.loadsProduct(this.$route.params.id_product)
-            }
-          }
-          catch (e){
-           console.log(e)}
         },
         async addButtons(object, x){
           try {

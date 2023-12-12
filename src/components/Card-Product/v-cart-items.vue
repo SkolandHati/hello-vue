@@ -2,7 +2,7 @@
   <div class="items" v-if="products">
     <div class="q-pa-md row items-start q-gutter-md">
       <q-card class="my-card" flat bordered>
-        <div @click="goCartItem(products.id_product)">
+        <div @click="goCartItem">
           <q-img :src="require(`@/components/assets/images/${products.product_brend}/${products.image_product}`)"
                  alt="images"></q-img>
         </div>
@@ -131,9 +131,9 @@
           console.log(e)
         }
       },
-      goCartItem(id_product){
-        if (id_product){
-          this.$router.push({name: 'v-cart-item-page', params: {id_product: id_product}})
+      goCartItem(){
+        if (this.products){
+          this.$router.push({name: 'v-cart-item-page', params: {id_product: this.products.id_product}})
         }
       }
     }

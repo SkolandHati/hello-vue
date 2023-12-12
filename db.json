@@ -1,12 +1,14 @@
 {
   "products": [
-    { "id_product": 1,
+    { "id": 1,
+      "id_product": 1,
       "image_product": "1.jpeg",
       "name_product": "Kenzo 1",
       "product_brend": "Kenzo",
       "price_product": 2100
     },
     {
+      "id": 2,
       "id_product": 2,
       "image_product": "2.jpeg",
       "name_product": "Kenzo 2",
