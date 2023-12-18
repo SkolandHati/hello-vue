@@ -43,7 +43,7 @@ export default {
             "content": String(this.comments),
             "user_id": String(this.user_data.user_id),
             "author_name": String(this.user_data.user_login),
-            "product_id": Number(this.productAll.id)
+            "product_id": Number(this.productAll.id_product)
           }
           await this.appendComment(obj)
           this.comments = null

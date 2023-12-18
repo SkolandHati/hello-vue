@@ -1,26 +1,11 @@
 <template>
     <form action="#" method="post" target="_blank">
-      <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
-      <fieldset class="block-inputs"
-                :class="{atherSetting: defaultSetting}">
-        <div class="inputs" v-for="(item, i) in labels">
-          <v-input :modelValue="state[Object.keys(this.state)[i]]"
-                   v-model="state[Object.keys(this.state)[i]]"
-                   :item="item"
-                   :defSetting="defaultSetting"
-                   />
-        </div>
-        <div class="block-native">
-          <div class="nav"
-               :class="{active: !!dataValidity}">
-            <p class="native" >Заполните все поля *</p>
-          </div>
-          <div class="submit-button">
-            <button type="submit"
-                    :disabled="dataValidity === false"
-                    :class="{fix: !!dataValidity, setting: defaultSetting}"
-                    @click.prevent="submitUserInformation">{{buttonTxt}}</button>
-          </div>
+      <q-banner class="banner">Заполните все поля и заказывайте товары в один клик!</q-banner>
+      <fieldset class="block-inputs">
+        <div v-for="(item, i) in labels" :key="i">
+          <vInput :item="item"
+                  :modelValue="state[Object.keys(this.state)[i]]"
+                  v-model="state[Object.keys(this.state)[i]]"></vInput>
         </div>
       </fieldset>
     </form>
@@ -34,12 +19,12 @@
     components:{
       vInput
     },
-    props:{
-      defaultSetting:{
-        type: Boolean,
-        default: false
-      }
-    },
+    // props:{
+    //   defaultSetting:{
+    //     type: Boolean,
+    //     default: false
+    //   }
+    // },
     emits: "sendDataUser",
     data(){
       return{
@@ -117,54 +102,11 @@
 </script>
 
 <style scoped>
-  h1{
-    margin-left: 190px;
+  .banner{
     margin-top: 10px;
-    margin-bottom: 5px;
     text-align: center;
-    font-size: 22px;
-  }
-  .block-inputs{
-    margin-top: 15px;
-    margin-left: 50px;
-    width: 108%;
-    height: 85%;
-    border-radius: 5px;
-  }
-  .atherSetting{
-    width: 94%;
-    margin-left: 35px;
-  }
-  .submit-button{
-    position: relative;
-    display: flex;
-  }
-  .block-native {
-    display: flex;
-  }
-  .native{
-    width: 160px;
-    height: 21px;
-    margin-top: 23px;
-    margin-left: 50px;
-  }
-  .active{
-    display: none;
-    width: 160px;
-    height: 21px;
-  }
-  .fix{
-    margin-left: 245px;
-  }
-  button{
-    position: relative;
-    margin: 10px;
-    width: 350px;
-    height: 35px;
-    margin-left: 35px;
-    margin-top: 15px;
-  }
-  .setting{
-    margin-left: 0px;
+    background-color: #3b899a;
+    border-radius: 7px 7px 0px 0px;
+    color: #f5f3f3;
   }
 </style>

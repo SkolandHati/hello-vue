@@ -85,7 +85,6 @@ export default {
         },
         ONE_SET_PRODUCTS(state, products) {
             state.oneproduct = products[0]
-            console.log(state.oneproduct)
         },
         SET_CAROUSEL_PRODUCTS(state){
             const randomNumber = () => { return Math.floor(Math.random() *(4 - 1) + 1)}

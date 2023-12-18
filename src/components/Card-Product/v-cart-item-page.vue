@@ -1,11 +1,11 @@
 <template>
   <vMainPanelUser/>
-  <div class="container-product" style="display: flex;">
+  <div class="container-product" v-if="oneproduct" style="display: flex;">
     <div class="blog">
       <q-banner class="bg-primary text-white">Оставьте комментарий о товаре!</q-banner>
       <vBlog :product-data="oneproduct"></vBlog>
     </div>
-    <div class="item" v-if="oneproduct">
+    <div class="item">
       <q-card class="my-card" flat bordered>
         <q-img style="width: 350px; height: 450px"
                :src="require(`@/components/assets/images/${oneproduct.product_brend}/${oneproduct.image_product}`)"
