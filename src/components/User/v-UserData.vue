@@ -1,11 +1,17 @@
 <template>
     <form action="#" method="post" target="_blank">
-      <q-banner class="banner">Заполните все поля и заказывайте товары в один клик!</q-banner>
+      <q-banner class="banner" :class="{defaultSetting}">{{bannerTxt}}</q-banner>
       <fieldset class="block-inputs">
         <div v-for="(item, i) in labels" :key="i">
           <vInput :item="item"
                   :modelValue="state[Object.keys(this.state)[i]]"
                   v-model="state[Object.keys(this.state)[i]]"></vInput>
+        </div>
+        <div class="block-submit"
+             style="display: flex; width: 100%; justify-content: center">
+          <q-btn color="secondary"
+                 style="width: 40%"
+                 :label="buttonTxt" @click.prevent="submitUserInformation"></q-btn>
         </div>
       </fieldset>
     </form>
@@ -19,16 +25,17 @@
     components:{
       vInput
     },
-    // props:{
-    //   defaultSetting:{
-    //     type: Boolean,
-    //     default: false
-    //   }
-    // },
+    props:{
+      defaultSetting:{
+        type: Boolean,
+        default: false
+      },
+    },
     emits: "sendDataUser",
     data(){
       return{
         buttonText: null,
+        bannerText: null,
         state: {
           login: '',
           first_name: '',
@@ -54,9 +61,16 @@
       },
       buttonTxt(){
         if (this.defaultSetting){
-          return this.buttonText = 'Заказать'
+          return this.buttonText = 'Оформить заказ'
         }else {
           return this.buttonText = 'Сохранить данные'
+        }
+      },
+      bannerTxt(){
+        if (this.defaultSetting){
+          return this.bannerText = "Для оформления заказа все поля должны быть заполнены"
+        }else {
+          return this.bannerText = "Заполните все поля и заказывайте товары в один клик!"
         }
       }
     },

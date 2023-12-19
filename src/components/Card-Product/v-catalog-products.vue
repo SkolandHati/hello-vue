@@ -6,7 +6,7 @@
           :products="prodcs"/>
     </div>
   <PaginateModul v-if="productus"
-                 :current_page="currentPage"
+                 :modelValue="currentPage"
                  :total_pages="totalPages"
                  @pagechanged="pageChanged"></PaginateModul>
 </template>
@@ -36,6 +36,12 @@
         visibleProducts() {
           const start = (this.currentPage - 1) * this.pageSize;
           const end = start + this.pageSize;
+          console.log(start, end, this.products.slice(start, end))
+          this.products.forEach((item, index) => {
+            if (!item){
+              this.products.splice(index,1)
+            }
+          })
           return this.products.slice(start, end)
         },
         totalPages() {

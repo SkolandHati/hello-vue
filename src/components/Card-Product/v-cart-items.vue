@@ -16,12 +16,16 @@
           <div class="text-h5 q-mt-sm q-mb-xs">
             {{products.name_product}},
             $ {{products.price_product}}
+            <h3 class="text-h5 q-mt-sm q-mb-xs"
+                style="font-size: 24px"
+                v-if="active"
+            >Количество: {{products.quantity}}</h3>
           </div>
         </q-card-section>
         <q-card-actions class="card-actions">
           <q-btn class="button-delite"
                  flat color="red"
-                 label="Удалить из избранного"
+                 :label="label"
                  @click="addButtons(products, 'favorite_delite')"></q-btn>
           <q-btn class="button-favorite"
                  flat color="primary"
@@ -55,6 +59,14 @@
         type: Object,
         require:true
       },
+      active:{
+        type: Boolean,
+        default: false
+      },
+      label:{
+        type: String,
+        default: null
+      }
     },
     data(){
       return {

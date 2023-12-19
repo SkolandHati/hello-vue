@@ -7,7 +7,7 @@
       <q-banner class="bg-primary text-white" style="border-radius: 0 7px 7px 0">Корзина Избранных Продуктов</q-banner>
       <div class="container">
         <div class="cart-container" v-for="(item, i) in busketproducts" :key="i">
-        <vCartItems class="cart-item" :products="item" ></vCartItems>
+        <vCartItems class="cart-item" :products="item" :active="active"></vCartItems>
         <q-btn-group style="width: 300px; margin-left: 23.5%; margin-bottom: 20px">
           <q-btn color="green"
                  icon="plus_one"
@@ -57,6 +57,7 @@ export default {
     data(){
       return {
         fullPrice: 0,
+        active: true
       }
     },
   computed:{
@@ -86,7 +87,6 @@ export default {
   },
   mounted() {
     this.loadsInBusketData()
-    console.log(this.busketproducts)
   },
     methods:{
       ...mapActions({

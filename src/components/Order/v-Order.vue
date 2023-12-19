@@ -24,7 +24,7 @@
             </q-card-section>
             <q-separator inset></q-separator>
             <q-card-section v-for="(item, i) in items.products" :key="i">
-              <h1 class="list-product">{{item.name}}</h1>
+              <h1 class="list-product" style="height: 10px">{{item.name}}</h1>
             </q-card-section>
 
           </q-card>
@@ -34,7 +34,7 @@
             </q-card-section>
             <q-separator inset></q-separator>
             <q-card-section>
-              <div class="data-time">
+              <div class="data-time" style="height: 200px;">
                 <h1 class="time">Время заказа товара: {{items.data_time}}</h1>
                 <h1 class="time">Время доставки товара: {{items.time_zone}}</h1>
               </div>
@@ -111,17 +111,16 @@
   .carousel__item{
     height: 100%;
   }
-
   .list-product{
     position: relative;
-    padding-bottom: 20px;
-    height: 20px;
+    height: 10px;
     font-size: 14px;
   }
   .time{
+    height: 50px;
     position: relative;
     font-size: 14px;
-    margin-top: 40px;
+    margin-top: 30px;
   }
   :deep(.q-card__section){
     padding: 10px;

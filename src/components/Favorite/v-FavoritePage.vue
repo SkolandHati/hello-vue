@@ -7,7 +7,7 @@
       <q-banner class="banner" style="text-align: center;">Товары добавленные в избранное</q-banner>
       <div class="container">
         <div class="item" v-for="(item, i) in getterFavoriteProd" :key="i">
-          <vCartItems :products="item"></vCartItems>
+          <vCartItems :products="item" :label="label"></vCartItems>
         </div>
       </div>
     </div>
@@ -34,6 +34,11 @@ export default {
       ...mapGetters({
         getterFavoriteProd:'favoriteProducts/GET_FAVORITE_PROD',
       })
+    },
+    data(){
+      return {
+        label: "Удалить из избранного"
+      }
     },
     mounted() {
       this.loadData()
