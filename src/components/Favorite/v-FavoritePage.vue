@@ -3,11 +3,15 @@
     <v-main-panel/>
   </div>
   <div class="favorite-block" style="display: flex">
-    <div class="container-favorite" style="width: 70%; " v-if="getterFavoriteProd">
+    <div class="container-favorite"
+         style="width: 70%; "
+         v-if="getterFavoriteProd">
       <q-banner class="banner" style="text-align: center;">Товары добавленные в избранное</q-banner>
       <div class="container">
-        <div class="item" v-for="(item, i) in getterFavoriteProd" :key="i">
-          <vCartItems :products="item" :label="label"></vCartItems>
+        <div class="item"
+             v-for="(item, i) in getterFavoriteProd"
+             :key="i">
+          <vCartItems :products="item"></vCartItems>
         </div>
       </div>
     </div>
@@ -35,18 +39,13 @@ export default {
         getterFavoriteProd:'favoriteProducts/GET_FAVORITE_PROD',
       })
     },
-    data(){
-      return {
-        label: "Удалить из избранного"
-      }
-    },
     mounted() {
       this.loadData()
     },
     methods:{
       ...mapActions({
         getFavorites: 'favoriteProducts/getFavoriteP',
-        addInBusket: 'busketProducts/appendBusket',
+        // addInBusket: 'busketProducts/appendBusket',
       }),
       async loadData(){
        try {
@@ -55,12 +54,12 @@ export default {
          console.log(e)
        }
       },
-      goOrderPage(data){
-        if (data){
-        this.addInBusket(data)
-      }
-        this.$router.push({name: 'v-OrderPage'})
-      }
+      // goOrderPage(data){
+      //   if (data){
+      //   this.addInBusket(data)
+      // }
+      //   this.$router.push({name: 'v-OrderPage'})
+      // }
     },
 }
 
@@ -68,6 +67,9 @@ export default {
 
 <style scoped>
   :deep(.button-favorite){
+    display: none;
+  }
+  :deep(.delite-product){
     display: none;
   }
   :deep(.button-delite){

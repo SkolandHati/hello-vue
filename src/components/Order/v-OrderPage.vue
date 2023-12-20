@@ -7,7 +7,7 @@
       <q-banner class="banner">Стоимость всех товаров в корзине: $ {{calculateThePrice}}</q-banner>
       <div class="container-products" v-if="getBusketProducts"
            v-for="(item, i) in getBusketProducts" :key="i">
-        <vCartItems :products="item" :label="label"></vCartItems>
+        <vCartItems :products="item"></vCartItems>
       </div>
     </div>
     <div class="container-data"
@@ -31,7 +31,6 @@
     },
     data(){
       return {
-        label:"Удалить товар",
         active_order: true,
         fullPrice: 0,
       }
@@ -129,8 +128,13 @@
   :deep(.button-busket){
     display: none;
   }
-  :deep(.button-delite){
+  :deep(.delite-product){
     display: block;
+    margin-left: 10px;
+    margin-bottom: 15px;
+  }
+  :deep(.button-delite){
+    display: none;
   }
   .banner{
     margin-top: 10px;

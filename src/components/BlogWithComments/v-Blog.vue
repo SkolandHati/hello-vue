@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="q-pa-md row" v-if="getDataComments">
-      <div class="comment" style="width: 100%; height: 70px" v-for="(itemComments, i) in getDataComments" :key="i">
+      <div class="comment" style="width: 100%; height: 70px"
+           v-for="(itemComments, i) in getDataComments"
+           :key="i">
         <q-chat-message v-if="itemComments.author_name === userData.user_login"
             :name="itemComments.author_name"
             :text="[itemComments.content]"

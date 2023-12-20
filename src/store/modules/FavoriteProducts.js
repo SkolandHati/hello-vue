@@ -30,7 +30,7 @@ async function setterFavoriteProducts(bodyProduct){
 async function deliteFavotiteProductsDatabase(id){
     try {
         if (id){
-            const {error} = await supabase.from('favoriteProdducts').delete().eq('id', id)
+            const {error} = await supabase.from('favoriteProdducts').delete().eq('id_product', id)
             if (error) throw error
         }
     }catch (e){
@@ -79,7 +79,7 @@ export default {
             state.favorite_products.push(product)
         },
         DELITEFAVORITEPRODUCT(state, id){
-            let data = state.favorite_products?.find(item => item.id === id)
+            let data = state.favorite_products?.find(item => item.id_product === id)
             console.log(data)
             state.favorite_products?.forEach((items, index, arrye) => {
                 if (arrye[index] === data){

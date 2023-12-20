@@ -45,14 +45,12 @@
 
 import {mapGetters, mapActions} from "vuex";
 import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
-import imageComponent from "@/components/kit/ImageComponent.vue";
 import vCartItems from "@/components/Card-Product/v-cart-items.vue"
 export default {
     name: 'v-BusketPage',
     components:{
       vCartItems,
       vMainPanelUser,
-      imageComponent
     },
     data(){
       return {

@@ -23,9 +23,13 @@
           </div>
         </q-card-section>
         <q-card-actions class="card-actions">
+          <q-btn class="delite-product"
+                 flat color="red"
+                 label="Удалить продукт"
+                 @click="addButtons(products, 'delite_product')"></q-btn>
           <q-btn class="button-delite"
                  flat color="red"
-                 :label="label"
+                 label="Удалить из избранного"
                  @click="addButtons(products, 'favorite_delite')"></q-btn>
           <q-btn class="button-favorite"
                  flat color="primary"
@@ -63,10 +67,6 @@
         type: Boolean,
         default: false
       },
-      label:{
-        type: String,
-        default: null
-      }
     },
     data(){
       return {
@@ -94,6 +94,7 @@
       ...mapActions({
         loadUser: 'user/getUsers',
         addInBusket: 'busketProducts/appendBusket',
+        deliteProduct: 'busketProducts/deliteProduct',
         addInFavorite: 'favoriteProducts/setFavoriteProduct',
         delitFavoriteProduct: 'favoriteProducts/delitFavoriteProduct',
         loadBrendsInfo: 'products/loadBrendsInfo'
@@ -109,7 +110,7 @@
           if (!this.getUser){
             return this.$router.push({name :'v-SignIn'})
           }
-          const landmark = ['in_busket', 'in_favorite', 'favorite_delite']
+          const landmark = ['in_busket', 'in_favorite', 'favorite_delite', 'delite_product']
           if (object) {
             switch (x) {
               case landmark[0]:
@@ -121,7 +122,10 @@
                 await this.addInFavorite(object)
                 break;
               case landmark[2]:
-                await this.delitFavoriteProduct(object.id)
+                await this.delitFavoriteProduct(object.id_product)
+                break;
+              case landmark[3]:
+                await this.deliteProduct(object.id_product)
                 break;
               default:
                 break
@@ -168,6 +172,9 @@
     display: ruby-base-container;
   }
   :deep(.button-delite){
+    display: none;
+  }
+  :deep(.delite-product){
     display: none;
   }
 </style>

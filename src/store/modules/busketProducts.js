@@ -46,7 +46,7 @@ async function minusProduct(dataProduct){
 
 async function deliteDataBusket(id){
     try {
-        let {error} = await supabase.from('busketProducts').delete().eq('id', id)
+        let {error} = await supabase.from('busketProducts').delete().eq('id_product', id)
         if (error) throw error
     }catch (e){
         console.log(e)
@@ -132,7 +132,7 @@ export default {
             state.busketProduct[index].quantity--
         },
         DELITERPOD(state, data){
-            let datass = state.busketProduct?.find(item => item.id === data)
+            let datass = state.busketProduct?.find(item => item.id_product === data)
             state.busketProduct?.forEach((items, index, arrye) => {
                 if (state.busketProduct[index] === datass){
                     state.busketProduct.splice(index, 1)

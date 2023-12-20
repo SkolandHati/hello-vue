@@ -7,8 +7,8 @@
                  @click="goBusketPage"></q-btn>
           <q-badge class="count"
                    rounded color="green"
-                   :label='count'
-                   v-if="!!count"></q-badge>
+                   :label='busketproducts.length'
+                   v-if="!!busketproducts && is_auth"></q-badge>
         </div>
         <div class="block-btn-2">
         <q-btn class="quasar-btn"
@@ -17,7 +17,7 @@
                @click="goFavoritePage"></q-btn>
           <q-badge class="count"
                    rounded color="green"
-                   v-if="!!getFavoriteProducts.length"
+                   v-if="!!getFavoriteProducts.length && is_auth"
                    :label='getFavoriteProducts.length'></q-badge>
         </div>
         <div class="block-btn-3">
@@ -119,7 +119,6 @@
     mounted() {
       this.checkUser()
       this.loadData()
-      this.calculateCountProducts()
     },
     methods: {
       ...mapActions({
@@ -131,25 +130,9 @@
       loadData() {
         Promise.all([
           this.getUser(),
-          this.FavoriteProducts()
+          this.FavoriteProducts(),
+          this.loadDatafromDataBase()
         ])
-      },
-      async calculateCountProducts(){
-        try {
-          await this.loadDatafromDataBase()
-          let data = await this.busketproducts
-          if (data){
-            const listPrice = []
-            for (const key in this.busketproducts){
-              listPrice.push(this.busketproducts[key].quantity)
-            }
-            return this.count = listPrice?.reduce((sum, current) => sum + current, 0)}
-          else {
-            return  this.count  = 0
-          }
-        }catch (e){
-          console.log(e)
-        }
       },
       async checkUser(){
         try {
