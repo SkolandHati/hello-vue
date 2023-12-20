@@ -88,7 +88,7 @@
   .list-brend.isActive{
     width: 20%;
     display: block;
-    z-index: 0;
+    z-index: 999;
     position: absolute;
     margin-left: 15px;
     background-color: #607d8b !important;
@@ -111,7 +111,7 @@
     margin: 10px;
     background: rgb(57, 73, 82);
     position: relative;
-    z-index: 0;
+    z-index: 1;
     transition: top 1s ease-out 0.5s;
   }
   a{

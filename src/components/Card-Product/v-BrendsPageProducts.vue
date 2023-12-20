@@ -4,10 +4,18 @@
   </div>
   <div class="container" v-if="data_brend && getProductsCatalog">
     <div class="brend-info" v-if="data_brend">
-      <h1 class="header">{{data_brend.brend_Name}}</h1>
-      <p class="info">{{data_brend.info_Brend}}</p>
+      <q-card dark bordered class="bg-grey-9 my-card">
+        <q-card-section>
+          <div class="text-h6" style="display: flex; justify-content: center">{{data_brend.brend_Name}}</div>
+        </q-card-section>
+        <q-separator dark inset></q-separator>
+        <q-card-section>
+          <div style="display: flex; justify-content: center; font-size: 15px; margin-left: 35px">
+            {{data_brend.info_Brend}}</div>
+        </q-card-section>
+      </q-card>
     </div>
-    <div class="catalog" v-if="getProductsCatalog">
+    <div class="catalog" v-if="getProductsCatalog" style="width: 100%;">
       <vCartItems
           v-for="(prodoos,i) in getProductsCatalog"
           :key="i"
@@ -15,7 +23,7 @@
     </div>
   </div>
   <div class="none" v-else>
-    <h1>Результаты поиска не увенчались упсехом</h1>
+    <q-banner class="head-banner" style="width: 100%">Результаты поиска не увенчались успехом</q-banner>
   </div>
 </template>
 
@@ -88,42 +96,14 @@ export default {
 </script>
 
 <style scoped>
-  .user-panel{
-    display: flex;
-    background-color: rgb(57, 73, 82);
-    width: 100%;
-    height: 50px;
-  }
-  .brend-info{
-    width: 91.6%;
-    height: 100%;
-    margin-top: 15px;
-    margin-left: 55px;
-    border-radius: 5px;
-    border: 2px solid black;
-  }
-  .header{
+  .head-banner{
+    margin-top: 40px;
     text-align: center;
-    margin-top: 15px;
-  }
-  .info{
-    text-align: center;
+    background-color: #3b899a;
+    color: #f5f3f3;
   }
   .catalog{
-      justify-content: center;
-      margin: 20px;
-      margin-left: 45px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-  }
-  .items{
-    padding: 50px;
-    padding-top: 25px;
-  }
-  .container-item{
-    border-radius: 4px;
-  }
-  .image>img{
-    height: 300px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 </style>
