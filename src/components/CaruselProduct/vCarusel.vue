@@ -1,6 +1,6 @@
 <template>
   <carousel class="carousel"
-            :autoplay="4000"
+            :autoplay="10000"
             :wrap-around="false"
             v-if="getCaruselProd">
     <slide class="carousel_page" v-for="item in getCaruselProd" :key="item.id_product">
@@ -51,7 +51,7 @@ export default {
     },
     goProductsPage(id){
       if (id){
-        this.$router.push({name: 'v-cart-item-page', params: {id: id}})
+        this.$router.push({name: 'v-cart-item-page', params: {id_product: id}})
       }
     }
   },

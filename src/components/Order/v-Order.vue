@@ -5,9 +5,9 @@
       <Carousel class="carousel" :autoplay="4000" :wrap-around="false">
         <slide class="carousel_page" v-for="(item, i) in items.products" :key="i">
           <div class="carousel__item">
-            <q-banner class="banner">{{item.name}}</q-banner>
-            <img :src="require(`@/components/assets/images/${item.brend}/${item.image}`)" alt="images">
-            <p>{{item.price}}</p>
+            <q-banner class="banner">{{item.name_product}}</q-banner>
+            <img :src="require(`@/components/assets/images/${item.product_brend}/${item.image_product}`)" alt="images">
+            <p>{{item.price_product}}</p>
           </div>
         </slide>
         <template #addons>
@@ -24,7 +24,7 @@
             </q-card-section>
             <q-separator inset></q-separator>
             <q-card-section v-for="(item, i) in items.products" :key="i">
-              <h1 class="list-product" style="height: 10px">{{item.name}}</h1>
+              <h1 class="list-product" style="height: 10px">{{item.name_product}}</h1>
             </q-card-section>
 
           </q-card>

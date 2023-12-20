@@ -36,7 +36,6 @@
         visibleProducts() {
           const start = (this.currentPage - 1) * this.pageSize;
           const end = start + this.pageSize;
-          console.log(start, end, this.products.slice(start, end))
           this.products.forEach((item, index) => {
             if (!item){
               this.products.splice(index,1)

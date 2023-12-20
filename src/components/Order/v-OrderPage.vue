@@ -12,7 +12,7 @@
     </div>
     <div class="container-data"
          style="width: 60%;">
-      <UserData :defaultSetting="active_order"></UserData>
+      <UserData :defaultSetting="active_order" @orderPush="addOrderUser"></UserData>
     </div>
   </div>
 </template>
@@ -78,43 +78,23 @@
         }
         return obj
       },
-      // async sortingFunc(){
-      //   try {
-      //     await this.getDataBusket()
-      //     if (!!this.getBusketProducts){
-      //       let list = []
-      //       this.getBusketProducts?.forEach(item => {
-      //         list.push({
-      //           image: item.image_product,
-      //           brend: item.product_brend,
-      //           name: item.name_product,
-      //           price: item.product_price,
-      //           quantity: item.quantity
-      //         })
-      //       })
-      //       return list
-      //     }
-      //   }catch (e){
-      //     console.log(e)
-      //   }
-      // },
-      // async addOrderUser(data){
-      //   try {
-      //     if (data && !!this.getBusketProducts){
-      //       let dataProducts = await this.sortingFunc()
-      //       let dataTime = this.dataTime()
-      //       const object = {
-      //         user_id: data.id,
-      //         products: dataProducts,
-      //         data_time: dataTime.day_time,
-      //         time_zone: dataTime.day_time_delivery
-      //       }
-      //       await this.setOrder(object)
-      //     }
-      //   }catch (e){
-      //     console.log(e)
-      //   }
-      // }
+      async addOrderUser(data){
+        try {
+          let dataProducts = await this.getBusketProducts
+          if (data && !!dataProducts){
+            let dataTime = this.dataTime()
+            const object = {
+              user_id: data,
+              products: dataProducts,
+              data_time: dataTime.day_time,
+              time_zone: dataTime.day_time_delivery
+            }
+            await this.setOrder(object)
+          }
+        }catch (e){
+          console.log(e)
+        }
+      }
     }
   }
 

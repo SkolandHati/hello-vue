@@ -31,7 +31,9 @@
         default: false
       },
     },
-    emits: "sendDataUser",
+    emits:
+        ["sendDataUser",
+        "orderPush"],
     data(){
       return{
         buttonText: null,
@@ -102,10 +104,12 @@
           let data = this.dataValidity
           if (data && this.user){
             this.state.id = this.user.user_id
-            await this.setterUserData(this.state)
-            if (this.defaultSetting){
-              await this.$emit('sendDataUser',this.state)
+            if(!this.user.id){
+              await this.setterUserData(this.state)
             }
+          }
+          if (this.defaultSetting ){
+            await this.$emit('orderPush', this.user.user_id)
           }
         }catch (e){
           console.log(e)
