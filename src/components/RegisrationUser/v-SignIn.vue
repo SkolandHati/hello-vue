@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import {supabase} from "@/services/APIauthorization";
+  import {supabase} from "@/services/API_supabase";
   import {ref} from "vue";
   export default {
     name: 'v-SignIn',

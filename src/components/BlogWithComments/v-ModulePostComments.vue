@@ -11,47 +11,50 @@
   </div>
 </template>
 
-<script>
-
-import {mapActions} from "vuex";
-
-export default {
-    name:"v-ModulePostComments",
-    props:{
-      productAll:{
-        type: Object,
-        required: true
-      },
-      user_data:{
-        type:Object,
-        required: true
-      }
-    },
-    data(){
-      return{
-        comments: null,
-      }
-    },
-    methods:{
-      ...mapActions({
-        appendComment: "commentsModules/addCommentDatabase",
-      }),
-      async addComment(){
-        const data = await this.productAll
-        if (data && this.user_data && this.comments){
-          const obj = {
-            "content": String(this.comments),
-            "user_id": String(this.user_data.user_id),
-            "author_name": String(this.user_data.user_login),
-            "product_id": Number(this.productAll.id_product)
-          }
-          await this.appendComment(obj)
-          this.comments = null
-          alert('Comment send')
+<script lang="ts">
+  import {mapActions} from "vuex";
+  import {defineComponent} from "vue";
+  import type {PropType} from 'vue'
+  import Product from "@/interfaces/Product";
+  import InformationUser from "@/interfaces/InformationUser";
+  import Comment from "@/interfaces/Comment"
+  export default defineComponent({
+      name:"v-ModulePostComments",
+      props:{
+        productAll:{
+          type: Object as PropType<Product>,
+          required: true
+        },
+        user_data:{
+          type:Object as PropType<InformationUser>,
+          required: true
         }
-      }
-    },
-}
+      },
+      data(){
+        return{
+          comments: null as unknown as string,
+        }
+      },
+      methods:{
+        ...mapActions({
+          appendComment: "commentsModules/addCommentDatabase",
+        }),
+        async addComment(){
+          const data = await this.productAll
+          if (data && this.user_data && this.comments){
+            const obj:Comment = {
+              "content": this.comments,
+              "user_id": this.user_data.user_id,
+              "author_name": this.user_data.user_login,
+              "product_id": this.productAll.id_product
+            }
+            await this.appendComment(obj)
+            this.comments = null as unknown as string
+            alert('Comment send')
+          }
+        }
+      },
+  })
 
 </script>
 

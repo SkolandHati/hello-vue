@@ -1,4 +1,5 @@
-import {supabase} from "@/services/APIauthorization";
+import {supabase} from "@/services/API_supabase";
+import InformationUser from "@/interfaces/index";
 async function setDataInformationUser(object){
     try {
         if (object){
@@ -41,7 +42,7 @@ export default {
     namespaced: true,
     state:{
         auth: false,
-        user: {
+        user:{
             id: null,
             user_id: 0,
             user_login: null,

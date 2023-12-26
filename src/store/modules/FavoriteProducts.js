@@ -1,4 +1,4 @@
-import {supabase} from "@/services/APIauthorization";
+import {supabase} from "@/services/API_supabase";
 
 async function getFavoriteProducts(){
     try {

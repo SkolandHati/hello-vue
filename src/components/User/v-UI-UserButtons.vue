@@ -64,7 +64,7 @@
 
 <script>
   import {mapGetters, mapActions} from "vuex";
-  import {supabase} from "@/services/APIauthorization";
+  import {supabase} from "@/services/API_supabase";
   export default {
     name: "v-UI-UserButtons",
     data(){

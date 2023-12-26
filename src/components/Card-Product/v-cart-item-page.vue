@@ -30,11 +30,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
     import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
     import vBlog from "@/components/BlogWithComments/v-Blog.vue"
     import {mapActions, mapGetters} from "vuex";
-    export default {
+    import {defineComponent} from "vue"
+    import Product from "@/interfaces/Product";
+    export default defineComponent({
       name: "v-cart-item-page",
       components:{
           vMainPanelUser,
@@ -53,7 +55,7 @@
       },
       methods:{
         ...mapActions({
-          loadsProduct: 'products/loadsProduct',
+          loadsProduct: 'products/loadOneProduct',
           loadInfoBrend: 'products/loadBrendsInfo',
           addBusket: 'busketProducts/appendBusket',
           getUser: 'user/getUser',
@@ -70,7 +72,7 @@
             console.log(e)
           }
         },
-        async addButtons(object, x){
+        async addButtons(object:Product, x: string):Promise<any>{
           try {
             if (!this.auth){
               return this.$router.push({name :'v-SignIn'})
@@ -100,7 +102,7 @@
           }
         },
       },
-    }
+    })
 </script>
 
 <style scoped>

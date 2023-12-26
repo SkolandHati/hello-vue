@@ -1,5 +1,5 @@
 import {getProductID, getInfoBrends} from "@/services/entities/product_request"
-import {supabase} from "@/services/APIauthorization";
+import {supabase} from "@/services/API_supabase";
 
 async function getProductsDataBase(){
     try {
@@ -40,7 +40,7 @@ export default {
                 console.log(e)
             }
         },
-        async loadsProduct({commit, state}, id_product){
+        async loadOneProduct({commit, state}, id_product){
             try {
                 const result = await getProductsIDDataBase(id_product)
                 commit("ONE_SET_PRODUCTS", result)

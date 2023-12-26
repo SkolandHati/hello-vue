@@ -39,7 +39,7 @@
 
 <script>
   import {ref, reactive} from "vue";
-  import {supabase} from "@/services/APIauthorization";
+  import {supabase} from "@/services/API_supabase";
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, minLength, maxLength } from '@vuelidate/validators'
 

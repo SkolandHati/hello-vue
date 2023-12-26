@@ -54,13 +54,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {mapActions, mapGetters} from "vuex";
-  export default {
+  import {defineComponent} from "vue";
+  import Product from "@/interfaces/Product";
+  import Brend from "@/interfaces/Brend";
+  import type {PropType} from "vue"
+  export default defineComponent({
     name: "v-cart-item",
     props:{
       products: {
-        type: Object,
+        type: Object as PropType<Product>,
         require:true
       },
       active:{
@@ -83,12 +87,12 @@
     },
     watch:{
       brends(){
-        this.getBrendsInfo(this.products.product_brend)
+        this.getBrendsInfo(this.products?.product_brend as any)
       }
     },
     mounted() {
       this.loadData()
-      this.getBrendsInfo(this.products.product_brend)
+      this.getBrendsInfo(this.products?.product_brend as any)
     },
     methods: {
       ...mapActions({
@@ -105,7 +109,7 @@
             this.loadBrendsInfo()
         ])
       },
-      async addButtons(object, x){
+      async addButtons(object: Product, x: string){
         try {
           if (!this.getUser){
             return this.$router.push({name :'v-SignIn'})
@@ -135,11 +139,11 @@
           console.log(e)
         }
       },
-      async getBrendsInfo(brend_name){
+      async getBrendsInfo(brend_name: string){
         try {
           let data = await this.brends
           if (data){
-            let brnd = data?.find(item => item.brend_Name === brend_name)
+            let brnd = data?.find((item: Brend) => item.brend_Name === brend_name)
             this.brend = brnd.brend_Name
             this.brendInfo = brnd.info_Brend
           }
@@ -153,7 +157,7 @@
         }
       }
     }
-  }
+  })
 </script>
 <style scoped>
   .items{

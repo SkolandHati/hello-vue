@@ -1,21 +1,24 @@
 <template>
-    <div class="v-catalog-products" v-if="products">
+  <div class="v-catalog-products" v-if="products">
         <vCartItems
           v-for="prodcs in visibleProducts"
-          :key="prodcs.id_product"
+          :key="prodcs.id_product as number"
           :products="prodcs"/>
     </div>
-  <PaginateModul v-if="productus"
+  <PaginateModul v-if="allProductus"
                  :modelValue="currentPage"
                  :total_pages="totalPages"
                  @pagechanged="pageChanged"></PaginateModul>
 </template>
 
-<script>
+<script lang="ts">
     import {mapActions, mapGetters} from "vuex";
-    import vCartItems from "./v-cart-items.vue"
+    import {defineComponent} from 'vue'
+    import type {PropType} from "vue";
+    import Product from "@/interfaces/Product";
+    import vCartItems from "./v-cart-items.vue";
     import PaginateModul from '@/components/Card-Product/v-PaginateModul.vue'
-    export default {
+    export default defineComponent({
       name: "v-catalog-products",
       components:{
         vCartItems,
@@ -23,20 +26,20 @@
       },
       data(){
         return {
-          products: [],
-          currentPage: 1,
+          products: [] as PropType<Product>,
+          currentPage: 1 ,
           pageSize: 6
         };
       },
-      computed:{
+      computed:<any>{
         ...mapGetters({
-          productus:'products/PRODUCTS',
+          allProductus:'products/PRODUCTS',
           brends: 'products/BRENDSINFO'
         }),
-        visibleProducts() {
-          const start = (this.currentPage - 1) * this.pageSize;
-          const end = start + this.pageSize;
-          this.products.forEach((item, index) => {
+        visibleProducts(){
+          const start: number = (this.currentPage - 1) * this.pageSize;
+          const end: number = start + this.pageSize;
+          this.products.forEach((item: object, index: number) => {
             if (!item){
               this.products.splice(index,1)
             }
@@ -65,14 +68,14 @@
         },
         async loadCountProducts(){
           try {
-            let data = await this.productus
+            const data: any = await this.allProductus
             let listProd = []
             if (data){
-              data?.forEach((item, index, arrey) => {
+              data?.forEach((item: object, index:string,) => {
                 localStorage.setItem(index, JSON.stringify(item))
               })
               for (let i = 0; localStorage.length > i; i++){
-                listProd.push(JSON.parse(localStorage.getItem(i)))
+                listProd.push(JSON.parse(localStorage.getItem(i as any) as string))
               }
               return this.products = listProd
             }
@@ -80,12 +83,12 @@
             console.log(e)
           }
         },
-        pageChanged(pageNumber) {
+        pageChanged(pageNumber: number) {
           this.currentPage = pageNumber;
         }
       },
       inheritAttrs: false,
-    }
+    })
 </script>
 <style scoped>
     .v-catalog-products {
