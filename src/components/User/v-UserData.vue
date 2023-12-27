@@ -17,10 +17,12 @@
     </form>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
+  import {StateUserData} from "@/interfaces/InterfacesState"
   import vInput from "@/components/kit/v-input.vue"
   import {mapGetters, mapActions} from "vuex";
-  export default {
+  export default defineComponent({
     name: 'v-UserData',
     components:{
       vInput
@@ -32,12 +34,11 @@
       },
     },
     emits:
-        ["sendDataUser",
-        "orderPush"],
+        {orderPush: (user_id: string)=> true},
     data(){
       return{
-        buttonText: null,
-        bannerText: null,
+        buttonText: null as unknown as string,
+        bannerText: null as unknown as string,
         state: {
           login: '',
           first_name: '',
@@ -45,7 +46,7 @@
           email: '',
           number_phone: '',
           cart_bank: ''
-        },
+        } as StateUserData,
         labels: ['Логин', 'Имя', 'Фамилия', 'Email', 'Тел.Номер', 'Банк.Карта']
       }
     },
@@ -108,7 +109,7 @@
               await this.setterUserData(this.state)
             }
           }
-          if (this.defaultSetting ){
+          if (this.defaultSetting){
             await this.$emit('orderPush', this.user.user_id)
           }
         }catch (e){
@@ -116,9 +117,8 @@
         }
       },
     },
-  }
+  })
 </script>
-
 <style scoped>
   .banner{
     margin-top: 10px;

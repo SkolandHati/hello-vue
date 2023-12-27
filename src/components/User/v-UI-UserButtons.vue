@@ -62,10 +62,11 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue"
   import {mapGetters, mapActions} from "vuex";
   import {supabase} from "@/services/API_supabase";
-  export default {
+  export default defineComponent({
     name: "v-UI-UserButtons",
     data(){
       return {
@@ -99,7 +100,7 @@
           window.location.reload()
           if (error) throw error;
         }
-        catch (error){
+        catch (error: any){
           console.log(error.message)
         }
       }
@@ -162,7 +163,7 @@
         return this.$router.push({name:'v-SignIn'})
       }
     },
-  }
+  })
 </script>
 
 <style scoped>

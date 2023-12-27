@@ -45,7 +45,7 @@ export default {
         favorite_products: []
     },
     actions: {
-        async getFavoriteP({commit}){
+        async getFavoriteProduct({commit}){
             try {
                 let data = await getFavoriteProducts()
                 commit('SET_PRODUCTS_FAVORITE', data)

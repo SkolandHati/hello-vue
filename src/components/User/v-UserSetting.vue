@@ -32,11 +32,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
   import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
   import vUserData from "@/components/User/v-UserData.vue"
   import vOrder from "@/components/Order/v-Order.vue"
-  export default {
+  export default defineComponent({
     name: 'v-UserSetting',
     components:{
       vMainPanelUser,
@@ -61,7 +62,7 @@
         }
       },
     }
-  }
+  })
 
 </script>
 

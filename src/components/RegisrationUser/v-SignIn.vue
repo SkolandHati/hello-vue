@@ -24,10 +24,11 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
   import {supabase} from "@/services/API_supabase";
   import {ref} from "vue";
-  export default {
+  export default defineComponent({
     name: 'v-SignIn',
     setup(){
       let email = ref('')
@@ -35,7 +36,7 @@
       const signIn = async () => {
         try {
           if (!email.value && !password.value){
-            this.router.push({name: 'v-SignIn'})
+            this.$router.push({name: 'v-SignIn'})
           }
             const {data, error } = await supabase.auth.signInWithPassword({
               email: email.value,
@@ -55,8 +56,7 @@
         goSignUp
       }
     },
-
-}
+  })
 
 </script>
 

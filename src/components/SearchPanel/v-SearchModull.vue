@@ -32,13 +32,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
   import {mapActions, mapGetters} from "vuex";
-  export default {
+  export default defineComponent({
     name: "SearchModull",
     data(){
       return{
-        data_search: null,
+        data_search: null as unknown as string,
         active: false
       }
     },
@@ -64,13 +65,13 @@
       onBlur(){
         setTimeout(() => {return this.active = false}, 1000)
       },
-      goNextCatalog(data){
+      goNextCatalog(data: string){
         if (data){
           this.$router.push({name:'v-BrendsPageProducts', params: {brend: data}})
         }
       }
     },
-  }
+  })
 </script>
 
 <style scoped>

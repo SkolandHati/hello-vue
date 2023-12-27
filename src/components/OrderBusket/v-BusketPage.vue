@@ -41,12 +41,12 @@
   </div>
 </template>
 
-<script>
-
-import {mapGetters, mapActions} from "vuex";
-import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
-import vCartItems from "@/components/Card-Product/v-cart-items.vue"
-export default {
+<script lang="ts">
+  import {defineComponent} from "vue";
+  import {mapGetters, mapActions} from "vuex";
+  import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
+  import vCartItems from "@/components/Card-Product/v-cart-items.vue"
+  export default defineComponent({
     name: 'v-BusketPage',
     components:{
       vCartItems,
@@ -58,7 +58,7 @@ export default {
         active: true
       }
     },
-  computed:{
+  computed:<any>{
     ...mapGetters({
       busketproducts: 'busketProducts/BUSKETPRODUCTS',
     }),
@@ -101,9 +101,9 @@ export default {
           console.log(e)
         }
       },
-      async countProduct(index, smbl){
+      async countProduct(index: number, smbl: string){
         try {
-          let symbol = ['plus','minus','delite']
+          let symbol: string[] = ['plus','minus','delite']
           switch (smbl) {
             case symbol[0]:
               await this.plusProdBusket(index);
@@ -121,11 +121,11 @@ export default {
       },
       goOrderPage(){
         if (this.busketproducts){
-          this.$router.push({name: 'v-OrderPage'})
+          this.$router.push({name: 'v-OrderPage' as string})
         }
       }
     },
-}
+  })
 
 </script>
 

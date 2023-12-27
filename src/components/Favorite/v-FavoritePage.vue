@@ -22,12 +22,13 @@
   </div>
 </template>
 
-<script>
-import {mapGetters, mapActions} from "vuex";
-import vMainPanel from "@/components/User/v-MainPanelUser.vue"
-import vCartItems from "@/components/Card-Product/v-cart-items.vue"
-import vCarusel from "@/components/CaruselProduct/vCarusel.vue"
-export default {
+<script lang="ts">
+  import {defineComponent} from "vue"
+  import {mapGetters, mapActions} from "vuex";
+  import vMainPanel from "@/components/User/v-MainPanelUser.vue"
+  import vCartItems from "@/components/Card-Product/v-cart-items.vue"
+  import vCarusel from "@/components/CaruselProduct/vCarusel.vue"
+  export default defineComponent({
     name: "vFavoritePage",
     components:{
       vMainPanel,
@@ -44,8 +45,7 @@ export default {
     },
     methods:{
       ...mapActions({
-        getFavorites: 'favoriteProducts/getFavoriteP',
-        // addInBusket: 'busketProducts/appendBusket',
+        getFavorites: 'favoriteProducts/getFavoriteProduct',
       }),
       async loadData(){
        try {
@@ -54,14 +54,8 @@ export default {
          console.log(e)
        }
       },
-      // goOrderPage(data){
-      //   if (data){
-      //   this.addInBusket(data)
-      // }
-      //   this.$router.push({name: 'v-OrderPage'})
-      // }
     },
-}
+  })
 
 </script>
 
