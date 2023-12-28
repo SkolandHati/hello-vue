@@ -79,7 +79,7 @@
         userinsystem: 'user/USERINSYSTEM',
         is_auth: 'user/AUTH',
         busketproducts: 'busketProducts/BUSKETPRODUCTS',
-        getFavoriteProducts: 'favoriteProducts/GET_FAVORITE_PROD'
+        getFavoriteProducts: 'favoriteProducts/GET_FAVORITE_PRODUCTS'
       }),
       styleCheck(){
         if (this.isActive){
@@ -101,7 +101,7 @@
           if (error) throw error;
         }
         catch (error: any){
-          console.log(error.message)
+          console.error(error.message)
         }
       }
       const isCurrentUser = async () => {
@@ -109,7 +109,7 @@
           const {error} = await supabase.auth.getSession()
           if (error) throw error
         }catch (e){
-          console.log(e)
+          console.error(e)
         }
       }
       return {
@@ -126,7 +126,7 @@
         getUser: 'user/getUser',
         outUser: 'user/outUser',
         loadDatafromDataBase: 'busketProducts/loadProductsData',
-        FavoriteProducts: 'favoriteProducts/getFavoriteP'
+        FavoriteProducts: 'favoriteProducts/getFavoriteProduct'
       }),
       loadData() {
         Promise.all([

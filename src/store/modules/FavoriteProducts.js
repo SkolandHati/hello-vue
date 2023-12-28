@@ -89,7 +89,7 @@ export default {
         }
     },
     getters: {
-        GET_FAVORITE_PROD(state){
+        GET_FAVORITE_PRODUCTS(state){
             return state.favorite_products
         }
     }

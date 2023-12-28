@@ -37,7 +37,7 @@
     },
     computed:{
       ...mapGetters({
-        getterFavoriteProd:'favoriteProducts/GET_FAVORITE_PROD',
+        getterFavoriteProd:'favoriteProducts/GET_FAVORITE_PRODUCTS',
       })
     },
     mounted() {
