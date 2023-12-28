@@ -1,5 +1,5 @@
 import {supabase} from "@/services/API_supabase";
-import InformationUser from "@/interfaces/index";
+import InformationUser from "@/interfaces/Types";
 async function setDataInformationUser(object){
     try {
         if (object){

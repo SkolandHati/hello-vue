@@ -72,25 +72,25 @@
             console.log(e)
           }
         },
-        async addButtons(object:Product, x: string):Promise<any>{
+        async addButtons(item:Product, marka: string):Promise<void>{
           try {
             if (!this.auth){
               return this.$router.push({name :'v-SignIn'})
             }
             const landmark = ['in_busket', 'in_favorite', 'order']
-            if (object) {
-              switch (x) {
+            if (item) {
+              switch (marka) {
                 case landmark[0]:
-                  object.quantity = 1
-                  await this.addBusket(object)
+                  item.quantity = 1
+                  await this.addBusket(item)
                   break;
                 case landmark[1]:
-                  object.quantity = 1
-                  await this.addFavorite(object)
+                  item.quantity = 1
+                  await this.addFavorite(item)
                   break;
                 case landmark[2]:
-                  object.quantity = 1
-                  await this.addBusket(object)
+                  item.quantity = 1
+                  await this.addBusket(item)
                   this.$router.push({name: 'v-OrderPage'})
                   break;
                 default:

@@ -18,6 +18,7 @@
   import Product from "@/interfaces/Product";
   import InformationUser from "@/interfaces/InformationUser";
   import Comment from "@/interfaces/Comment"
+  import {Nullable} from "@/interfaces/Types";
   export default defineComponent({
       name:"v-ModulePostComments",
       props:{
@@ -32,7 +33,7 @@
       },
       data(){
         return{
-          comments: null as unknown as string,
+          comments: null as Nullable,
         }
       },
       methods:{
@@ -40,17 +41,21 @@
           appendComment: "commentsModules/addCommentDatabase",
         }),
         async addComment(){
-          const data = await this.productAll
-          if (data && this.user_data && this.comments){
-            const obj:Comment = {
-              "content": this.comments,
-              "user_id": this.user_data.user_id,
-              "author_name": this.user_data.user_login,
-              "product_id": this.productAll.id_product
+          try {
+            const data = await this.productAll
+            if (data && this.user_data && this.comments){
+              const obj:Comment = {
+                content: this.comments,
+                user_id: this.user_data.user_id,
+                author_name: this.user_data.user_login,
+                product_id: this.productAll.id_product
+              }
+              await this.appendComment(obj)
+              this.comments = null
+              alert('Comment send')
             }
-            await this.appendComment(obj)
-            this.comments = null as unknown as string
-            alert('Comment send')
+          }catch (error){
+            console.log(error)
           }
         }
       },

@@ -2,7 +2,7 @@
   <div class="v-catalog-products" v-if="products">
         <vCartItems
           v-for="prodcs in visibleProducts"
-          :key="prodcs.id_product as number"
+          :key="prodcs.id_product"
           :products="prodcs"/>
     </div>
   <PaginateModul v-if="allProductus"
@@ -16,6 +16,8 @@
     import {defineComponent} from 'vue'
     import type {PropType} from "vue";
     import Product from "@/interfaces/Product";
+    import {AllProduct} from "@/interfaces/Product";
+    import {ListType} from "@/interfaces/Types";
     import vCartItems from "./v-cart-items.vue";
     import PaginateModul from '@/components/Card-Product/v-PaginateModul.vue'
     export default defineComponent({
@@ -39,7 +41,7 @@
         visibleProducts(){
           const start: number = (this.currentPage - 1) * this.pageSize;
           const end: number = start + this.pageSize;
-          this.products.forEach((item: object, index: number) => {
+          this.products.forEach((item: Product, index: number):void => {
             if (!item){
               this.products.splice(index,1)
             }
@@ -68,13 +70,13 @@
         },
         async loadCountProducts(){
           try {
-            const data: any = await this.allProductus
+            const data = await this.allProductus
             let listProd = []
             if (data){
-              data?.forEach((item: object, index:string,) => {
+              data?.forEach((item: Product, index:string,) => {
                 localStorage.setItem(index, JSON.stringify(item))
               })
-              for (let i = 0; localStorage.length > i; i++){
+              for (let i: number = 0; localStorage.length > i; i++){
                 listProd.push(JSON.parse(localStorage.getItem(i as any) as string))
               }
               return this.products = listProd

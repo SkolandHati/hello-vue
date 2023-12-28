@@ -87,12 +87,12 @@
     },
     watch:{
       brends(){
-        this.getBrendsInfo(this.products?.product_brend as any)
+        this.getBrendsInfo(this.products?.product_brend as string)
       }
     },
     mounted() {
       this.loadData()
-      this.getBrendsInfo(this.products?.product_brend as any)
+      this.getBrendsInfo(this.products?.product_brend as string)
     },
     methods: {
       ...mapActions({

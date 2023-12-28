@@ -35,6 +35,7 @@
   import vCartItems from "@/components/Card-Product/v-cart-items.vue";
   import {defineComponent, PropType} from "vue"
   import Brend from "@/interfaces/Brend";
+  import {Nullable} from "@/interfaces/Types";
   export default defineComponent({
     name: 'BrendsPageProducts',
     components: {
@@ -68,7 +69,7 @@
             await this.loadProducts(this.$route.params.brend)
           }
         }catch (e){
-          console.log(e)
+          console.error(e)
         }
       },
       async loadInfo(){
