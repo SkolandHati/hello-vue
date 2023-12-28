@@ -16,8 +16,6 @@
     import {defineComponent} from 'vue'
     import type {PropType} from "vue";
     import Product from "@/interfaces/Product";
-    import {AllProduct} from "@/interfaces/Product";
-    import {ListType} from "@/interfaces/Types";
     import vCartItems from "./v-cart-items.vue";
     import PaginateModul from '@/components/Card-Product/v-PaginateModul.vue'
     export default defineComponent({
@@ -70,7 +68,7 @@
         },
         async loadCountProducts(){
           try {
-            const data = await this.allProductus
+            const data: Product|unknown = await this.allProductus
             let listProd = []
             if (data){
               data?.forEach((item: Product, index:string,) => {
