@@ -33,7 +33,7 @@
       },
       data(){
         return{
-          comments: null as Nullable,
+          comments: null as Nullable<string>,
         }
       },
       methods:{
