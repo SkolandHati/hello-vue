@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import {supabase} from "@/services/APIauthorization";
+import {supabase} from "@/services/API_supabase";
 
 const App = () => import('@/App.vue')
 const Home = () => import('@/components/Home/v-HomePage')

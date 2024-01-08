@@ -12,10 +12,13 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+  import {defineComponent} from "vue"
+  export default defineComponent({
     name: 'v-PaginateModul',
-    emits: 'pagechanged',
+    emits: {
+      pagechanged: (page: number) => true
+    },
     props:{
       modelValue:{
         type: Number,
@@ -28,17 +31,17 @@ export default {
     },
     data(){
       return {
-        numb: this.modelValue,
+        numb: this.modelValue as number,
       }
     },
     methods:{
-      navigate(page) {
-        if (this.currentPage !== page) {
+      navigate(page: number): void {
+        if (this.modelValue !== page) {
           this.$emit('pagechanged', page);
         }
       }
     },
-}
+  })
 </script>
 <style scoped>
   :deep(.q-pagination){

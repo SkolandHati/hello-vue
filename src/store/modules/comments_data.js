@@ -1,4 +1,4 @@
-import {supabase} from "@/services/APIauthorization";
+import {supabase} from "@/services/API_supabase";
 async function setCommentsForProduct(bodyComment){
     try {
         const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}

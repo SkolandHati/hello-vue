@@ -37,13 +37,14 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
   import {ref, reactive} from "vue";
-  import {supabase} from "@/services/APIauthorization";
+  import {StateForSignUp} from "@/interfaces/InterfacesState"
+  import {supabase} from "@/services/API_supabase";
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, minLength, maxLength } from '@vuelidate/validators'
-
-  export default {
+  export default defineComponent({
       name: "v-SignUp",
       data(){
         return{
@@ -54,13 +55,12 @@
         }
       },
       setup(){
-
         const nameUser = ref("");
         const emailAdress = ref("");
         const password = ref("");
         const confirmpassword = ref("")
 
-        const state = reactive({
+        const state: StateForSignUp = reactive({
           nameUser: nameUser,
           emailAdress: emailAdress,
           password: password,
@@ -87,8 +87,8 @@
               }
             });
             if (error) throw error
-          }catch (error){
-            console.log(error.error_description || error.message)
+          }catch (error: any){
+            console.log(error.message)
           }
         }
         return {
@@ -99,7 +99,6 @@
           v$,
           submitinDatabase
         }
-
       },
       computed:{
         confirmPassword(){
@@ -114,7 +113,7 @@
           }
         }
       },
-  }
+    })
 </script>
 
 <style scoped>

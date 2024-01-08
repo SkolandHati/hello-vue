@@ -19,49 +19,47 @@
   </carousel>
 </template>
 
-<script>
-
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
-import 'vue3-carousel/dist/carousel.css'
-import {mapActions, mapGetters} from "vuex";
-export default {
-  name: 'vCarusel',
-  components: {
-    Carousel,
-    Slide,
-    Pagination,
-    Navigation,
-  },
-  computed:{
-    ...mapGetters({
-      getCaruselProd: 'products/CAROSELPRODUCTS',
-    })
-  },
-  mounted() {
-    this.getCaruselProducts()
-  },
-  methods:{
-    ...mapActions({
-      loadProductsCarusel: 'products/loadCaruselProd',
-    }),
-    async getCaruselProducts(){
-      try {
-        await this.loadProductsCarusel()
-      }catch (e){
-        console.log(e)
+<script lang="ts">
+  import {mapActions, mapGetters} from "vuex";
+  import {defineComponent} from "vue"
+  import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+  import 'vue3-carousel/dist/carousel.css'
+  export default defineComponent({
+    name: 'vCarusel',
+    components: {
+      Carousel,
+      Slide,
+      Pagination,
+      Navigation,
+    },
+    computed:{
+      ...mapGetters({
+        getCaruselProd: 'products/CAROSELPRODUCTS',
+      })
+    },
+    mounted() {
+      this.getCaruselProducts()
+    },
+    methods:{
+      ...mapActions({
+        loadProductsCarusel: 'products/loadCaruselProd',
+      }),
+      async getCaruselProducts(){
+        try {
+          await this.loadProductsCarusel()
+        }catch (e){
+          console.log(e)
+        }
+      },
+      goProductsPage(id: number){
+        if (id){
+          this.$router.push({name: 'v-cart-item-page', params: {id_product: id}})
+        }
       }
     },
-    goProductsPage(id){
-      if (id){
-        this.$router.push({name: 'v-cart-item-page', params: {id_product: id}})
-      }
-    }
-  },
-}
+  })
 </script>
-
 <style scoped>
-
 .carousel {
   position: relative;
   text-align: center;

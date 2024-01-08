@@ -19,17 +19,20 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {mapActions, mapGetters} from "vuex";
+  import {defineComponent} from 'vue'
+  import type {PropType} from 'vue'
+  import Product from "@/interfaces/Product";
   import modulePostComments from "@/components/BlogWithComments/v-ModulePostComments.vue"
-  export default {
+  export default defineComponent({
     name: "vBlog",
     components:{
       modulePostComments
     },
     props:{
       productData:{
-        type: Object,
+        type: Object as PropType<Product>,
         required: true
       }
     },
@@ -65,16 +68,14 @@
       async loadCommentDataBase(){
         try {
           let data = await this.productData
-          await this.responseDataComments(data.id_product)
+          await this.responseDataComments(data.id_product as number)
         }catch (e){
           console.log(e)
         }
       },
     },
-  }
-
+  })
 </script>
-
 <style scoped>
   :deep(.q-pa-md){
     height: 450px;

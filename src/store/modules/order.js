@@ -1,4 +1,4 @@
-import {supabase} from "@/services/APIauthorization";
+import {supabase} from "@/services/API_supabase";
 async function getOrderDataBase(){
     try {
         const {data} = await supabase.from('order_user').select('*')
