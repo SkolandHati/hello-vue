@@ -2,33 +2,41 @@
   <div class="user-panel">
     <v-main-panel-user/>
   </div>
-  <div id="busketContainer">
-    <div class="busket">
-      <div class="productInBusket" v-if=busketproducts>
-        <h1 id="header">Корзина Избранных Продуктов</h1>
-        <div class="productItem" v-for="(item, i) in busketproducts">
-          <imageComponent :productBrend="item.product_brend"
-                          :imageProduct="item.image_product"
-                          :settingBusketPage="true"></imageComponent>
-          <div class="productInfo">
-              <div class="productInfo">
-                <h1 id="product">{{item.name_product}}</h1>
-                <h1 id="product">{{item.price_product * item.quantity}}</h1>
-                <h1 id="product">Количество товаров в корзине {{item.quantity}}</h1>
-              </div>
-              <div class="navig-btn">
-                <button id="prod-button" class="plus" @click="countProduct(i, 'plus')">+</button>
-                <button id="prod-button" class="minus" @click="countProduct(i, 'minus')">-</button>
-                <button id="prod-button" class="delite" @click="countProduct(item.id_product, 'delit')">X</button>
-              </div>
-          </div>
+  <div class="busket-container">
+    <div class="item-container" style="width: 80%;" v-if="busketproducts">
+      <q-banner class="bg-primary text-white" style="border-radius: 0 7px 7px 0">Корзина Избранных Продуктов</q-banner>
+      <div class="container">
+        <div class="cart-container" v-for="(item, i) in busketproducts" :key="i">
+        <vCartItems class="cart-item" :products="item" :active="active"></vCartItems>
+        <q-btn-group style="width: 300px; margin-left: 23.5%; margin-bottom: 20px">
+          <q-btn color="green"
+                 icon="plus_one"
+                 style="width: 33.3%;"
+                 @click="countProduct(i, 'plus')"></q-btn>
+          <q-btn color="dark"
+                 icon="remove"
+                 style="width: 33.3%;"
+                 @click="countProduct(i, 'minus')"></q-btn>
+          <q-btn color="red"
+                 icon="remove_shopping_cart"
+                 style="width: 33.3%;"
+                 @click="countProduct(item.id, 'delite')"></q-btn>
+        </q-btn-group>
         </div>
+       </div>
       </div>
-      <div class="infoAllBusket">
-        <h1 id="infoPrice" >Стоимость всех товаров в корзине: {{calculateThePrice}}</h1>
-        <button id="button" @click="goOrderPage">Оформить заказ</button>
-        <button id="button" class="clearBusket" @click="clearBusket">Очистить корзину</button>
-      </div>
+    <div class="info-all-busket" style="width: 18%; height: 400px;">
+      <q-banner class="info-banner bg-primary text-white">Стоимость всех товаров в корзине: {{calculateThePrice}}</q-banner>
+        <q-btn class="buttns"
+               style="display: block"
+               unelevated rounded color="green"
+               label="Оформить заказ"
+               @click="goOrderPage"></q-btn>
+        <q-btn class="buttns"
+               style="display: block"
+               unelevated rounded color="red"
+               label="Очистить корзину"
+               @click="clearBusket"></q-btn>
     </div>
   </div>
 </template>
@@ -36,17 +44,18 @@
 <script>
 
 import {mapGetters, mapActions} from "vuex";
-import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
-import imageComponent from "@/components/kit/ImageComponent.vue";
+import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
+import vCartItems from "@/components/Card-Product/v-cart-items.vue"
 export default {
     name: 'v-BusketPage',
     components:{
+      vCartItems,
       vMainPanelUser,
-      imageComponent
     },
     data(){
       return {
         fullPrice: 0,
+        active: true
       }
     },
   computed:{
@@ -121,125 +130,43 @@ export default {
 </script>
 
 <style scoped>
+ .busket-container{
+   display: flex;
+ }
+ .info-all-busket{
+   top: 100px;
+   position: sticky;
+   margin: 15px;
+   margin-top: 80px;
+   border: 2px solid dimgrey;
+   border-radius: 7px;
+   text-align:center;
 
-  .user-panel{
-    display: flex;
-    background-color: rgb(57, 73, 82);
-    width: 100%;
-    height: 50px;
-  }
-
-  #busketContainer{
-    display: flex;
-  }
-  .busket{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    width: 750px;
-    height: 100%;
-    margin-left: 15%;
-    margin-top: 2%;
-    margin-bottom: 20px;
-    border: 1px solid #6e6d6d;
-    border-radius: 5px;
-  }
-  .productInBusket{
-    display: block;
-    margin: 25px;
-  }
-  .productItem{
-    display: flex;
-    margin-top: 10px;
-
-  }
-  imageComponent>img{
-    width: 300px;
-    height: 300px;
-    padding: 5px;
-    padding-right: 0px;
-    padding-left: 0px;
-    border: 2px solid #3B5983;
-    border-radius: 5px;
-  }
-  .navig-btn{
-    height: 50px;
-  }
-  .navig-btn{
-    display: flex;
-    width: 100%;
-    height: 50px;
-    margin-top: 5px;
-    justify-content: center;
-  }
-  .user-block{
-    margin-left: 30px;
-  }
-  #prod-button{
-    width: 50px;
-    height: 50px;
-    margin-left: 20px;
-    margin-top: 15px;
-    border-radius: 5px;
-  }
-  .plus{
-    background-color: green;
-    font-size: 25px;
-  }
-  .minus{
-    background-color: red;
-    font-size: 25px;
-  }
-  .delite{
-    background-color: #6e6d6d;
-    font-size: 20px;
-  }
-  .productInfo{
-    display: block;
-    margin-left: 35px;
-  }
-  #product{
-    color: black;
-    border-top: 2px solid #c2b0b0;
-    border: 2px solid #c2b0b0;
-    border-radius: 5px;
-    text-align: center;
-    margin-top: 20px;
-    margin-top: 5px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 25px;
-  }
-  h1{
-    color: black;
-  }
-  #header{
-    text-align: center;
-    margin-top: 0px;
-    width: 600px;
-  }
-  .infoAllBusket{
-    position: sticky;
-    top: 160px;
-    margin: 15px;
-    margin-left: 130px;
-    margin-top: 0px;
-    width: 330px;
-    height: 100%;
-    max-width: 330px;
-    max-height: 30%;
-    border-radius: 5px;
-    border: 1px solid black;
-  }
-  #infoPrice{
-    color: black;
-    text-align: center;
-  }
-  #button{
-    display: block;
-    text-align: center;
-    margin: 25px;
-    margin-left: 90px;
-    width: 140px;
-    height: 37px;
-  }
+ }
+ .item-container{
+   text-align: center;
+ }
+ :deep(.items){
+   margin-bottom: 0px;
+   padding-left: 12%;
+   color: dimgray;
+ }
+ :deep(.card-actions){
+   display: none;
+ }
+ .container{
+   display: grid;
+   grid-template-columns: repeat(2, 1fr)
+ }
+ :deep(.q-btn-group.row.no-wrap.inline){
+   display: block;
+   margin-left: 60px;
+ }
+ :deep(.info-banner.q-banner.row.items-center.bg-primary.text-white){
+   margin-top: 70px;
+ }
+ .buttns{
+   margin: 0 auto;
+   margin-top: 50px;
+ }
 </style>

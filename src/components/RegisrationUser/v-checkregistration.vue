@@ -1,15 +1,19 @@
 <template>
   <section class="container">
-    <main class="container-main">
-      <div class="window-accept" v-if="loadData">
-        <h1>Регистрация прошла успешна!</h1>
-        <h2>Пользователь создан</h2>
+    <main class="main"
+          style="width: 100%">
+      <div class="header" v-if="userAuth">
+        <q-banner class="banner-one">Регистрация прошла успешна!</q-banner>
+        <q-banner class="banner-two">Пользователь создан</q-banner>
         <div class="buttn">
-          <button @click="goHome">Завершить и вернуться к главной странице</button>
+          <q-btn @click="goHome" color="amber">Завершить и вернуться к главной странице</q-btn>
+        </div>
+        <div class="buttn">
+          <q-btn @click="goSetting" color="primary">Перейти к настройкам и закончить регистрацию</q-btn>
         </div>
       </div>
-      <div class="window-danger" v-else>
-          <h1>Не удалось успешно пройти регистрацию</h1>
+      <div class="wdanger" v-else>
+        <q-banner>Не удалось успешно пройти регистрацию</q-banner>
       </div>
     </main>
   </section>
@@ -54,6 +58,9 @@
       },
       goHome(){
         return this.$router.push({name: 'v-HomePage'})
+      },
+      goSetting(){
+        return this.$router.push({name: 'v-UserSetting'})
       }
     },
   }
@@ -61,46 +68,23 @@
 </script>
 
 <style scoped>
-  body{
-    background-color: #6e6d6d;
+  .header{
+    margin:80px;
   }
-  .container-main{
-    width: 100%;
-    height: 100%;
-    padding: 0px;
-    margin: 0px;
+  .banner-one{
+    border-radius: 7px 7px 0 0;
   }
-  .window-accept{
-    width: 500px;
-    height: 400px;
-    margin: 100px;
-    margin-left: 30%;
-    border: 2px solid #1a6c80;
-    border-radius: 10px;
-    background-color: #ffffff;
+  .banner-two{
+    border-radius: 0 0 7px 7px;
   }
-  .window-accept>h1, h2{
+  .banner-one,.banner-two{
     text-align: center;
+    background-color: #3b899a;
+    color: #f5f3f3;
   }
-  .buttn{
-    width: 480px;
-    height: 300px;
-    display: block;
-    margin-top: 50px;
-    margin-left: 10px;
+  .buttn {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
   }
-  .buttn>button{
-    width: 270px;
-    height: 35px;
-    cursor: pointer;
-    font-size: 13px;
-    margin-top: 25px;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-  }
-  h1{
-    color: brown;
-  }
-
 </style>

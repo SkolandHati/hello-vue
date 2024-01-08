@@ -61,8 +61,8 @@ export default {
                     dispatch('updateUserInfo')
                     if (result.data.user === null){
                         commit("GET_USER", false, result.data.user)
-                    }
-                    commit("GET_USER_STATUS", result.data.user.aud)
+                    }else {
+                    commit("GET_USER_STATUS", result.data.user.aud)}
                 }else {
                     if (result.data.user === null){
                         commit("GET_USER", false, result.data.user)
@@ -120,6 +120,7 @@ export default {
             state.user.user_email = email
         },
         UPDATE_USER_INFO(state, data){
+            state.user.id = data[0].id
             state.user.user_id = data[0].user_id
             state.user.user_login = data[0].login_user
             state.user.user_first_name = data[0].first_user_name

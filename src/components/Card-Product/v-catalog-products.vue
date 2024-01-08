@@ -1,13 +1,14 @@
 <template>
     <div class="v-catalog-products" v-if="products">
         <vCartItems
-          v-for="prodoos in visibleProducts"
-          :key="prodoos.id"
-          :products="prodoos"/>
+          v-for="prodcs in visibleProducts"
+          :key="prodcs.id_product"
+          :products="prodcs"/>
     </div>
-  <PaginateModul v-if="productus" :current_page="currentPage"
-               :total_pages="totalPages"
-               @pagechanged="pageChanged"></PaginateModul>
+  <PaginateModul v-if="productus"
+                 :modelValue="currentPage"
+                 :total_pages="totalPages"
+                 @pagechanged="pageChanged"></PaginateModul>
 </template>
 
 <script>
@@ -29,11 +30,17 @@
       },
       computed:{
         ...mapGetters({
-          productus:'products/PRODUCTS'
+          productus:'products/PRODUCTS',
+          brends: 'products/BRENDSINFO'
         }),
         visibleProducts() {
           const start = (this.currentPage - 1) * this.pageSize;
           const end = start + this.pageSize;
+          this.products.forEach((item, index) => {
+            if (!item){
+              this.products.splice(index,1)
+            }
+          })
           return this.products.slice(start, end)
         },
         totalPages() {
@@ -79,9 +86,7 @@
       },
       inheritAttrs: false,
     }
-
 </script>
-
 <style scoped>
     .v-catalog-products {
       display: grid;

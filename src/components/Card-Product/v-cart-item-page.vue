@@ -1,35 +1,37 @@
 <template>
-  <div class="wrapper-container">
-    <div class="user-panel">
-      <vMainPanelUser/>
+  <vMainPanelUser/>
+  <div class="container-product" v-if="oneproduct" style="display: flex;">
+    <div class="blog">
+      <q-banner class="bg-primary text-white">Оставьте комментарий о товаре!</q-banner>
+      <vBlog :product-data="oneproduct"></vBlog>
     </div>
-      <div class="prime-container" v-if="oneproduct">
-        <div class="first-container">
-          <div class="comments-block">
-            <h1>Оставить комментарий о товаре : {{oneproduct.name}}</h1>
-            <v-blog :productData="oneproduct"/>
-          </div>
-        </div>
-        <div class="itemproduct">
-          <div class="info-product">
-            <div class="image-container">
-                <img :src="require(`../assets/images/${oneproduct.brend}/${$route.params.id}.jpeg`)" alt="images">
-                <h1 class="nameProducts">'{{oneproduct.name}}' B: {{oneproduct.brend}}</h1>
-                <h2 class="price"> $ {{oneproduct.price}}</h2>
-            </div>
-          </div>
-          <div class="block-button">
-            <button id="buy" class="button">Купить</button>
-            <button id="favorite" class="button" @click="addToFavoriteProduct(oneproduct)">В избранное</button>
-            <button id="in-busket" class="button" @click="addToCartInBusket(oneproduct)">В корзину</button>
-          </div>
-        </div>
+    <div class="item">
+      <q-card class="my-card" flat bordered>
+        <q-img style="width: 350px; height: 450px"
+               :src="require(`@/components/assets/images/${oneproduct.product_brend}/${oneproduct.image_product}`)"
+               alt="images"></q-img>
+        <q-card-section>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{oneproduct.name_product}}</div>
+          <h2 class="text-h5 q-mt-sm q-mb-xs"> $ {{oneproduct.price_product}}</h2>
+        </q-card-section>
+      </q-card>
+    </div>
+    <div class="q-pa-md column q-gutter-sm">
+      <q-btn unelevated rounded color="green"
+             label="Купить"
+             @click="addButtons(oneproduct, 'order')"></q-btn>
+      <q-btn unelevated rounded color="secondary"
+             label="В избранное"
+             @click="addButtons(oneproduct, 'in_favorite')"></q-btn>
+      <q-btn unelevated rounded color="red"
+             label="В корзину"
+             @click="addButtons(oneproduct, 'in_busket')"></q-btn>
     </div>
   </div>
 </template>
 
 <script>
-    import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+    import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
     import vBlog from "@/components/BlogWithComments/v-Blog.vue"
     import {mapActions, mapGetters} from "vuex";
     export default {
@@ -48,7 +50,6 @@
       },
       mounted() {
         this.loadData()
-        this.getData()
       },
       methods:{
         ...mapActions({
@@ -56,127 +57,78 @@
           loadInfoBrend: 'products/loadBrendsInfo',
           addBusket: 'busketProducts/appendBusket',
           getUser: 'user/getUser',
-          addProductInfavorite: 'favoriteProducts/setFavoriteProduct'
+          addFavorite: 'favoriteProducts/setFavoriteProduct'
         }),
-        async loadData(){
-          Promise.all([
-            await this.getUser(),
-            await this.loadInfoBrend()
-          ])
-        },
-        async getData(){
+        loadData(){
           try {
-            if (this.$route.params.id){
-              await this.loadsProduct(this.$route.params.id)
-            }
+            Promise.all([
+              this.getUser(),
+              this.loadsProduct(this.$route.params.id_product),
+              this.loadInfoBrend(),
+            ])
+          }catch (e){
+            console.log(e)
           }
-          catch (e){
-              console.log(e)}
         },
-        async addToCartInBusket(product) {
+        async addButtons(object, x){
           try {
             if (!this.auth){
               return this.$router.push({name :'v-SignIn'})
             }
-            const prod = await this.oneproduct;
-            if (prod) {
-              await this.addBusket(product)
+            const landmark = ['in_busket', 'in_favorite', 'order']
+            if (object) {
+              switch (x) {
+                case landmark[0]:
+                  object.quantity = 1
+                  await this.addBusket(object)
+                  break;
+                case landmark[1]:
+                  object.quantity = 1
+                  await this.addFavorite(object)
+                  break;
+                case landmark[2]:
+                  object.quantity = 1
+                  await this.addBusket(object)
+                  this.$router.push({name: 'v-OrderPage'})
+                  break;
+                default:
+                  break
+              }
             }
           }catch (e){
             console.log(e)
           }
         },
-        async addToFavoriteProduct(product){
-          try {
-            if (!this.auth){
-              return this.$router.push({name :'v-SignIn'})
-            }
-            const prod = await this.oneproduct;
-            if (prod){
-                await this.addProductInfavorite(product)
-            }
-          }catch (e){
-            console.log(e)
-          }
-        }
       },
     }
 </script>
 
 <style scoped>
-  .user-panel{
-      display: flex;
-      background-color: rgb(57, 73, 82);
-      width: 100%;
-      height: 50px;
+  .container-product{
+    float: right;
   }
-  .prime-container{
-    display: flex;
-  }
-  .brend-container>.head{
-    text-align: center;
-    margin: 10px;
-  }
-  .brend-container>h2{
-    text-align: center;
-    font-size: 15px;
-    font-family: Padauk, sans-serif;
-  }
-  .brend-container>p{
-    margin-left: 5px;
-    text-align: center;
-  }
-  .comments-block{
-    width: 100%;
-    height: 90%;
-  }
-  .comments-block>h1{
-    padding-left: 25px;
-    text-align: center;
-    font-size: 17px;
-  }
-  .itemproduct{
-    justify-content: right;
-    display: flex;
-  }
-  .info-product{
-    width: 70%;
-    display: block;
-    margin: 50px;
-    margin-top: 25px;
-  }
-  .image-container{
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 6px;
-    padding-top: 10px;
-  }
-  img{
-    width: 350px;
-    height: 350px;
-  }
-  .block-button{
-    margin: 25px;
-    margin-top: 25px;
-    margin-bottom: 50px;
-    border: 2px solid dimgrey;
-    border-radius: 6px;
-  }
-  .button{
-    display: block;
-    background: #c2c2c2;
-    color:#088;
-    text-decoration:none;
+  .q-pa-md{
+    margin: 40px;
+    padding-top: 80px;
+    float: right;
     width: 200px;
-    height: 45px;
-    margin-top: 20px;
-    margin-bottom: 25px;
-    text-align:center;
-    transition:all 0.3s;
+    height: 500px;
+    border: 1px solid #568fe3;
+    border-radius: 7px;
   }
-  .block-button>.button:hover{
-      cursor: pointer;
-      box-shadow:0px -5px 0 #088 inset;
+  .item{
+    margin: 15px;
   }
-
+  .blog{
+    width: 600px;
+    height: 600px;
+    margin-top: 15px;
+    margin-right: 35px;
+  }
+  .bg-primary.text-white{
+    border-radius: 7px 7px 0 0;
+  }
+  .q-btn{
+    margin-top: 50px;
+  }
 </style>

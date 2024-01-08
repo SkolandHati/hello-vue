@@ -1,26 +1,17 @@
 <template>
     <form action="#" method="post" target="_blank">
-      <h1 v-if="!defaultSetting">Заполните все поля и заказывайте товары в один клик!</h1>
-      <fieldset class="block-inputs"
-                :class="{atherSetting: defaultSetting}">
-        <div class="inputs" v-for="(item, i) in labels">
-          <v-input :modelValue="state[Object.keys(this.state)[i]]"
-                   v-model="state[Object.keys(this.state)[i]]"
-                   :item="item"
-                   :defSetting="defaultSetting"
-                   />
+      <q-banner class="banner" :class="{defaultSetting}">{{bannerTxt}}</q-banner>
+      <fieldset class="block-inputs">
+        <div v-for="(item, i) in labels" :key="i">
+          <vInput :item="item"
+                  :modelValue="state[Object.keys(this.state)[i]]"
+                  v-model="state[Object.keys(this.state)[i]]"></vInput>
         </div>
-        <div class="block-native">
-          <div class="nav"
-               :class="{active: !!dataValidity}">
-            <p class="native" >Заполните все поля *</p>
-          </div>
-          <div class="submit-button">
-            <button type="submit"
-                    :disabled="dataValidity === false"
-                    :class="{fix: !!dataValidity, setting: defaultSetting}"
-                    @click.prevent="submitUserInformation">{{buttonTxt}}</button>
-          </div>
+        <div class="block-submit"
+             style="display: flex; width: 100%; justify-content: center">
+          <q-btn color="secondary"
+                 style="width: 40%"
+                 :label="buttonTxt" @click.prevent="submitUserInformation"></q-btn>
         </div>
       </fieldset>
     </form>
@@ -38,12 +29,15 @@
       defaultSetting:{
         type: Boolean,
         default: false
-      }
+      },
     },
-    emits: "sendDataUser",
+    emits:
+        ["sendDataUser",
+        "orderPush"],
     data(){
       return{
         buttonText: null,
+        bannerText: null,
         state: {
           login: '',
           first_name: '',
@@ -69,9 +63,16 @@
       },
       buttonTxt(){
         if (this.defaultSetting){
-          return this.buttonText = 'Заказать'
+          return this.buttonText = 'Оформить заказ'
         }else {
           return this.buttonText = 'Сохранить данные'
+        }
+      },
+      bannerTxt(){
+        if (this.defaultSetting){
+          return this.bannerText = "Для оформления заказа все поля должны быть заполнены"
+        }else {
+          return this.bannerText = "Заполните все поля и заказывайте товары в один клик!"
         }
       }
     },
@@ -103,10 +104,12 @@
           let data = this.dataValidity
           if (data && this.user){
             this.state.id = this.user.user_id
-            await this.setterUserData(this.state)
-            if (this.defaultSetting){
-              await this.$emit('sendDataUser',this.state)
+            if(!this.user.id){
+              await this.setterUserData(this.state)
             }
+          }
+          if (this.defaultSetting ){
+            await this.$emit('orderPush', this.user.user_id)
           }
         }catch (e){
           console.log(e)
@@ -117,54 +120,11 @@
 </script>
 
 <style scoped>
-  h1{
-    margin-left: 190px;
+  .banner{
     margin-top: 10px;
-    margin-bottom: 5px;
     text-align: center;
-    font-size: 22px;
-  }
-  .block-inputs{
-    margin-top: 15px;
-    margin-left: 50px;
-    width: 108%;
-    height: 85%;
-    border-radius: 5px;
-  }
-  .atherSetting{
-    width: 94%;
-    margin-left: 35px;
-  }
-  .submit-button{
-    position: relative;
-    display: flex;
-  }
-  .block-native {
-    display: flex;
-  }
-  .native{
-    width: 160px;
-    height: 21px;
-    margin-top: 23px;
-    margin-left: 50px;
-  }
-  .active{
-    display: none;
-    width: 160px;
-    height: 21px;
-  }
-  .fix{
-    margin-left: 245px;
-  }
-  button{
-    position: relative;
-    margin: 10px;
-    width: 350px;
-    height: 35px;
-    margin-left: 35px;
-    margin-top: 15px;
-  }
-  .setting{
-    margin-left: 0px;
+    background-color: #3b899a;
+    border-radius: 7px 7px 0px 0px;
+    color: #f5f3f3;
   }
 </style>

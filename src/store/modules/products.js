@@ -1,5 +1,26 @@
-import {getPRoducts, getProductID, getInfoBrends} from "@/services/entities/product_request"
+import {getProductID, getInfoBrends} from "@/services/entities/product_request"
+import {supabase} from "@/services/APIauthorization";
 
+async function getProductsDataBase(){
+    try {
+        let {data} = await supabase.from('products').select('*')
+        if (data){
+            return data
+        }
+    }catch (e){
+        console.log(e)
+    }
+}
+async function getProductsIDDataBase(id){
+    try {
+        let {data} = await supabase.from('products').select('*').eq('id_product', id)
+        if (data){
+            return data
+        }
+    }catch (e){
+        console.log(e)
+    }
+}
 export default {
     namespaced: true,
     state:{
@@ -9,24 +30,23 @@ export default {
         caruselProducts: [],
         randomProduct: null,
         brends: [],
-        index: 1
     },
     actions: {
         async loadProducts({commit}) {
             try {
-                const result = await getPRoducts()
+                const result = await getProductsDataBase()
                 commit("SET_PRODUCTS_STATE", result)
             } catch (e) {
-                Promise.reject(e)
+                console.log(e)
             }
         },
-        async loadsProduct({commit, state}, number){
+        async loadsProduct({commit, state}, id_product){
             try {
-                const result = await getProductID(number|| state.index)
+                const result = await getProductsIDDataBase(id_product)
                 commit("ONE_SET_PRODUCTS", result)
             }
             catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async loadProdcutsCatalog({dispatch, commit}, data){
@@ -34,7 +54,7 @@ export default {
                 await dispatch('loadProducts')
                 commit("SET_PRODUCTS_CATALOG", data)
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async loadCaruselProd({dispatch,commit}){
@@ -43,16 +63,7 @@ export default {
                 await dispatch('loadBrendsInfo')
                 commit("SET_CAROUSEL_PRODUCTS")
             }catch (e){
-                Promise.reject(e)
-            }
-        },
-        async getRandomProduct({commit}){
-            try {
-                 const randomNumber = () => { return Math.floor(Math.random() *(6 - 1) + 1)}
-                 const result = await getProductID(randomNumber())
-                 commit('SET_RANDOM_PROD', result)
-            }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         },
         async loadBrendsInfo({commit}){
@@ -60,7 +71,7 @@ export default {
                 const result = await getInfoBrends()
                 commit("SET_INFO_BRENDS", result)
             }catch (e){
-                Promise.reject(e)
+                console.log(e)
             }
         }
     },
@@ -69,27 +80,17 @@ export default {
             state.products = products
         },
         SET_PRODUCTS_CATALOG(state, nameBrend){
-            let list = state.products?.filter(item => item.brend === nameBrend)
+            let list = state.products?.filter(item => item.product_brend === nameBrend)
             state.catalogProducts = list
         },
         ONE_SET_PRODUCTS(state, products) {
-            state.oneproduct = products
+            state.oneproduct = products[0]
         },
         SET_CAROUSEL_PRODUCTS(state){
             const randomNumber = () => { return Math.floor(Math.random() *(4 - 1) + 1)}
             let data = state.brends[randomNumber()].brend_Name
-            let list = state.products?.filter(item => item.brend === data)
+            let list = state.products?.filter(item => item.product_brend === data)
             state.caruselProducts = list
-        },
-        SET_RANDOM_PROD(state, prod){
-            const object = {
-                image_product: prod.image,
-                name_products: prod.name,
-                product_id: prod.id,
-                price_product: prod.price,
-                quantity: 1,
-                name_brend: prod.brend}
-            state.randomProduct = object
         },
         SET_INFO_BRENDS(state, infoData){
             state.brends = infoData
@@ -111,9 +112,6 @@ export default {
         BRENDSINFO(state){
             return state.brends
         },
-        GETRANDOMPRODUCT(state){
-            return state.randomProduct
-        }
     }
 }
 

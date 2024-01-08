@@ -1,19 +1,23 @@
 <template>
   <div class="container__paginate">
-    <button class="pagination" v-for="(item, i) in pages" :key="i" :class="{active: current_page === item}" @click.prevent="navigate(item)">
-      {{item}}
-    </button>
+    <q-pagination
+        :max="total_pages"
+        v-model="numb"
+        @click.prevent="navigate(numb)"
+        direction-links
+        unelevated
+        color="green"
+        active-color="amber"
+    ></q-pagination>
   </div>
 </template>
 
 <script>
-import {createLogger} from "vuex";
-
 export default {
     name: 'v-PaginateModul',
     emits: 'pagechanged',
     props:{
-      current_page:{
+      modelValue:{
         type: Number,
         require: true
       },
@@ -24,21 +28,7 @@ export default {
     },
     data(){
       return {
-        numb: null,
-        Active: false
-      }
-    },
-    computed: {
-      pages() {
-        const pagesArray = [];
-        for (let page = 1; page <= this.total_pages; page++) {
-          const pageDiff = Math.abs(page - this.current_page);
-          const showPage = (pageDiff < 3 || page === 1 || page === this.total_pages);
-          if (showPage) {
-            pagesArray.push(page);
-          }
-        }
-        return pagesArray;
+        numb: this.modelValue,
       }
     },
     methods:{
@@ -49,44 +39,15 @@ export default {
       }
     },
 }
-
-
-
-
-
 </script>
-
 <style scoped>
-
-  .container__paginate {
-    display: flex;
+  :deep(.q-pagination){
+    margin-bottom: 25px;
     justify-content: center;
-    margin-top: 15px;
-    margin-left: 10px;
-    margin-bottom: 15px;
-    padding-bottom: 20px;
-    width: 98%;
-    height: 35px;
-    border: 1px solid #989898;
-    border-radius: 5px;
   }
-  .pagination{
-    display: flex;
-    margin: 15px;
-    width: 30px;
-    height: 30px;
-    padding-top: 4px;
-    justify-content: center;
-    border: 2px solid skyblue;
-    border-radius: 50%;
-  }
-
-  .pagination:hover{
-    cursor: pointer;
-    background-color: skyblue;
-  }
-  .container__paginate>.active{
-    background-color: skyblue;
+  :deep(.q-btn){
+    margin-left: 20px;
+    margin-right: 20px;
   }
 </style>
 

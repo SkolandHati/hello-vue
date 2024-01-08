@@ -4,18 +4,10 @@ async function appProductInDatabase(bodyProduct){
     try {
         if (bodyProduct){
             const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
-            const obj = {
-                id: randomID(),
-                image_product: bodyProduct.image,
-                name_product: bodyProduct.name,
-                id_product: bodyProduct.id,
-                quantity: 1,
-                product_brend: bodyProduct.brend,
-                price_product: bodyProduct.price
-            }
+            bodyProduct.id = randomID()
             let {data} = await supabase
                 .from('busketProducts')
-                .insert([obj]).select()
+                .insert([bodyProduct]).select()
         }
     }catch (e){
         console.log(e)
@@ -140,7 +132,7 @@ export default {
             state.busketProduct[index].quantity--
         },
         DELITERPOD(state, data){
-            let datass = state.busketProduct?.find(item => item.id === data.id)
+            let datass = state.busketProduct?.find(item => item.id_product === data)
             state.busketProduct?.forEach((items, index, arrye) => {
                 if (state.busketProduct[index] === datass){
                     state.busketProduct.splice(index, 1)

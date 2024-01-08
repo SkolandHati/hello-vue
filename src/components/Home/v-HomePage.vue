@@ -3,17 +3,14 @@
       <vMainPanelUser/>
     </div>
     <div class="contaner-homepage">
-      <vCarusel/>
+      <vCarusel></vCarusel>
       <div class="cards">
-          <div class="head">
-            <h1 class="header-product">Catalog Brend's</h1>
-          </div>
          <vCatalogProducts/>
       </div>
     </div>
 </template>
 <script>
-    import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+    import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
     import vCarusel from "../CaruselProduct/vCarusel"
     import vCatalogProducts from "../Card-Product/v-catalog-products.vue"
     export default {
@@ -41,7 +38,6 @@
       width: 100%;
       margin-left: 10px;
     }
-
     h1{
         color: black;
         text-align: center;

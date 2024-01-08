@@ -2,22 +2,38 @@
   <div class="user-panel">
     <v-main-panel-user/>
   </div>
-  <div class="container-user-setting">
-    <div class="choice">
-      <h1 class="setting" :class="{active_data}" id="act" @click="fakePaginate">Настройки</h1>
-      <h1 class="order" :class="{active_order}" id="act" @click="fakePaginate">Заказы</h1>
+  <div class="container-user-setting" style="display: flex">
+    <div class="block-buttons" style="width: 35%; margin: 20px">
+        <q-btn class="button"
+               :class="{active_data}"
+               style="width:80%;
+               height: 50px;
+               font-size: 15px;
+               display: block"
+               @click="fakePaginate">
+          <div>Информация пользователя</div>
+        </q-btn>
+        <q-btn class="button"
+               :class="{active_order}"
+               style="width:80%;
+               height: 50px;
+               font-size: 18px;
+               display: block"
+               @click="fakePaginate">
+          <div>Заказы</div>
+        </q-btn>
     </div>
-    <div class="user-data" :class="{active_data}">
-      <v-user-data/>
+    <div class="user-data" :class="{active_data}" style="width: 65%; float: right">
+      <vUserData></vUserData>
     </div>
-    <div class="user-order" :class="{active_order}">
-      <v-order/>
+    <div class="user-order" :class="{active_order}" style="width: 65%; float: right">
+      <vOrder></vOrder>
     </div>
   </div>
 </template>
 
 <script>
-  import vMainPanelUser from "@/components/User/v-main-panel-user.vue"
+  import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
   import vUserData from "@/components/User/v-UserData.vue"
   import vOrder from "@/components/Order/v-Order.vue"
   export default {
@@ -43,72 +59,47 @@
           this.active_order = false
           return this.active_data = true
         }
-      }
+      },
     }
   }
 
 </script>
 
 <style scoped>
-  .user-panel{
-    display: flex;
-    background-color: rgb(57, 73, 82);
-    width: 100%;
-    height: 50px;
+  .block-buttons{
+    padding: 45px;
   }
-  .container-user-setting{
-    display: flex;
-    width: 93.5%;
-    height: 550px;
-    border: 1px solid black;
-    border-radius: 10px;
-    margin: 40px;
-    margin-top: 20px;
+  .button{
+    margin: 20px;
+    margin-bottom: 40px;
+  }
+  :deep(.button){
+    background-color: #1a6c80;
+    color:white;
+  }
+  :deep(.button.active_data){
+    background-color: #2aaac5;
+  }
+  :deep(.button.active_data){
+    background-color: #2aaac5;
+    border: 1px solid dimgray;
+  }
+  :deep(.button.active_order){
+    background-color: #2aaac5;
+    border: 1px solid dimgray;
   }
   .user-data{
     display: none;
   }
-  .active_data{
-    display: block;
-  }
-  .choice {
-    margin: 15px;
-  }
-  h1{
-    text-align: center;
-  }
-  #act{
-    width: 260px;
-    max-width: 260px;
-    height: 50px;
-    max-height: 50px;
-    margin-top: 35px;
-    margin-left: 25px;
-    padding-top: 10px;
-    border-radius: 7px;
-    border: 1px solid transparent;
-    color: #3b3b3b;
-    background-color: #989898;
-  }
-  #act:hover{
-    border: 1px solid #595959;
-    cursor: pointer;
-    background-color: #edf8ff;
-  }
-  #act.active_data{
-    background-color: #d8f1d4;
-    border: 1px solid #595959;
-  }
-  #act.active_order{
-    width: 100%;
-    height: 100%;
-    background-color: #d8f1d4;
-    border: 1px solid #595959;
-  }
   .user-order{
     display: none;
   }
-  .active_order{
+  .user-data.active_data{
+    margin: 15px;
+    display: block;
+  }
+  .user-order.active_order{
+    margin: 15px;
     display: block;
   }
 </style>

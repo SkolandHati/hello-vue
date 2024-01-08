@@ -1,13 +1,20 @@
 <template>
-  <div id="block" class="block-input"
-       :class="{atherSetting: defSetting}">
-    <label class="label">{{item}}</label>
-    <input class="input" type="text"
-           @input="$emit('update:modelValue', $event.target.value)"
-           :value="modelValue"
-           :placeholder="item" required>
-    <span class="span-symbol-good" v-if="!!modelValue">&#128504;</span>
-    <span class="span-symbol-bad" v-else>&#10006;</span>
+  <div class="container">
+    <div class="item">
+      {{item}}
+    </div>
+    <div id="block" class="block-input">
+      <input class="inpt"
+             @input="$emit('update:modelValue', $event.target.value)"
+             :value="modelValue"
+             :placeholder="item">
+    </div>
+    <q-icon class="icon" v-if="!!modelValue"
+            style="color: green"
+            name="check_circle_outline"></q-icon>
+    <q-icon class="icon" v-else
+            style="color: red"
+            name="close"></q-icon>
   </div>
 </template>
 
@@ -27,59 +34,72 @@
         type: String,
         required: true
       },
-      defSetting:{
-        type: Boolean,
-        default: false
-      },
     },
   }
 
 </script>
 
 <style scoped>
-  .block-input{
+  .container{
     display: flex;
-    width: 500px;
-    height: 50px;
-    margin-top: 17px;
-    margin-left: 150px;
-    border: 1.5px solid #6e6d6d;
-    border-radius: 7px;
+    margin-left: 90px;
   }
-  .label{
-    display: block;
+  .item{
+    position: relative;
+    max-width: 100px;
     width: 100px;
-    font-size: 18px;
+    max-height: 50px;
     margin: 15px;
+    margin-right:5px;
+    padding-top: 10px;
   }
-  .input{
-    width: 60%;
-    height: 27px;
+  .block-input{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 400px;
+    margin: 15px;
+    margin-left:25px;
+    border-radius: 5px;
+    background: $input-background;
+      &:after {
+        content: "";
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        height: 2px;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        background-position: 0% 0%;
+        background: linear-gradient(to right, #B294FF, #57E6E6, #FEFFB8, #57E6E6, #B294FF, #57E6E6);
+        background-size: 500% auto;
+        animation: gradient 3s linear infinite;
+      }
+    }
+  $input-background: rgba(57, 63, 84, 0.8);
+  $input-text-inactive: #7881A1;
+  $input-text-active: #BFD2FF;
+  @keyframes gradient {
+    0%{background-position:0 0}
+    100%{background-position:100% 0}
+  }
+  .block-input input{
     text-align: center;
-    margin-top: 10px;
-    margin-left: 25px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    flex-grow: 1;
+    color: $input-text-active;
+    font-size: 17px;
+    line-height: 2.4rem;
+    vertical-align: middle;
+    border-radius: 2px;
   }
-  .input{
-    margin-left: 10px;
+  .block-input input:focus{
+    outline:none;
   }
-  .atherSetting{
-    margin-left: 60px;
+  .icon{
+    padding-top: 20px;
+    font-size: 30px;
   }
-  .span-symbol-good,.span-symbol-bad{
-    width: 20px;
-    height: 20px;
-    margin: 10px;
-    margin-top:15px;
-    text-align: center;
-    border: 2px solid #4b4b4b;
-    border-radius: 50%;
-  }
-  .span-symbol-good{
-    background-color: #9edc86;
-  }
-  .span-symbol-bad{
-    background-color: #e71f1f;
-    border: 2px solid #6e6d6d;
-  }
-
 </style>

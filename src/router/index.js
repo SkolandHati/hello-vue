@@ -38,7 +38,7 @@ const router = createRouter({
                     component: BrendsPageCatalog
                 },
                 {
-                    path:'/products/:id',
+                    path:'/products/:id_product',
                     name:'v-cart-item-page',
                     component: ProductID,
                 },

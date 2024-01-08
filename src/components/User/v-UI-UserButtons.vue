@@ -1,45 +1,64 @@
 <template>
     <div class="panel-user">
-      <link rel="stylesheet"
-                  href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-                  integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-                  crossorigin="anonymous">
-      <div class="userbuttons">
-        <div class="button" id="button-busket">
-          <button class="busket-btn" @click="goBusketPage">
-            <i class="fas fa-solid fa-cart-plus"></i>
-            <span class="circle" v-if="count !== 0 && is_auth">{{count}}</span>
-          </button>
+      <q-toolbar class="float-right">
+        <div class="block-btn-1">
+          <q-btn class="quasar-btn"
+                 flat round dense icon="shopping_cart"
+                 @click="goBusketPage"></q-btn>
+          <q-badge class="count"
+                   rounded color="green"
+                   :label='busketproducts.length'
+                   v-if="!!busketproducts && is_auth"></q-badge>
         </div>
-        <div class="button" id="button-heart">
-          <button class="fas fa-solid fa-heart"
-                  :class="{active: getFavoriteProducts.length !== 0}"
-                  @click="goFavoritePage">
-          </button>
+        <div class="block-btn-2">
+        <q-btn class="quasar-btn"
+               flat round dense icon="favorite"
+               :class="{active: getFavoriteProducts.length !== 0}"
+               @click="goFavoritePage"></q-btn>
+          <q-badge class="count"
+                   rounded color="green"
+                   v-if="!!getFavoriteProducts.length && is_auth"
+                   :label='getFavoriteProducts.length'></q-badge>
         </div>
-        <div class="button" id="button-user">
-          <button class="fas fa-solid fa-user"
-                  :style="styleCheck"
-                  v-on:mouseover="active_buttns = true"
-                  v-on:mouseout="outMouse"></button>
-          <div class="btn-auth-regist"
-               :class="{active_buttns}"
-               v-on:mouseover="active_panel = true"
-               v-on:mouseout="outMouse_two"
-               v-if="is_auth">
-            <a @click="goSettingPage"> Настройки </a>
-            <a @click="signOut"> Выйти </a>
+        <div class="block-btn-3">
+        <q-btn class="quasar-btn"
+               flat round dense icon="person"
+               :style="styleCheck"
+               @click="goSettingPage"></q-btn>
+          <div class="dropdown-container">
+            <q-btn-dropdown class="btn-dropdown" color="white-gray">
+              <q-list class="list" v-if="is_auth">
+                <q-item clickable v-close-popup
+                        @click="goSettingPage">
+                  <q-item-section>
+                    <q-item-label>Настройки</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup
+                        @click="signOut">
+                  <q-item-section>
+                    <q-item-label>Выйти</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+              <q-list class="list" v-else>
+                <q-item clickable v-close-popup
+                        @click="goSignUpPage">
+                  <q-item-section>
+                    <q-item-label>Регистрация</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup
+                        @click="goSignInPage">
+                  <q-item-section>
+                    <q-item-label>Войти</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
           </div>
-          <div class="btn-auth-regist"
-               :class="{active_buttns}"
-               v-on:mouseover="active_panel = true"
-               v-on:mouseout="outMouse_two"
-               v-else>
-            <a @click="goSignUpPage"> Регистрация </a>
-            <a @click="goSignInPage"> Войти </a>
-          </div>
         </div>
-      </div>
+      </q-toolbar>
     </div>
 </template>
 
@@ -51,8 +70,6 @@
     data(){
       return {
         isActive: false,
-        active_buttns: false,
-        active_panel: false,
         count: 0
       }
     },
@@ -66,7 +83,6 @@
       styleCheck(){
         if (this.isActive){
           return {
-            border: '2px solid #53D31DFF',
             color: '#b0f19d'
           }
         }else {
@@ -84,7 +100,7 @@
           if (error) throw error;
         }
         catch (error){
-          console.log(error.error_description || error.message)
+          console.log(error.message)
         }
       }
       const isCurrentUser = async () => {
@@ -103,7 +119,6 @@
     mounted() {
       this.checkUser()
       this.loadData()
-      this.calculateCountProducts()
     },
     methods: {
       ...mapActions({
@@ -112,41 +127,12 @@
         loadDatafromDataBase: 'busketProducts/loadProductsData',
         FavoriteProducts: 'favoriteProducts/getFavoriteP'
       }),
-      outMouse(){
-        setTimeout(() => {
-          if (this.active_panel){
-            return this.active_buttns = true
-          }
-          this.active_buttns = false
-        }, 1000)
-      },
-      outMouse_two(){
-        setTimeout(() => {
-          this.active_buttns = false
-        }, 1000)
-      },
       loadData() {
         Promise.all([
           this.getUser(),
-          this.FavoriteProducts()
+          this.FavoriteProducts(),
+          this.loadDatafromDataBase()
         ])
-      },
-      async calculateCountProducts(){
-        try {
-          await this.loadDatafromDataBase()
-          let data = await this.busketproducts
-          if (data){
-            const listPrice = []
-            for (const key in this.busketproducts){
-              listPrice.push(this.busketproducts[key].quantity)
-            }
-            return this.count = listPrice?.reduce((sum, current) => sum + current, 0)}
-          else {
-            return  this.count  = 0
-          }
-        }catch (e){
-          console.log(e)
-        }
       },
       async checkUser(){
         try {
@@ -181,102 +167,69 @@
 
 <style scoped>
     .panel-user {
+      margin-top: 5px;
       width: 100%;
-      display: block;
-    }
-    .userbuttons{
       display: flex;
-      float: right;
-      width: 200px;
-      height: 50px;
     }
-    .userbuttons>.button{
-      display: block;
-    }
-    .userbuttons>#button-busket{
-      display: flex;
-      width: 60px;
-    }
-    .busket-btn{
-      margin-right: 0px;
-      display: flex;
-      padding: 8px;
-      padding-top: 10px;
-    }
-    .circle{
-      width: 20px;
-      height: 20px;
-      background-color: rgb(83, 211, 29);
-      border-radius: 50%;
-      margin-top: 10px;
-      padding-left: 7px;
-      padding-right: 6px;
-      font-size: 14px;
-      color: #1a6c80;
-      text-align: center;
-    }
-    .button>button{
-      position: relative;
-      width: 40px;
-      height: 40px;
+    .quasar-btn{
       margin-right: 20px;
-      margin-top: 4px;
-      color: #e5e5e5;
-      background-color: rgb(57, 73, 82);
-      border-radius: 50%;
-      border: 2px solid #7BA7AB;
-      cursor: pointer;
-      font-size: 16px
+      display: flex;
     }
-    .btn-auth-regist{
-      width: 150px;
-      height: 100px;
-      color: #e5e5e5;
-      background-color: rgb(57, 73, 82);
-      top: 3.0em;
-      display: none;
-      z-index: 1;
+    .block-btn-1,.block-btn-2,.block-btn-3{
+      display: flex;
+    }
+    .count{
+      width: 19px;
+      height: 19px;
+      margin-top: 15px;
       position: absolute;
+      margin-left: 21px;
     }
-
-    .btn-auth-regist.active_buttns{
-      width: 190px;
-      display: block;
-      height: 100px;
-      right: 0px;
-    }
-    .btn-auth-regist.active_buttns:hover{
-      display: block;
-      width: 190px;
-      height: 100px;
-      right: 0px;
-    }
-    .btn-auth-regist.active_buttns>a{
-      text-align: center;
-      display: block;
-      width: 160px;
-      height: 40px;
-      padding: 15px;
-      padding-bottom: 0px;
-      padding-top: 10px;
-      border: none;
-    }
-    .btn-auth-regist.active_buttns>a:hover{
-      color: #ffffff;
-      background-color: dimgrey;
-      cursor: pointer;
-      right: 0px;
-    }
-    .button>.circle{
-      width: 15px;
-      height: 15px;
-      display: inline-block;
-      background-color: rgb(83, 211, 29);
+    .btn-dropdown{
+      width: 25px;
+      height: 10px;
       border-radius: 50%;
-      margin-top: 27px;
-      padding-left: 5px;
+      position: relative;
+      margin-top: 12px;
     }
-    .fas.fa-solid.fa-heart.active{
+    .dropdown-container{
+      display: none;
+    }
+    .block-btn-3>.quasar-btn:hover ~.dropdown-container{
+      display: block;
+      position: absolute;
+      margin-left: 1px;
+      margin-top: 5px;
+    }
+    .dropdown-container:hover{
+      display: block;
+      width: 20px;
+      height: 5px;
+      position: absolute;
+      margin-left: 1px;
+      margin-top: 5px;
+    }
+    .list{
+      position: relative;
+    }
+    .q-btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: relative;
+      outline: 0;
+      border: 0;
+      vertical-align: middle;
+      font-size: 14px;
+      line-height: 1.715em;
+      text-decoration: none;
+      color: inherit;
+      background: transparent;
+      font-weight: 500;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .block-btn-2>.quasar-btn.active{
       color: red;
     }
 </style>
