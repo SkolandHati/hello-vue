@@ -17,12 +17,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
+  import Order from "@/interfaces/Order"
   import {mapActions, mapGetters} from "vuex";
   import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
   import UserData from "@/components/User/v-UserData.vue"
   import vCartItems from "@/components/Card-Product/v-cart-items.vue"
-  export default {
+  export default defineComponent({
     name: 'v-OrderPage',
     components:{
       vMainPanelUser,
@@ -35,7 +37,7 @@
         fullPrice: 0,
       }
     },
-    computed:{
+    computed:<any>{
       ...mapGetters({
         getBusketProducts: 'busketProducts/BUSKETPRODUCTS',
         userData:'user/USERINSYSTEM'
@@ -77,7 +79,7 @@
         }
         return obj
       },
-      async addOrderUser(data){
+      async addOrderUser(data: string){
         try {
           let dataProducts = await this.getBusketProducts
           if (data && !!dataProducts){
@@ -87,15 +89,15 @@
               products: dataProducts,
               data_time: dataTime.day_time,
               time_zone: dataTime.day_time_delivery
-            }
-            await this.setOrder(object)
+            } as Order
+            await this.setOrder(object as Order)
           }
         }catch (e){
           console.log(e)
         }
       }
     }
-  }
+  })
 
 </script>
 

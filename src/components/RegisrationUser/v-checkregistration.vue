@@ -19,10 +19,11 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
   import {mapGetters, mapActions} from "vuex";
-  import {supabase} from "@/services/APIauthorization";
-  export default {
+  import {supabase} from "@/services/API_supabase";
+  export default defineComponent({
     name: "checkregisteration",
     computed:{
       ...mapGetters({
@@ -63,10 +64,8 @@
         return this.$router.push({name: 'v-UserSetting'})
       }
     },
-  }
-
+  })
 </script>
-
 <style scoped>
   .header{
     margin:80px;

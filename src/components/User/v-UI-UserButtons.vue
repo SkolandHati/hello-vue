@@ -13,7 +13,7 @@
         <div class="block-btn-2">
         <q-btn class="quasar-btn"
                flat round dense icon="favorite"
-               :class="{active: getFavoriteProducts.length !== 0}"
+               :class="{active: getFavoriteProducts.length !== 0 && is_auth}"
                @click="goFavoritePage"></q-btn>
           <q-badge class="count"
                    rounded color="green"
@@ -62,10 +62,11 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue"
   import {mapGetters, mapActions} from "vuex";
-  import {supabase} from "@/services/APIauthorization";
-  export default {
+  import {supabase} from "@/services/API_supabase";
+  export default defineComponent({
     name: "v-UI-UserButtons",
     data(){
       return {
@@ -78,7 +79,7 @@
         userinsystem: 'user/USERINSYSTEM',
         is_auth: 'user/AUTH',
         busketproducts: 'busketProducts/BUSKETPRODUCTS',
-        getFavoriteProducts: 'favoriteProducts/GET_FAVORITE_PROD'
+        getFavoriteProducts: 'favoriteProducts/GET_FAVORITE_PRODUCTS'
       }),
       styleCheck(){
         if (this.isActive){
@@ -99,8 +100,8 @@
           window.location.reload()
           if (error) throw error;
         }
-        catch (error){
-          console.log(error.message)
+        catch (error: any){
+          console.error(error.message)
         }
       }
       const isCurrentUser = async () => {
@@ -108,7 +109,7 @@
           const {error} = await supabase.auth.getSession()
           if (error) throw error
         }catch (e){
-          console.log(e)
+          console.error(e)
         }
       }
       return {
@@ -125,7 +126,7 @@
         getUser: 'user/getUser',
         outUser: 'user/outUser',
         loadDatafromDataBase: 'busketProducts/loadProductsData',
-        FavoriteProducts: 'favoriteProducts/getFavoriteP'
+        FavoriteProducts: 'favoriteProducts/getFavoriteProduct'
       }),
       loadData() {
         Promise.all([
@@ -162,7 +163,7 @@
         return this.$router.push({name:'v-SignIn'})
       }
     },
-  }
+  })
 </script>
 
 <style scoped>

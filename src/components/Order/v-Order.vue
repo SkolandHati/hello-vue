@@ -47,12 +47,12 @@
 
 </template>
 
-<script>
+<script lang="ts">
+  import {defineComponent} from "vue";
+  import {mapGetters, mapActions} from "vuex";
   import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
   import 'vue3-carousel/dist/carousel.css'
-  import {mapGetters, mapActions} from "vuex";
-
-  export default {
+  export default defineComponent({
     name: 'v-Order',
     components:{
       Carousel,
@@ -80,7 +80,7 @@
         }
       }
     }
-  }
+  })
 </script>
 
 <style scoped>

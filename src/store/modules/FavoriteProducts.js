@@ -1,4 +1,4 @@
-import {supabase} from "@/services/APIauthorization";
+import {supabase} from "@/services/API_supabase";
 
 async function getFavoriteProducts(){
     try {
@@ -45,7 +45,7 @@ export default {
         favorite_products: []
     },
     actions: {
-        async getFavoriteP({commit}){
+        async getFavoriteProduct({commit}){
             try {
                 let data = await getFavoriteProducts()
                 commit('SET_PRODUCTS_FAVORITE', data)
@@ -89,7 +89,7 @@ export default {
         }
     },
     getters: {
-        GET_FAVORITE_PROD(state){
+        GET_FAVORITE_PRODUCTS(state){
             return state.favorite_products
         }
     }

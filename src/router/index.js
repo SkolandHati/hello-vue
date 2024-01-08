@@ -1,5 +1,6 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import {supabase} from "@/services/APIauthorization";
+import {createRouter, createWebHistory, RouteLocationRaw, RouteRecordRaw,} from 'vue-router'
+import {supabase} from "@/services/API_supabase";
+import {RouterType} from "@/interfaces/Types";
 
 const App = () => import('@/App.vue')
 const Home = () => import('@/components/Home/v-HomePage')
@@ -84,7 +85,7 @@ const router = createRouter({
                     }
                 }
             ],
-        },
+        }
     ],
     history: createWebHistory()
 })

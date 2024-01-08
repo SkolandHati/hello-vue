@@ -30,11 +30,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
     import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
     import vBlog from "@/components/BlogWithComments/v-Blog.vue"
     import {mapActions, mapGetters} from "vuex";
-    export default {
+    import {ComponentCustomProperties, defineComponent} from "vue"
+    import Product from "@/interfaces/Product";
+    export default defineComponent({
       name: "v-cart-item-page",
       components:{
           vMainPanelUser,
@@ -53,7 +55,7 @@
       },
       methods:{
         ...mapActions({
-          loadsProduct: 'products/loadsProduct',
+          loadsProduct: 'products/loadOneProduct',
           loadInfoBrend: 'products/loadBrendsInfo',
           addBusket: 'busketProducts/appendBusket',
           getUser: 'user/getUser',
@@ -70,25 +72,25 @@
             console.log(e)
           }
         },
-        async addButtons(object, x){
+        async addButtons(item:Product, marka: string){
           try {
             if (!this.auth){
               return this.$router.push({name :'v-SignIn'})
             }
             const landmark = ['in_busket', 'in_favorite', 'order']
-            if (object) {
-              switch (x) {
+            if (item) {
+              switch (marka) {
                 case landmark[0]:
-                  object.quantity = 1
-                  await this.addBusket(object)
+                  item.quantity = 1
+                  await this.addBusket(item)
                   break;
                 case landmark[1]:
-                  object.quantity = 1
-                  await this.addFavorite(object)
+                  item.quantity = 1
+                  await this.addFavorite(item)
                   break;
                 case landmark[2]:
-                  object.quantity = 1
-                  await this.addBusket(object)
+                  item.quantity = 1
+                  await this.addBusket(item)
                   this.$router.push({name: 'v-OrderPage'})
                   break;
                 default:
@@ -100,7 +102,7 @@
           }
         },
       },
-    }
+    })
 </script>
 
 <style scoped>
