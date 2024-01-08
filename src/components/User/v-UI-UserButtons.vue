@@ -13,7 +13,7 @@
         <div class="block-btn-2">
         <q-btn class="quasar-btn"
                flat round dense icon="favorite"
-               :class="{active: getFavoriteProducts.length !== 0}"
+               :class="{active: getFavoriteProducts.length !== 0 && is_auth}"
                @click="goFavoritePage"></q-btn>
           <q-badge class="count"
                    rounded color="green"

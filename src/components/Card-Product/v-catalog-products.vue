@@ -68,7 +68,7 @@
         },
         async loadCountProducts(){
           try {
-            const data: Product|unknown = await this.allProductus
+            const data: any = await this.allProductus
             let listProd = []
             if (data){
               data?.forEach((item: Product, index:string,) => {

@@ -39,6 +39,7 @@
     },
     mounted() {
       this.getCaruselProducts()
+      console.log(this.getCaruselProd)
     },
     methods:{
       ...mapActions({

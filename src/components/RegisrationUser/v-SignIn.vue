@@ -25,7 +25,8 @@
 </template>
 
 <script lang="ts">
-  import {defineComponent} from "vue";
+  import {ComponentCustomProperties, defineComponent} from "vue";
+  import { useRouter, useRoute } from 'vue-router'
   import {supabase} from "@/services/API_supabase";
   import {ref} from "vue";
   export default defineComponent({
@@ -33,10 +34,13 @@
     setup(){
       let email = ref('')
       let password = ref('')
+
+      const router = useRouter()
+      const route = useRoute()
       const signIn = async () => {
         try {
           if (!email.value && !password.value){
-            this.$router.push({name: 'v-SignIn'})
+            router.push({name: 'v-SignIn'})
           }
             const {data, error } = await supabase.auth.signInWithPassword({
               email: email.value,
@@ -47,7 +51,7 @@
         }
       }
       const goSignUp = () => {
-        return this.$router.push({name: 'v-SignUp'})
+        return router.push({name: 'v-SignUp'})
       }
       return {
         email,

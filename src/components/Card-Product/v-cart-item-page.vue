@@ -34,7 +34,7 @@
     import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
     import vBlog from "@/components/BlogWithComments/v-Blog.vue"
     import {mapActions, mapGetters} from "vuex";
-    import {defineComponent} from "vue"
+    import {ComponentCustomProperties, defineComponent} from "vue"
     import Product from "@/interfaces/Product";
     export default defineComponent({
       name: "v-cart-item-page",
@@ -72,7 +72,7 @@
             console.log(e)
           }
         },
-        async addButtons(item:Product, marka: string):Promise<void>{
+        async addButtons(item:Product, marka: string){
           try {
             if (!this.auth){
               return this.$router.push({name :'v-SignIn'})
