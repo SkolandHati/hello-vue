@@ -87,7 +87,7 @@ export default {
             state.oneproduct = products[0]
         },
         SET_CAROUSEL_PRODUCTS(state){
-            const randomNumber = () => {return Math.floor(Math.random() *(4 - 1) + 1)}
+            const randomNumber = () => {return Math.floor(Math.random() * (4 - 1) + 1)}
             let data = state.brends[randomNumber()].brend_Name
             let list = state.products?.filter(item => item.product_brend === data)
             state.caruselProducts = list

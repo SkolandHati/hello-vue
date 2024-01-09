@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-  import {ComponentCustomProperties, defineComponent} from "vue";
+  import {defineComponent} from "vue";
   import { useRouter, useRoute } from 'vue-router'
   import {supabase} from "@/services/API_supabase";
   import {ref} from "vue";
@@ -46,8 +46,8 @@
               email: email.value,
               password: password.value
             })
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       }
       const goSignUp = () => {

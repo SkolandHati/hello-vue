@@ -16,7 +16,8 @@
     import {defineComponent} from 'vue'
     import type {PropType} from "vue";
     import Product from "@/interfaces/Product";
-    import vCartItems from "./v-cart-items.vue";
+    import {listObjectKeys, Nullable} from "@/interfaces/Type/Types";
+    import vCartItems from "@/components/Card-Product/v-cart-items.vue";
     import PaginateModul from '@/components/Card-Product/v-PaginateModul.vue'
     export default defineComponent({
       name: "v-catalog-products",
@@ -26,27 +27,27 @@
       },
       data(){
         return {
-          products: [] as PropType<Product>,
+          products: [] as Product[],
           currentPage: 1 ,
           pageSize: 6
         };
       },
-      computed:<any>{
+      computed:{
         ...mapGetters({
-          allProductus:'products/PRODUCTS',
+          allProductus: 'products/PRODUCTS',
           brends: 'products/BRENDSINFO'
         }),
-        visibleProducts(){
+        visibleProducts(): Nullable<Product[]>{
           const start: number = (this.currentPage - 1) * this.pageSize;
           const end: number = start + this.pageSize;
-          this.products.forEach((item: Product, index: number):void => {
+          listObjectKeys(this.products).forEach((item: Nullable<Product>, index: number): void => {
             if (!item){
-              this.products.splice(index,1)
+              listObjectKeys(this.products).splice(index, 1)
             }
           })
-          return this.products.slice(start, end)
+          return this.products?.slice(start, end)
         },
-        totalPages() {
+        totalPages(): number {
           return Math.ceil(this.products.length / this.pageSize);
         },
       },
@@ -61,31 +62,30 @@
         async loadData(){
           try {
             await this.loadProducts()
-          }
-          catch (e){
-            console.log(e)
+          } catch (e){
+            console.error(e)
           }
         },
         async loadCountProducts(){
           try {
-            const data: any = await this.allProductus
+            const data: Nullable<Product[]> = await this.allProductus
             let listProd = []
             if (data){
-              data?.forEach((item: Product, index:string,) => {
-                localStorage.setItem(index, JSON.stringify(item))
+              data?.forEach((item: Product, index:number,) => {
+                localStorage.setItem(index as Nullable<any>, JSON.stringify(item))
               })
               for (let i: number = 0; localStorage.length > i; i++){
-                listProd.push(JSON.parse(localStorage.getItem(i as any) as string))
+                listProd.push(JSON.parse(localStorage.getItem(i as Nullable<any>) as string))
               }
               return this.products = listProd
             }
-          }catch (e){
-            console.log(e)
+          } catch (e){
+            console.error(e)
           }
         },
         pageChanged(pageNumber: number) {
           this.currentPage = pageNumber;
-        }
+        },
       },
       inheritAttrs: false,
     })

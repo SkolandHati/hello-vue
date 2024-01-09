@@ -22,6 +22,7 @@
   import {StateUserData} from "@/interfaces/InterfacesState"
   import vInput from "@/components/kit/v-input.vue"
   import {mapGetters, mapActions} from "vuex";
+  import {Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
     name: 'v-UserData',
     components:{
@@ -37,8 +38,8 @@
         {orderPush: (user_id: string)=> true},
     data(){
       return{
-        buttonText: null as unknown as string,
-        bannerText: null as unknown as string,
+        buttonText: null as Nullable<string>,
+        bannerText: null as Nullable<string>,
         state: {
           login: '',
           first_name: '',
@@ -62,14 +63,14 @@
         }
         return true
       },
-      buttonTxt(){
+      buttonTxt(): Nullable<string>{
         if (this.defaultSetting){
           return this.buttonText = 'Оформить заказ'
         }else {
           return this.buttonText = 'Сохранить данные'
         }
       },
-      bannerTxt(){
+      bannerTxt(): Nullable<string>{
         if (this.defaultSetting){
           return this.bannerText = "Для оформления заказа все поля должны быть заполнены"
         }else {
@@ -96,8 +97,9 @@
       async loadData(){
         try {
           await this.getUserData()
-        }catch(e) {
-          console.log(e)}
+        } catch(e) {
+          console.error(e)
+        }
       },
       async submitUserInformation(){
         try {
@@ -112,8 +114,8 @@
           if (this.defaultSetting){
             await this.$emit('orderPush', this.user.user_id)
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
     },

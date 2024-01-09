@@ -28,14 +28,13 @@
 </template>
 
 <script lang="ts">
-
   import {mapGetters, mapActions} from "vuex";
   import vMainPanelUser from "@/components/User/v-MainPanelUser.vue";
   import vCatalogProducts from "@/components/Card-Product/v-catalog-products.vue"
   import vCartItems from "@/components/Card-Product/v-cart-items.vue";
-  import {defineComponent, PropType} from "vue"
+  import {defineComponent} from "vue"
   import Brend from "@/interfaces/Brend";
-  import {Nullable} from "@/interfaces/Types";
+  import {Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
     name: 'BrendsPageProducts',
     components: {
@@ -45,7 +44,7 @@
     },
     data(){
       return {
-        data_brend: null as unknown as PropType<Brend>
+        data_brend: null as Nullable<Brend>
       }
     },
     computed:{
@@ -68,15 +67,15 @@
           if (this.$route.params.brend){
             await this.loadProducts(this.$route.params.brend)
           }
-        }catch (e){
+        } catch (e){
           console.error(e)
         }
       },
       async loadInfo(){
         try {
           await this.loadBrendsInfo()
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       async getBrend(){
@@ -85,12 +84,12 @@
             await this.loadInfo()
             let data = await this.getBrendInfo
             if (data){
-              this.data_brend = data?.find((item: Brend) => item.brend_Name === this.$route.params.brend)
+              this.data_brend = data.find((item: Brend) => item.brend_Name === this.$route.params.brend)
               return this.data_brend
             }
           }
-        }catch (e){
-          console.log(e)
+         } catch (e){
+          console.error(e)
         }
       }
     },

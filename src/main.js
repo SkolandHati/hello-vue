@@ -8,7 +8,7 @@ import quasarUserOptions from './quasar-user-options'
 
 initAPIinfoBrends(store)
 
-createApp(App).use(Quasar, quasarUserOptions)
+createApp(App)
     .use(Quasar, quasarUserOptions)
     .use(router)
     .use(store)

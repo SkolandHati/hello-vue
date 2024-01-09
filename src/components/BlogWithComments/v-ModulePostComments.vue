@@ -18,7 +18,7 @@
   import Product from "@/interfaces/Product";
   import InformationUser from "@/interfaces/InformationUser";
   import Comment from "@/interfaces/Comment"
-  import {Nullable} from "@/interfaces/Types";
+  import {Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
       name:"v-ModulePostComments",
       props:{
@@ -27,12 +27,12 @@
           required: true
         },
         user_data:{
-          type:Object as PropType<InformationUser>,
+          type: Object as PropType<InformationUser>,
           required: true
         }
       },
       data(){
-        return{
+        return {
           comments: null as Nullable<string>,
         }
       },
@@ -44,13 +44,13 @@
           try {
             const data = await this.productAll
             if (data && this.user_data && this.comments){
-              const obj:Comment = {
+              const info_comment : Comment = {
                 content: this.comments,
                 user_id: this.user_data.user_id,
                 author_name: this.user_data.user_login,
                 product_id: this.productAll.id_product
               }
-              await this.appendComment(obj)
+              await this.appendComment(info_comment)
               this.comments = null
               alert('Comment send')
             }

@@ -17,21 +17,21 @@
 </template>
 
 <script lang="ts">
-    import {defineComponent} from "vue"
-    import vSearchPanel from '../SearchPanel/v-SearchModull.vue';
-    import vUI_UserButtons from './v-UI-UserButtons.vue';
-    export default defineComponent({
-        name: "v-main-panel-user",
-        components: {
-            vSearchPanel,
-            vUI_UserButtons,
-        },
-        methods:{
-          goHomePage(){
-            return this.$router.push({name:'v-HomePage'})
-          }
-        }
-    })
+  import {defineComponent} from "vue"
+  import vSearchPanel from '../SearchPanel/v-SearchModull.vue';
+  import vUI_UserButtons from './v-UI-UserButtons.vue';
+  export default defineComponent({
+    name: "v-main-panel-user",
+    components: {
+      vSearchPanel,
+      vUI_UserButtons,
+    },
+    methods:{
+      goHomePage(){
+        return this.$router.push({name:'v-HomePage'})
+      }
+    }
+  })
 </script>
 
 <style scoped>

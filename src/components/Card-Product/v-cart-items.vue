@@ -59,13 +59,15 @@
   import {defineComponent} from "vue";
   import Product from "@/interfaces/Product";
   import Brend from "@/interfaces/Brend";
-  import type {PropType} from "vue"
+  import Enum from "@/enum/const";
+  import type {PropType} from "vue";
+  import imgSrc from "@/components/assets/images/Kenzo/1.jpeg"
   export default defineComponent({
     name: "v-cart-item",
     props:{
       products: {
-        type: Object as PropType<Product>,
-        require:true
+        type: Object,
+        require: true
       },
       active:{
         type: Boolean,
@@ -76,7 +78,8 @@
       return {
         expanded: false,
         brend: null,
-        brendInfo: null
+        brendInfo: null,
+        imageSrc: "@/components/assets/images/"
       }
     },
     computed:{
@@ -93,6 +96,7 @@
     mounted() {
       this.loadData()
       this.getBrendsInfo(this.products?.product_brend as string)
+      console.log(this.products)
     },
     methods: {
       ...mapActions({
@@ -114,41 +118,40 @@
           if (!this.getUser){
             return this.$router.push({name :'v-SignIn'})
           }
-          const landmark = ['in_busket', 'in_favorite', 'favorite_delite', 'delite_product']
           if (object) {
             switch (x) {
-              case landmark[0]:
+              case Enum.InBasket:
                 object.quantity = 1
                 await this.addInBusket(object)
                 break;
-              case landmark[1]:
+              case Enum.InFavorite:
                 object.quantity = 1
                 await this.addInFavorite(object)
                 break;
-              case landmark[2]:
+              case Enum.FavoriteDelited:
                 await this.delitFavoriteProduct(object.id_product)
                 break;
-              case landmark[3]:
+              case Enum.DelitedProduct:
                 await this.deliteProduct(object.id_product)
                 break;
               default:
                 break
             }
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
-      async getBrendsInfo(brend_name: string){
+      async getBrendsInfo(brend_Name: string){
         try {
           let data = await this.brends
           if (data){
-            let brnd = data?.find((item: Brend) => item.brend_Name === brend_name)
+            let brnd = data.find((item: Brend) => item.brend_Name === brend_Name)
             this.brend = brnd.brend_Name
             this.brendInfo = brnd.info_Brend
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       goCartItem(){

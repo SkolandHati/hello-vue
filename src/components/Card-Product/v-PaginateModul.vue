@@ -2,8 +2,8 @@
   <div class="container__paginate">
     <q-pagination
         :max="total_pages"
-        v-model="numb"
-        @click.prevent="navigate(numb)"
+        v-model="number_page"
+        @click.prevent="navigate(number_page)"
         direction-links
         unelevated
         color="green"
@@ -31,7 +31,7 @@
     },
     data(){
       return {
-        numb: this.modelValue as number,
+        number_page: this.modelValue as number,
       }
     },
     methods:{
@@ -43,6 +43,7 @@
     },
   })
 </script>
+
 <style scoped>
   :deep(.q-pagination){
     margin-bottom: 25px;

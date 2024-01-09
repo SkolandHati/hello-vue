@@ -34,7 +34,8 @@
     import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
     import vBlog from "@/components/BlogWithComments/v-Blog.vue"
     import {mapActions, mapGetters} from "vuex";
-    import {ComponentCustomProperties, defineComponent} from "vue"
+    import {defineComponent} from "vue"
+    import Enum from "@/enum/const";
     import Product from "@/interfaces/Product";
     export default defineComponent({
       name: "v-cart-item-page",
@@ -68,27 +69,26 @@
               this.loadsProduct(this.$route.params.id_product),
               this.loadInfoBrend(),
             ])
-          }catch (e){
-            console.log(e)
+          } catch (e){
+            console.error(e)
           }
         },
-        async addButtons(item:Product, marka: string){
+        async addButtons(item: Product, marka: string){
           try {
             if (!this.auth){
               return this.$router.push({name :'v-SignIn'})
             }
-            const landmark = ['in_busket', 'in_favorite', 'order']
             if (item) {
               switch (marka) {
-                case landmark[0]:
+                case Enum.InBasket:
                   item.quantity = 1
                   await this.addBusket(item)
                   break;
-                case landmark[1]:
+                case Enum.InFavorite:
                   item.quantity = 1
                   await this.addFavorite(item)
                   break;
-                case landmark[2]:
+                case Enum.Order:
                   item.quantity = 1
                   await this.addBusket(item)
                   this.$router.push({name: 'v-OrderPage'})
@@ -97,8 +97,8 @@
                   break
               }
             }
-          }catch (e){
-            console.log(e)
+          } catch (e){
+            console.error(e)
           }
         },
       },

@@ -35,11 +35,12 @@
 <script lang="ts">
   import {defineComponent} from "vue";
   import {mapActions, mapGetters} from "vuex";
+  import {Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
     name: "SearchModull",
     data(){
       return{
-        data_search: null as unknown as string,
+        data_search: null as Nullable<string>,
         active: false
       }
     },
@@ -58,17 +59,15 @@
       async loadData(){
         try {
           await this.getterBrends()
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       onBlur(){
         setTimeout(() => {return this.active = false}, 1000)
       },
       goNextCatalog(data: string){
-        if (data){
-          this.$router.push({name:'v-BrendsPageProducts', params: {brend: data}})
-        }
+        if (data) this.$router.push({name:'v-BrendsPageProducts', params: {brend: data}})
       }
     },
   })

@@ -51,7 +51,7 @@
       }
     },
     methods:{
-      fakePaginate(){
+      fakePaginate(): boolean{
         if (this.active_data){
           this.active_data = false
           return this.active_order = true

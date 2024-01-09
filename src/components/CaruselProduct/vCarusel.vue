@@ -39,7 +39,6 @@
     },
     mounted() {
       this.getCaruselProducts()
-      console.log(this.getCaruselProd)
     },
     methods:{
       ...mapActions({
@@ -48,14 +47,12 @@
       async getCaruselProducts(){
         try {
           await this.loadProductsCarusel()
-        }catch (e){
-          console.log(e)
+        } catch (e) {
+          console.error(e)
         }
       },
       goProductsPage(id: number){
-        if (id){
-          this.$router.push({name: 'v-cart-item-page', params: {id_product: id}})
-        }
+        if (id) this.$router.push({name: 'v-cart-item-page', params: {id_product: id}})
       }
     },
   })

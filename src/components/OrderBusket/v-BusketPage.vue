@@ -46,6 +46,8 @@
   import {mapGetters, mapActions} from "vuex";
   import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
   import vCartItems from "@/components/Card-Product/v-cart-items.vue"
+  import Enum from "@/enum/const";
+  import {listObjectKeys, Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
     name: 'v-BusketPage',
     components:{
@@ -54,38 +56,38 @@
     },
     data(){
       return {
-        fullPrice: 0,
+        fullPrice: 0 as Nullable<number>,
         active: true
       }
     },
-  computed:<any>{
-    ...mapGetters({
-      busketproducts: 'busketProducts/BUSKETPRODUCTS',
-    }),
-    calculateThePrice(){
-      try {
-        if (this.busketproducts){
-          const listPrice = []
-          for (const key in this.busketproducts){
-            listPrice.push(this.busketproducts[key].price_product * this.busketproducts[key].quantity)
+    computed:{
+      ...mapGetters({
+        busketproducts: 'busketProducts/BUSKETPRODUCTS',
+      }),
+      calculateThePrice(): Nullable<number|undefined>{
+        try {
+          if (this.busketproducts){
+            const listPrice: Nullable<number[]> = []
+            for (const key in listObjectKeys(this.busketproducts)){
+              listPrice.push(this.busketproducts[key].price_product * this.busketproducts[key].quantity)
+            }
+            return this.fullPrice = listPrice?.reduce((sum, current) => sum + current, 0)}
+          else {
+            return this.fullPrice = 0
           }
-          return this.fullPrice = listPrice?.reduce((sum, current) => sum + current, 0)}
-        else {
-          return  this.fullPrice = 0
+        } catch (e){
+          console.error(e)
         }
-      }catch (e){
-        console.log(e)
-      }
+      },
     },
-  },
-  watch:{
-    busketproducts(){
+    watch:{
+      busketproducts(){
+        this.loadsInBusketData()
+      },
+    },
+    mounted() {
       this.loadsInBusketData()
     },
-  },
-  mounted() {
-    this.loadsInBusketData()
-  },
     methods:{
       ...mapActions({
         loadDatafromDataBase: 'busketProducts/loadProductsData',
@@ -97,32 +99,29 @@
       async loadsInBusketData(){
         try {
           await this.loadDatafromDataBase()
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
-      async countProduct(index: number, smbl: string){
+      async countProduct(index: number|string, symbl: string){
         try {
-          let symbol: string[] = ['plus','minus','delite']
-          switch (smbl) {
-            case symbol[0]:
+          switch (symbl) {
+            case Enum.Plus:
               await this.plusProdBusket(index);
               break;
-            case symbol[1]:
+            case Enum.Minus:
               await this.minusProdBusket(index);
               break;
-            case symbol[2]:
+            case Enum.Delite:
               await this.deliteDataProduct(index);
               break;
           }
-        }catch (e){
-          console.log(e)
+        } catch(e) {
+          console.error(e)
         }
       },
       goOrderPage(){
-        if (this.busketproducts){
-          this.$router.push({name: 'v-OrderPage' as string})
-        }
+        if (this.busketproducts) this.$router.push({name: 'v-OrderPage' as string})
       }
     },
   })
