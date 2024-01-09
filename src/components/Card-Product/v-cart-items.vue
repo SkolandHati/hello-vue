@@ -61,12 +61,11 @@
   import Brend from "@/interfaces/Brend";
   import Enum from "@/enum/const";
   import type {PropType} from "vue";
-  import imgSrc from "@/components/assets/images/Kenzo/1.jpeg"
   export default defineComponent({
     name: "v-cart-item",
     props:{
       products: {
-        type: Object,
+        type: Object as PropType<Product>,
         require: true
       },
       active:{
@@ -96,7 +95,6 @@
     mounted() {
       this.loadData()
       this.getBrendsInfo(this.products?.product_brend as string)
-      console.log(this.products)
     },
     methods: {
       ...mapActions({
