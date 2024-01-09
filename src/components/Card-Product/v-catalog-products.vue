@@ -14,7 +14,6 @@
 <script lang="ts">
     import {mapActions, mapGetters} from "vuex";
     import {defineComponent} from 'vue'
-    import type {PropType} from "vue";
     import Product from "@/interfaces/Product";
     import {listObjectKeys, Nullable} from "@/interfaces/Type/Types";
     import vCartItems from "@/components/Card-Product/v-cart-items.vue";
@@ -40,7 +39,7 @@
         visibleProducts(): Nullable<Product[]>{
           const start: number = (this.currentPage - 1) * this.pageSize;
           const end: number = start + this.pageSize;
-          listObjectKeys(this.products).forEach((item: Nullable<Product>, index: number): void => {
+          listObjectKeys(this.products).forEach((item, index: number):void => {
             if (!item){
               listObjectKeys(this.products).splice(index, 1)
             }
