@@ -44,7 +44,7 @@
           try {
             const data = await this.productAll
             if (data && this.user_data && this.comments){
-              const info_comment : Comment = {
+              const info_comment: Comment = {
                 content: this.comments,
                 user_id: this.user_data.user_id,
                 author_name: this.user_data.user_login,

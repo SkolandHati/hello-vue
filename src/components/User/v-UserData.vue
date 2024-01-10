@@ -55,7 +55,7 @@
       ...mapGetters({
         user: 'user/USERINSYSTEM'
       }),
-      dataValidity(){
+      dataValidity(): Nullable<boolean>{
         for (let i = 0; Object.keys(this.state).length > i; i++){
           if (!Object.values(this.state)[i]){
             return false

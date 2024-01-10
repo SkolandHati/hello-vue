@@ -14,3 +14,14 @@ export interface StateUserData {
     number_phone: string,
     cart_bank: string
 }
+
+export interface VuexStateInterface {
+    id: number | null,
+    user_id: string | number | null,
+    user_login: string | null,
+    user_first_name: string | null,
+    user_last_name: string | null,
+    user_email: string | null,
+    user_number_phone: string | null,
+    user_cart_bunk_number: string | null
+}

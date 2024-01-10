@@ -1,18 +1,20 @@
 import {supabase} from "@/services/API_supabase";
-import InformationUser from "@/interfaces/Type/Types";
-async function setDataInformationUser(object){
+import InformationUser from "@/interfaces/InformationUser";
+import {VuexStateInterface} from "@/interfaces/InterfacesState"
+import {Nullable} from "@/interfaces/Type/Types";
+async function setDataInformationUser(info_user: InformationUser){
     try {
-        if (object){
+        if (info_user){
             const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
             const obj = {
                 "id": Number(randomID()),
-                "user_id": String(object.id),
-                "login_user": String(object.login),
-                "first_user_name": String(object.first_name),
-                "last_user_name": String(object.last_name),
-                "email_user": String(object.email),
-                "number_phone_user": String(object.number_phone),
-                "cart_bank_user": String(object.cart_bank)
+                "user_id": String(info_user.id),
+                "user_login": String(info_user.login),
+                "user_first_name": String(info_user.first_name),
+                "user_last_name": String(info_user.last_name),
+                "user_email": String(info_user.email),
+                "user_number_phone": String(info_user.number_phone),
+                "user_cart_bunk_number": String(info_user.cart_bank)
             }
             let {error} = await supabase.from('information_user')
                 .insert([obj]).select()
@@ -20,21 +22,22 @@ async function setDataInformationUser(object){
         }else {
             console.log('Ошибка данных о пользователе')
         }
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
 async function updateUserData(){
     try {
         let dataUser = await supabase.auth.getUser()
         if (dataUser){
+            // @ts-ignore
             const {data, error} = await supabase.from('information_user').select('*').eq('user_id', dataUser.data.user.id)
             return data
         }else {
             return null
         }
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
 
@@ -51,13 +54,14 @@ export default {
             user_email: null,
             user_number_phone: null,
             user_cart_bunk_number: null
-        }
+        } as VuexStateInterface
     },
     actions: {
-        async getUser({dispatch, commit}){
+        async getUser({dispatch, commit}:Nullable<unknown>){
             try {
                 const result = await supabase.auth.getUser()
                 const data = await updateUserData()
+                // @ts-ignore
                 if (!!data.length){
                     dispatch('updateUserInfo')
                     if (result.data.user === null){
@@ -68,17 +72,20 @@ export default {
                     if (result.data.user === null){
                         commit("GET_USER", false, result.data.user)
                     }
+                    // @ts-ignore
                     commit("GET_USER_STATUS", result.data.user.aud)
+                    // @ts-ignore
                     commit("GET_USER_ID", result.data.user.id)
+                    // @ts-ignore
                     commit("GET_USER_LOGIN", result.data.user.user_metadata.first_name)
+                    // @ts-ignore
                     commit("GET_USER_EMAIL", result.data.user.email)
                 }
-            }
-            catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async updateUserInfo({commit}){
+        async updateUserInfo({commit}:Nullable<unknown>){
             try {
                 let dataUser = await updateUserData()
                 if (dataUser){
@@ -88,54 +95,53 @@ export default {
                 console.log(e)
             }
         },
-        async setUserData({dispatch, commit}, data){
+        async setUserData({dispatch, commit}:Nullable<unknown>, data: InformationUser){
             try {
                 if (data){
                     await setDataInformationUser(data)
                     dispatch('updateUserInfo')
                 }
-
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async outUser({commit}){
+        async outUser({commit}:Nullable<unknown>){
             try {
                 commit("GET_USER", null)
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
     },
     mutations:{
-        GET_USER_STATUS(state, auth){
+        GET_USER_STATUS(state: { auth: Nullable<boolean>; }, auth: Nullable<boolean>){
             state.auth = auth
         },
-        GET_USER_ID(state, id){
+        GET_USER_ID(state: { user: VuexStateInterface; }, id: number){
             state.user.user_id = id
         },
-        GET_USER_LOGIN(state, login){
+        GET_USER_LOGIN(state: { user: VuexStateInterface; }, login: Nullable<string>){
             state.user.user_login = login
         },
-        GET_USER_EMAIL(state, email){
+        GET_USER_EMAIL(state: { user: VuexStateInterface; }, email: Nullable<string>){
             state.user.user_email = email
         },
-        UPDATE_USER_INFO(state, data){
+        UPDATE_USER_INFO(state: { user: VuexStateInterface; }, data: VuexStateInterface[]){
             state.user.id = data[0].id
             state.user.user_id = data[0].user_id
-            state.user.user_login = data[0].login_user
-            state.user.user_first_name = data[0].first_user_name
-            state.user.user_last_name = data[0].last_user_name
-            state.user.user_email = data[0].email_user
-            state.user.user_number_phone = data[0].number_phone_user
-            state.user.user_cart_bunk_number = data[0].cart_bank_user
+            state.user.user_login = data[0].user_login
+            state.user.user_first_name = data[0].user_first_name
+            state.user.user_last_name = data[0].user_last_name
+            state.user.user_email = data[0].user_email
+            state.user.user_number_phone = data[0].user_number_phone
+            state.user.user_cart_bunk_number = data[0].user_cart_bunk_number
         }
     },
     getters: {
-        AUTH(state){
+        AUTH(state: { auth: Nullable<boolean>; }){
           return state.auth
         },
-        USERINSYSTEM(state){
+        USERINSYSTEM(state: { user: VuexStateInterface; }){
             return state.user
         }
     }

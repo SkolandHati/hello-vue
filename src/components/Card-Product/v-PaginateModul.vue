@@ -14,6 +14,7 @@
 
 <script lang="ts">
   import {defineComponent} from "vue"
+  import {Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
     name: 'v-PaginateModul',
     emits: {
@@ -31,14 +32,20 @@
     },
     data(){
       return {
-        number_page: this.modelValue as number,
+        number_page: null as Nullable<number|undefined>,
       }
+    },
+    mounted() {
+      this.initialState()
     },
     methods:{
       navigate(page: number): void {
-        if (this.modelValue !== page) {
+        if (this.number_page !== page) {
           this.$emit('pagechanged', page);
         }
+      },
+      initialState() {
+        this.number_page = this.modelValue
       }
     },
   })

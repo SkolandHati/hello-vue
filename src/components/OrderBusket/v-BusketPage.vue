@@ -121,7 +121,7 @@
         }
       },
       goOrderPage(){
-        if (this.busketproducts) this.$router.push({name: 'v-OrderPage' as string})
+        if (this.busketproducts) this.$router.push({name: 'v-OrderPage'})
       }
     },
   })

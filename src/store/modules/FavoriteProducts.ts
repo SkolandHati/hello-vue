@@ -1,4 +1,6 @@
 import {supabase} from "@/services/API_supabase";
+import {Nullable} from "@/interfaces/Type/Types";
+import Product from "@/interfaces/Product";
 
 async function getFavoriteProducts(){
     try {
@@ -7,12 +9,12 @@ async function getFavoriteProducts(){
         if (favoriteProducts){
             return favoriteProducts
         }
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
 
-async function setterFavoriteProducts(bodyProduct){
+async function setterFavoriteProducts(bodyProduct: Product){
     try {
         if (bodyProduct){
             const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
@@ -22,19 +24,19 @@ async function setterFavoriteProducts(bodyProduct){
                 .insert([bodyProduct]).select()
             if (error) throw error
         }
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
 
-async function deliteFavotiteProductsDatabase(id){
+async function deliteFavotiteProductsDatabase(id: number){
     try {
         if (id){
             const {error} = await supabase.from('favoriteProdducts').delete().eq('id_product', id)
             if (error) throw error
         }
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
 
@@ -42,43 +44,43 @@ async function deliteFavotiteProductsDatabase(id){
 export default {
     namespaced: true,
     state:{
-        favorite_products: []
+        favorite_products: [] as Product[]
     },
     actions: {
-        async getFavoriteProduct({commit}){
+        async getFavoriteProduct({commit}:Nullable<unknown>){
             try {
                 let data = await getFavoriteProducts()
                 commit('SET_PRODUCTS_FAVORITE', data)
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async setFavoriteProduct({commit}, product){
+        async setFavoriteProduct({commit}:Nullable<unknown>, product: Product){
             try {
                 await setterFavoriteProducts(product)
                 commit("APPEND_FAVORITE_PRODUCT", product)
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async delitFavoriteProduct({dispatch, commit}, data){
+        async delitFavoriteProduct({dispatch, commit}:Nullable<unknown>, data: number){
             try {
                 await dispatch("SET_PRODUCTS_FAVORITE")
                 await deliteFavotiteProductsDatabase(data)
                 commit("DELITEFAVORITEPRODUCT", data)
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         }
     },
     mutations: {
-        SET_PRODUCTS_FAVORITE(state, products){
+        SET_PRODUCTS_FAVORITE(state: { favorite_products: Product[]; }, products: Product[]){
             state.favorite_products = products
         },
-        APPEND_FAVORITE_PRODUCT(state, product){
+        APPEND_FAVORITE_PRODUCT(state: { favorite_products: Product[]; }, product: Product){
             state.favorite_products.push(product)
         },
-        DELITEFAVORITEPRODUCT(state, id){
+        DELITEFAVORITEPRODUCT(state: { favorite_products: Product[]; }, id: number){
             let data = state.favorite_products?.find(item => item.id_product === id)
             console.log(data)
             state.favorite_products?.forEach((items, index, arrye) => {
@@ -89,7 +91,7 @@ export default {
         }
     },
     getters: {
-        GET_FAVORITE_PRODUCTS(state){
+        GET_FAVORITE_PRODUCTS(state: { favorite_products: Product[]; },){
             return state.favorite_products
         }
     }
