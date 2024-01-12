@@ -111,26 +111,26 @@
             this.loadBrendsInfo()
         ])
       },
-      async addButtons(object: Product, x: string){
+      async addButtons(product: Product, x: string){
         try {
           if (!this.getUser){
             return this.$router.push({name :'v-SignIn'})
           }
-          if (object) {
+          if (product) {
             switch (x) {
               case Enum.InBasket:
-                object.quantity = 1
-                await this.addInBusket(object)
+                product.quantity = 1
+                await this.addInBusket(product)
                 break;
               case Enum.InFavorite:
-                object.quantity = 1
-                await this.addInFavorite(object)
+                product.quantity = 1
+                await this.addInFavorite(product)
                 break;
               case Enum.FavoriteDelited:
-                await this.delitFavoriteProduct(object.id_product)
+                await this.delitFavoriteProduct(product.id_product)
                 break;
               case Enum.DelitedProduct:
-                await this.deliteProduct(object.id_product)
+                await this.deliteProduct(product.id_product)
                 break;
               default:
                 break

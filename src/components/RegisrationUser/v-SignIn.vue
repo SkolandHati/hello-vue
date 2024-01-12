@@ -36,7 +36,6 @@
       let password = ref('')
 
       const router = useRouter()
-      const route = useRoute()
       const signIn = async () => {
         try {
           if (!email.value && !password.value){

@@ -20,46 +20,46 @@
   import Comment from "@/interfaces/Comment"
   import {Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
-      name:"v-ModulePostComments",
-      props:{
-        productAll:{
-          type: Object as PropType<Product>,
-          required: true
-        },
-        user_data:{
-          type: Object as PropType<InformationUser>,
-          required: true
-        }
+    name:"v-ModulePostComments",
+    props:{
+      productAll:{
+        type: Object as PropType<Product>,
+        required: true
       },
-      data(){
-        return {
-          comments: null as Nullable<string>,
-        }
-      },
-      methods:{
-        ...mapActions({
-          appendComment: "commentsModules/addCommentDatabase",
-        }),
-        async addComment(){
-          try {
-            const data = await this.productAll
-            if (data && this.user_data && this.comments){
-              const info_comment: Comment = {
-                content: this.comments,
-                user_id: this.user_data.user_id,
-                author_name: this.user_data.user_login,
-                product_id: this.productAll.id_product
-              }
-              await this.appendComment(info_comment)
-              this.comments = null
-              alert('Comment send')
+      user_data:{
+        type: Object as PropType<InformationUser>,
+        required: true
+      }
+    },
+    data(){
+      return {
+        comments: null as Nullable<string>,
+      }
+    },
+    methods:{
+      ...mapActions({
+        appendComment: "commentsModules/addCommentDatabase",
+      }),
+      async addComment(){
+        try {
+          const data = await this.productAll
+          if (data && this.user_data && this.comments){
+            const info_comment: Comment = {
+              content: this.comments,
+              user_id: this.user_data.user_id,
+              author_name: this.user_data.user_login,
+              product_id: this.productAll.id_product,
             }
-          }catch (error){
-            console.log(error)
+            await this.appendComment(info_comment)
+            this.comments = null
+            alert('Comment send')
           }
+        }catch (error){
+            console.log(error)
         }
-      },
-  })
+      }
+    },
+})
 
 </script>
 

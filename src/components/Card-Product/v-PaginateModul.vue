@@ -13,13 +13,10 @@
 </template>
 
 <script lang="ts">
-  import {defineComponent} from "vue"
+  import {defineComponent, SetupContext, defineEmits} from "vue"
   import {Nullable} from "@/interfaces/Type/Types";
   export default defineComponent({
     name: 'v-PaginateModul',
-    emits: {
-      pagechanged: (page: number) => true
-    },
     props:{
       modelValue:{
         type: Number,
@@ -35,16 +32,21 @@
         number_page: null as Nullable<number|undefined>,
       }
     },
+    setup(props, { emit } ) {
+      const navigate = (page:number) => {
+        if (props.modelValue !== page) {
+          emit('pagechanged', page)
+        }
+      }
+      return {
+        navigate
+      }
+    },
     mounted() {
       this.initialState()
     },
     methods:{
-      navigate(page: number): void {
-        if (this.number_page !== page) {
-          this.$emit('pagechanged', page);
-        }
-      },
-      initialState() {
+      initialState(){
         this.number_page = this.modelValue
       }
     },

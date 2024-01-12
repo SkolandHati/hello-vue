@@ -27,7 +27,7 @@
       data(){
         return {
           products: [] as Product[],
-          currentPage: 1 ,
+          currentPage: 1,
           pageSize: 6
         };
       },

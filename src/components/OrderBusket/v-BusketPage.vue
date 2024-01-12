@@ -140,7 +140,6 @@
    border: 2px solid dimgrey;
    border-radius: 7px;
    text-align:center;
-
  }
  .item-container{
    text-align: center;
