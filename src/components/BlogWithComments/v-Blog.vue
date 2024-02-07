@@ -44,7 +44,7 @@
       })
     },
     watch:{
-      getDataComments() {
+      getDataComments(){
         this.loadCommentDataBase()
       }
     },
@@ -59,18 +59,18 @@
         deliteComm: "commentsModules/deliteComments"
       }),
       async loadUserData(){
-        try{
+        try {
           await this.getUser()
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       async loadCommentDataBase(){
         try {
           let data = await this.productData
-          await this.responseDataComments(data.id_product as number)
-        }catch (e){
-          console.log(e)
+          await this.responseDataComments(data.id_product)
+        } catch (e){
+          console.error(e)
         }
       },
     },

@@ -1,6 +1,8 @@
 import {supabase} from "@/services/API_supabase";
+import {Nullable} from "@/interfaces/Type/Types";
+import Product from "@/interfaces/Product";
 
-async function appProductInDatabase(bodyProduct){
+async function appProductInDatabase(bodyProduct: Product){
     try {
         if (bodyProduct){
             const randomID = () => { return Math.floor(Math.random() *(1000 - 1) + 1)}
@@ -9,8 +11,8 @@ async function appProductInDatabase(bodyProduct){
                 .from('busketProducts')
                 .insert([bodyProduct]).select()
         }
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
 
@@ -21,35 +23,35 @@ async function getDataBusketProducts(){
             return dataFromDatabase
         }
         if (error) throw error
-    }catch (e){
-        console.log("что то ему не нравиться",e)
+    } catch (e){
+        console.error(e)
     }
 }
 
-async function plusProduct(dataProduct){
+async function plusProduct(dataProduct: Product){
     try {
         let {error} = await supabase.from('busketProducts').update({'quantity': dataProduct.quantity}).eq('id_product', dataProduct.id_product)
         if (error) throw error
-    }catch (e){
-        console.log("Неудалось увеличить кол-во продукта", e)
+    } catch (e){
+        console.error(e)
     }
 }
 
-async function minusProduct(dataProduct){
+async function minusProduct(dataProduct: Product){
     try {
         let {error} = await supabase.from('busketProducts').update({'quantity': dataProduct.quantity}).eq('id_product', dataProduct.id_product)
         if (error) throw error
-    }catch (e){
-        console.log("Неудалось уменьшить кол-во продукта", e)
+    } catch (e){
+        console.error(e)
     }
 }
 
-async function deliteDataBusket(id){
+async function deliteDataBusket(id: Nullable<number>){
     try {
         let {error} = await supabase.from('busketProducts').delete().eq('id_product', id)
         if (error) throw error
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
 
@@ -57,94 +59,93 @@ async function cleareDataBusket(){
     try {
         let {error} = await supabase.from('busketProducts').delete()
         if (error) throw error
-    }catch (e){
-        console.log(e)
+    } catch (e){
+        console.error(e)
     }
 }
-
 export default {
     namespaced: true,
     state:{
-        busketProduct: [],
+        busketProduct: [] as Product[],
     },
     actions: {
-        async loadProductsData({commit}){
+        async loadProductsData({commit}:Nullable<unknown>){
             try {
                 let data = await getDataBusketProducts()
                 if (data){
                     commit('LOADBUSKETDATA', data)
                 }
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async appendBusket({commit}, data){
+        async appendBusket({commit}:Nullable<unknown>, data: Product){
             try {
                 await appProductInDatabase(data)
                 commit("ADDPRODINB", data)
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async plusProdBusket({commit, state}, index){
+        async plusProdBusket({commit, state}:Nullable<unknown>, index: number){
             try {
                 commit("PLUSPRODUCT", index)
                 await plusProduct(state.busketProduct[index])
-            }  catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async minusProdBusket({commit, state}, index){
+        async minusProdBusket({commit, state}:Nullable<unknown>, index: number){
             try {
                 commit("MINUSPROD", index)
                 await minusProduct(state.busketProduct[index])
-            }catch (e){
-                console.log(e)}
+            } catch (e){
+                console.error(e)}
         },
-        async deliteProduct({commit}, data){
+        async deliteProduct({commit}:Nullable<unknown>, data: number){
             try {
                 await deliteDataBusket(data)
                 commit('DELITERPOD', data)
-            }  catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         },
-        async clearBusket({commit}){
+        async clearBusket({commit}:Nullable<unknown>){
             try {
                 await cleareDataBusket()
                 commit("CLEARBUSKET")
-            }catch (e){
-                console.log(e)
+            } catch (e){
+                console.error(e)
             }
         }
     },
     mutations: {
-        LOADBUSKETDATA(state, data){
+        LOADBUSKETDATA(state: { busketProduct: Product[]; }, data: Product[]){
             state.busketProduct = data
         },
-        ADDPRODINB(state, prod){
+        ADDPRODINB(state: { busketProduct: Product[]; }, prod: Product){
             state.busketProduct.push(prod)
         },
-        PLUSPRODUCT(state, index){
+        PLUSPRODUCT(state: { busketProduct: { quantity: number; }[]; }, index: number){
             state.busketProduct[index].quantity++
         },
-        MINUSPROD(state, index){
+        MINUSPROD(state: { busketProduct: { quantity: number; }[]; }, index: number){
             state.busketProduct[index].quantity--
         },
-        DELITERPOD(state, data){
-            let datass = state.busketProduct?.find(item => item.id_product === data)
-            state.busketProduct?.forEach((items, index, arrye) => {
+        DELITERPOD(state: { busketProduct: any[]; }, data: number){
+            let datass: Nullable<boolean> = state.busketProduct?.find((item: Product) => item.id_product === data)
+            state.busketProduct?.forEach((items, index) => {
                 if (state.busketProduct[index] === datass){
                     state.busketProduct.splice(index, 1)
                 }
             })
         },
-        CLEARBUSKET(state){
+        CLEARBUSKET(state: { busketProduct: never[]; }){
             state.busketProduct = []
         }
     },
     getters: {
-        BUSKETPRODUCTS(state){
+        BUSKETPRODUCTS(state: { busketProduct: Product[]; }){
             return state.busketProduct
         },
     },

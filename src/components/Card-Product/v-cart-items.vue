@@ -59,13 +59,14 @@
   import {defineComponent} from "vue";
   import Product from "@/interfaces/Product";
   import Brend from "@/interfaces/Brend";
-  import type {PropType} from "vue"
+  import Enum from "@/enum/const";
+  import type {PropType} from "vue";
   export default defineComponent({
     name: "v-cart-item",
     props:{
       products: {
         type: Object as PropType<Product>,
-        require:true
+        require: true
       },
       active:{
         type: Boolean,
@@ -76,7 +77,8 @@
       return {
         expanded: false,
         brend: null,
-        brendInfo: null
+        brendInfo: null,
+        imageSrc: "@/components/assets/images/"
       }
     },
     computed:{
@@ -109,46 +111,45 @@
             this.loadBrendsInfo()
         ])
       },
-      async addButtons(object: Product, x: string){
+      async addButtons(product: Product, x: string){
         try {
           if (!this.getUser){
             return this.$router.push({name :'v-SignIn'})
           }
-          const landmark = ['in_busket', 'in_favorite', 'favorite_delite', 'delite_product']
-          if (object) {
+          if (product) {
             switch (x) {
-              case landmark[0]:
-                object.quantity = 1
-                await this.addInBusket(object)
+              case Enum.InBasket:
+                product.quantity = 1
+                await this.addInBusket(product)
                 break;
-              case landmark[1]:
-                object.quantity = 1
-                await this.addInFavorite(object)
+              case Enum.InFavorite:
+                product.quantity = 1
+                await this.addInFavorite(product)
                 break;
-              case landmark[2]:
-                await this.delitFavoriteProduct(object.id_product)
+              case Enum.FavoriteDelited:
+                await this.delitFavoriteProduct(product.id_product)
                 break;
-              case landmark[3]:
-                await this.deliteProduct(object.id_product)
+              case Enum.DelitedProduct:
+                await this.deliteProduct(product.id_product)
                 break;
               default:
                 break
             }
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
-      async getBrendsInfo(brend_name: string){
+      async getBrendsInfo(brend_Name: string){
         try {
           let data = await this.brends
           if (data){
-            let brnd = data?.find((item: Brend) => item.brend_Name === brend_name)
+            let brnd = data.find((item: Brend) => item.brend_Name === brend_Name)
             this.brend = brnd.brend_Name
             this.brendInfo = brnd.info_Brend
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       goCartItem(){

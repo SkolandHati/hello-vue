@@ -50,8 +50,8 @@
       async loadData(){
        try {
          await this.getFavorites()
-       } catch (e){
-         console.log(e)
+       } catch (e) {
+         console.error(e)
        }
       },
     },

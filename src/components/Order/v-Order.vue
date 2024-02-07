@@ -75,8 +75,8 @@
       async loadData(){
         try {
           await this.getterOrderData()
-        }catch (e){
-          console.log(e)
+        } catch(e) {
+          console.error(e)
         }
       }
     }

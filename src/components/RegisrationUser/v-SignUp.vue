@@ -72,7 +72,6 @@
             password: {required, minLength: minLength(6), maxLength: maxLength(16)},
             confirmpassword: {required}}
 
-
         const v$ = useVuelidate(rules, state, { $lazy: true, $autoDirty: true, })
 
         const submitinDatabase = async () => {
@@ -87,8 +86,8 @@
               }
             });
             if (error) throw error
-          }catch (error: any){
-            console.log(error.message)
+          } catch (e){
+            console.error(e)
           }
         }
         return {
@@ -108,8 +107,8 @@
             }else {
               return false
             }
-          }catch (e){
-            console.log(e)
+          } catch(e){
+            console.error(e)
           }
         }
       },

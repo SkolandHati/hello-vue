@@ -7,7 +7,3 @@ export default interface Product {
     price_product: number
     quantity: number
 }
-
-export interface AllProduct {
-    [key: string | number]: Product
-}

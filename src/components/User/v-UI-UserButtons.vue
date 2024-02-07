@@ -99,16 +99,15 @@
           const {error} = await supabase.auth.signOut().then()
           window.location.reload()
           if (error) throw error;
-        }
-        catch (error: any){
-          console.error(error.message)
+        } catch (e){
+          console.error(e)
         }
       }
       const isCurrentUser = async () => {
         try {
           const {error} = await supabase.auth.getSession()
           if (error) throw error
-        }catch (e){
+        } catch (e){
           console.error(e)
         }
       }
@@ -140,11 +139,11 @@
           const data = supabase.auth.getSession()
           if ((await data).data.session){
             this.isActive = true
-          }else {
+          } else {
             this.isActive = false
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       goBusketPage(){

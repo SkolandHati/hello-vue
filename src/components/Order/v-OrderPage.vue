@@ -19,8 +19,9 @@
 
 <script lang="ts">
   import {defineComponent} from "vue";
-  import Order from "@/interfaces/Order"
   import {mapActions, mapGetters} from "vuex";
+  import Order from "@/interfaces/Order"
+  import {listObjectKeys, Nullable} from "@/interfaces/Type/Types";
   import vMainPanelUser from "@/components/User/v-MainPanelUser.vue"
   import UserData from "@/components/User/v-UserData.vue"
   import vCartItems from "@/components/Card-Product/v-cart-items.vue"
@@ -34,23 +35,23 @@
     data(){
       return {
         active_order: true,
-        fullPrice: 0,
+        fullPrice: 0 as Nullable<number>
       }
     },
-    computed:<any>{
+    computed:{
       ...mapGetters({
         getBusketProducts: 'busketProducts/BUSKETPRODUCTS',
         userData:'user/USERINSYSTEM'
       }),
-      calculateThePrice(){
+      calculateThePrice(): Nullable<number>{
         if (this.getBusketProducts){
-          const listPrice = []
-          for (const key in this.getBusketProducts){
+          const listPrice: Nullable<number[]> = []
+          for (const key in listObjectKeys(this.getBusketProducts)){
             listPrice.push(this.getBusketProducts[key].price_product * this.getBusketProducts[key].quantity)
           }
           return this.fullPrice = listPrice?.reduce((sum, current) => sum + current, 0)}
         else {
-          return  this.fullPrice = 0
+          return this.fullPrice = 0
         }
       },
     },
@@ -73,27 +74,27 @@
         let data = new Date()
         let dataDel = new Date()
         dataDel.setDate(5); dataDel.setMonth(data.getMonth()+1); dataDel.setHours(data.getHours()+3)
-        const obj = {
+        const timeOrder = {
           day_time: String(`${data.getDate()}.${data.getMonth()}.${data.getFullYear()} ${data.getHours()}:${data.getMinutes()}`),
           day_time_delivery: String(`${dataDel.getDate()}.${dataDel.getMonth()}.${dataDel.getFullYear()} ${dataDel.getHours()}:${dataDel.getMinutes()}`),
         }
-        return obj
+        return timeOrder
       },
       async addOrderUser(data: string){
         try {
           let dataProducts = await this.getBusketProducts
           if (data && !!dataProducts){
             let dataTime = this.dataTime()
-            const object = {
+            const orderInfo = {
               user_id: data,
               products: dataProducts,
               data_time: dataTime.day_time,
               time_zone: dataTime.day_time_delivery
             } as Order
-            await this.setOrder(object as Order)
+            await this.setOrder(orderInfo as Order)
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       }
     }

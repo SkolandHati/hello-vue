@@ -41,8 +41,8 @@
       async loadUserData(){
         try {
           await this.thenUser()
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       async loadData(){
@@ -50,11 +50,11 @@
           const data = await supabase.auth.getUser()
           if (data){
             return data.data.user
-          }else{
+          } else{
             return false
           }
-        }catch (e){
-          console.log(e)
+        } catch (e){
+          console.error(e)
         }
       },
       goHome(){
@@ -66,6 +66,7 @@
     },
   })
 </script>
+
 <style scoped>
   .header{
     margin:80px;
